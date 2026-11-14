@@ -311,8 +311,8 @@
         <div class="floating-element el-6">🧬</div>
     </div>
 
-    <!-- Elemen Audio -->
-    <!-- Pastikan file lagu.mp3 sudah diunggah ke repositori GitHub kamu -->
+    <!-- Elemen Audio (Pastikan file lagu.mp3 sudah ada di folder GitHub yang sama) -->
+    <!-- Hapus tulisan 'loop' jika ingin lagu berhenti setelah selesai -->
     <audio id="bg-music" loop>
         <source src="lagu.mp3" type="audio/mpeg">
         Browser kamu tidak mendukung elemen audio.
@@ -374,12 +374,11 @@
         const bgMusic = document.getElementById('bg-music');
         let isMuted = false;
 
-        // Browser modern memblokir autoplay. Lagu akan berputar saat pertama kali layar diklik.
+        // Browser memblokir autoplay. Lagu akan berputar saat pertama kali layar diklik.
         document.body.addEventListener('click', function playMusic() {
             if(bgMusic.paused) {
                 bgMusic.play().catch(e => console.log("Menunggu interaksi user untuk memutar musik."));
             }
-            // Hapus event listener agar tidak terpanggil berulang kali
             document.body.removeEventListener('click', playMusic);
         });
 
