@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
     
     <style>
-        /* Pengaturan Dasar & Latar Belakang Biologi */
+        /* Pengaturan Dasar */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -15,28 +15,28 @@
         }
 
         body {
-            /* Latar belakang hijau sangat muda (nuansa alam/biologi) */
             background-color: #eef7ee; 
             font-family: 'Patrick Hand', cursive;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #1a2e1a; /* Warna teks hijau sangat gelap, bukan hitam pekat */
-            overflow: hidden; /* Mencegah scrollbar akibat animasi */
+            color: #1a2e1a;
+            overflow: hidden;
             position: relative;
         }
 
-        /* Animasi DNA / Elemen Biologis Melayang di Background */
+        /* Animasi Latar Belakang (Z-index dibuat negatif agar selalu di bawah) */
         .bio-background {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            z-index: -1; /* KUNCI: Agar tidak menimpa teks */
             overflow: hidden;
-            opacity: 0.15; /* Dibuat samar agar tidak mengganggu teks */
+            opacity: 0.1;
             font-family: 'Permanent Marker', cursive;
             font-size: 3rem;
             color: #2e7d32;
+            pointer-events: none; /* Agar tidak bisa diklik */
         }
 
         .floating-element {
@@ -49,15 +49,44 @@
             100% { transform: translateY(-30px) rotate(15deg); }
         }
 
-        /* Posisi elemen biologis (A, T, C, G, dan simbol DNA) */
-        .el-1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .el-1 { top: 10%; left: 10%; }
         .el-2 { top: 20%; right: 15%; animation-delay: 2s; }
         .el-3 { bottom: 15%; left: 15%; animation-delay: 1s; }
         .el-4 { bottom: 25%; right: 10%; animation-delay: 3s; }
         .el-5 { top: 50%; left: 5%; animation-delay: 4s; }
         .el-6 { top: 60%; right: 8%; animation-delay: 1.5s; }
 
-        /* Kontainer Utama */
+        /* --- HEADER (Tombol Kanan Atas) --- */
+        .top-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .icon-btn {
+            background-color: white;
+            border: 3px solid #1b5e20;
+            border-radius: 50%; /* Membuat tombol bulat */
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 2px 2px 0px #81c784;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background-color: #e8f5e9;
+            transform: translateY(-2px);
+        }
+
+        /* --- KONTEN UTAMA --- */
         .container {
             width: 90%;
             max-width: 600px;
@@ -65,10 +94,9 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            z-index: 1;
+            z-index: 1; /* Pastikan konten di atas background */
         }
 
-        /* Judul Utama */
         .title-wrapper {
             display: flex;
             align-items: center;
@@ -95,22 +123,20 @@
             text-align: center;
             transform: rotate(-2deg);
             letter-spacing: 2px;
-            color: #1b5e20; /* Hijau tua */
+            color: #1b5e20;
         }
 
-        /* Subjudul (Fase F) */
         .subtitle {
             font-size: 1.5rem;
             margin-bottom: 25px;
             letter-spacing: 3px;
-            background-color: #81c784; /* Stabilo hijau muda */
+            background-color: #81c784;
             padding: 2px 15px;
             border-radius: 20px;
             color: #fff;
             font-weight: bold;
         }
 
-        /* Kotak Menu Utama */
         .menu-box {
             border: 4px solid #1b5e20;
             width: 100%;
@@ -119,12 +145,11 @@
             flex-direction: column;
             gap: 20px;
             border-radius: 8px;
-            background-color: rgba(255, 255, 255, 0.9); /* Putih sedikit transparan */
-            box-shadow: 6px 6px 0px #81c784; /* Bayangan hijau */
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 6px 6px 0px #81c784;
             position: relative;
         }
 
-        /* Hiasan sudut kotak */
         .menu-box::before {
             content: "🧬";
             position: absolute;
@@ -134,9 +159,10 @@
             background: #fff;
             border-radius: 50%;
             padding: 5px;
+            z-index: 2;
         }
 
-        /* Tombol Umum */
+        /* Tombol Menu */
         .btn {
             display: block;
             width: 100%;
@@ -156,9 +182,8 @@
             overflow: hidden;
         }
 
-        /* Efek hover tombol */
         .btn:hover {
-            background-color: #e8f5e9; /* Hijau sangat muda */
+            background-color: #e8f5e9;
             transform: translateY(-2px);
             box-shadow: 3px 3px 0px #1b5e20;
         }
@@ -168,7 +193,6 @@
             box-shadow: none;
         }
 
-        /* Garis DNA di dalam tombol (hiasan) */
         .btn::after {
             content: "";
             position: absolute;
@@ -176,39 +200,120 @@
             background-color: #66bb6a;
         }
 
-        /* Tombol Pilih Permainan */
+        /* Tombol Pilih Permainan (Warna Ungu Bioteknologi) */
         .btn-play {
-            border-color: #c62828; /* Merah gelap */
-            color: #c62828;
+            border-color: #6a1b9a; /* Ungu gelap */
+            color: #6a1b9a;
             font-size: 2.5rem;
             padding: 20px 15px;
-            background-color: #ffebee;
+            background-color: #f3e5f5; /* Ungu sangat muda */
         }
 
         .btn-play::after {
-            background-color: #ef5350;
+            background-color: #ab47bc;
         }
 
         .btn-play:hover {
-            background-color: #ffcdd2;
-            box-shadow: 3px 3px 0px #c62828;
+            background-color: #e1bee7;
+            box-shadow: 3px 3px 0px #6a1b9a;
         }
 
-        /* Kotak Kreator */
-        .creator-box {
-            margin-top: 25px;
-            border: 3px dashed #66bb6a; /* Garis putus-putus nuansa biologi */
-            padding: 10px 30px;
-            font-size: 1.5rem;
-            background-color: rgba(255, 255, 255, 0.8);
-            letter-spacing: 1px;
-            color: #2e7d32;
+        /* --- POP-UP KREATOR (Tersembunyi secara default) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border: 4px solid #1b5e20;
+            border-radius: 10px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 8px 8px 0px #81c784;
+            position: relative;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #1b5e20;
+            font-weight: bold;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            color: #1b5e20;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #81c784;
+            padding-bottom: 10px;
+        }
+
+        .creator-info {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            color: #1b5e20;
+            text-decoration: none;
+            background-color: #e8f5e9;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #66bb6a;
+            transition: all 0.2s;
+        }
+
+        .social-item:hover {
+            background-color: #c8e6c9;
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- Background Elemen Biologi yang Melayang -->
+    <!-- Background Elemen Biologi (Tidak akan menimpa teks) -->
     <div class="bio-background">
         <div class="floating-element el-1">A</div>
         <div class="floating-element el-2">T</div>
@@ -218,29 +323,97 @@
         <div class="floating-element el-6">🧬</div>
     </div>
 
+    <!-- Tombol Kontrol Kanan Atas -->
+    <div class="top-controls">
+        <!-- Tombol Komunitas / Kreator -->
+        <button class="icon-btn" id="open-creator" title="Info Kreator">👥</button>
+        <!-- Tombol Mute / Unmute -->
+        <button class="icon-btn" id="mute-btn" title="Mute/Unmute Musik">🔊</button>
+    </div>
+
     <div class="container">
-        <!-- Judul dengan Hiasan DNA -->
+        <!-- Judul -->
         <div class="title-wrapper">
             <div class="dna-icon">🧬</div>
             <h1 class="title">MARI BELAJAR</h1>
             <div class="dna-icon">🧬</div>
         </div>
         
-        <!-- Subjudul -->
         <p class="subtitle">FASE F - GENETIKA</p>
 
-        <!-- Kotak Menu Utama -->
+        <!-- Menu Utama -->
         <div class="menu-box">
             <a href="cara-main.html" class="btn">CARA MAIN</a>
             <a href="cp-tp.html" class="btn">CP / TP</a>
             <a href="pilih-permainan.html" class="btn btn-play">PILIH PERMAINAN</a>
         </div>
+    </div>
 
-        <!-- Teks Kreator -->
-        <div class="creator-box">
-            Kreator: Naztarbaja
+    <!-- POP-UP KREATOR (Tersembunyi) -->
+    <div class="modal-overlay" id="creator-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-creator">&times;</span>
+            <h2 class="modal-title">Tentang Kreator</h2>
+            
+            <div class="creator-info">
+                <!-- Tempat identitas yang akan kamu isi nanti -->
+                <p><b>Naztarbaja</b></p>
+                <p style="font-size: 1rem; color: #666; margin-top: 5px;">
+                    (Silakan isi deskripsi kelompok, sekolah, atau kelas di sini nanti)
+                </p>
+            </div>
+
+            <div class="social-links">
+                <!-- Ikon Instagram dan TikTok -->
+                <a href="#" class="social-item" target="_blank">
+                    <span class="social-icon">📸</span> @.naztarbaja
+                </a>
+                <a href="#" class="social-item" target="_blank">
+                    <span class="social-icon">🎵</span> @.naztarbaja
+                </a>
+            </div>
         </div>
     </div>
+
+    <!-- SCRIPT UNTUK INTERAKSI (Mute & Pop-up) -->
+    <script>
+        // --- 1. Logika Tombol Mute ---
+        const muteBtn = document.getElementById('mute-btn');
+        let isMuted = false;
+
+        muteBtn.addEventListener('click', () => {
+            isMuted = !isMuted;
+            if (isMuted) {
+                muteBtn.innerText = '🔇'; // Ganti ikon ke mute
+                // Logika untuk mematikan audio (bisa ditambahkan nanti)
+            } else {
+                muteBtn.innerText = '🔊'; // Ganti ikon ke unmute
+                // Logika untuk menyalakan audio (bisa ditambahkan nanti)
+            }
+        });
+
+        // --- 2. Logika Pop-up Kreator ---
+        const creatorModal = document.getElementById('creator-modal');
+        const openCreatorBtn = document.getElementById('open-creator');
+        const closeCreatorBtn = document.getElementById('close-creator');
+
+        // Buka pop-up
+        openCreatorBtn.addEventListener('click', () => {
+            creatorModal.classList.add('active');
+        });
+
+        // Tutup pop-up via tombol X
+        closeCreatorBtn.addEventListener('click', () => {
+            creatorModal.classList.remove('active');
+        });
+
+        // Tutup pop-up jika klik di luar kotak
+        creatorModal.addEventListener('click', (e) => {
+            if (e.target === creatorModal) {
+                creatorModal.classList.remove('active');
+            }
+        });
+    </script>
 
 </body>
 </html>
