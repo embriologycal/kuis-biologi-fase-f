@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mari Belajar - Fase F (Genetika)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Pengaturan Dasar & Latar Belakang Biologi */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Latar belakang hijau sangat muda (nuansa alam/biologi) */
+            background-color: #eef7ee; 
+            font-family: 'Patrick Hand', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #1a2e1a; /* Warna teks hijau sangat gelap, bukan hitam pekat */
+            overflow: hidden; /* Mencegah scrollbar akibat animasi */
+            position: relative;
+        }
+
+        /* Animasi DNA / Elemen Biologis Melayang di Background */
+        .bio-background {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            opacity: 0.15; /* Dibuat samar agar tidak mengganggu teks */
+            font-family: 'Permanent Marker', cursive;
+            font-size: 3rem;
+            color: #2e7d32;
+        }
+
+        .floating-element {
+            position: absolute;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-30px) rotate(15deg); }
+        }
+
+        /* Posisi elemen biologis (A, T, C, G, dan simbol DNA) */
+        .el-1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .el-2 { top: 20%; right: 15%; animation-delay: 2s; }
+        .el-3 { bottom: 15%; left: 15%; animation-delay: 1s; }
+        .el-4 { bottom: 25%; right: 10%; animation-delay: 3s; }
+        .el-5 { top: 50%; left: 5%; animation-delay: 4s; }
+        .el-6 { top: 60%; right: 8%; animation-delay: 1.5s; }
+
+        /* Kontainer Utama */
+        .container {
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        /* Judul Utama */
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 5px;
+            width: 100%;
+        }
+
+        .dna-icon {
+            font-size: 3.5rem;
+            animation: spin-pulse 4s infinite linear;
+        }
+
+        @keyframes spin-pulse {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(10deg) scale(1.1); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        .title {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 3.5rem;
+            text-align: center;
+            transform: rotate(-2deg);
+            letter-spacing: 2px;
+            color: #1b5e20; /* Hijau tua */
+        }
+
+        /* Subjudul (Fase F) */
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            letter-spacing: 3px;
+            background-color: #81c784; /* Stabilo hijau muda */
+            padding: 2px 15px;
+            border-radius: 20px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Kotak Menu Utama */
+        .menu-box {
+            border: 4px solid #1b5e20;
+            width: 100%;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9); /* Putih sedikit transparan */
+            box-shadow: 6px 6px 0px #81c784; /* Bayangan hijau */
+            position: relative;
+        }
+
+        /* Hiasan sudut kotak */
+        .menu-box::before {
+            content: "🧬";
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            font-size: 2rem;
+            background: #fff;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        /* Tombol Umum */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 2rem;
+            font-weight: bold;
+            background-color: #fff;
+            border: 3px solid #1b5e20;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: #1b5e20;
+            transition: all 0.1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efek hover tombol */
+        .btn:hover {
+            background-color: #e8f5e9; /* Hijau sangat muda */
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 0px #1b5e20;
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        /* Garis DNA di dalam tombol (hiasan) */
+        .btn::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 5px; height: 100%;
+            background-color: #66bb6a;
+        }
+
+        /* Tombol Pilih Permainan */
+        .btn-play {
+            border-color: #c62828; /* Merah gelap */
+            color: #c62828;
+            font-size: 2.5rem;
+            padding: 20px 15px;
+            background-color: #ffebee;
+        }
+
+        .btn-play::after {
+            background-color: #ef5350;
+        }
+
+        .btn-play:hover {
+            background-color: #ffcdd2;
+            box-shadow: 3px 3px 0px #c62828;
+        }
+
+        /* Kotak Kreator */
+        .creator-box {
+            margin-top: 25px;
+            border: 3px dashed #66bb6a; /* Garis putus-putus nuansa biologi */
+            padding: 10px 30px;
+            font-size: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 1px;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Elemen Biologi yang Melayang -->
+    <div class="bio-background">
+        <div class="floating-element el-1">A</div>
+        <div class="floating-element el-2">T</div>
+        <div class="floating-element el-3">C</div>
+        <div class="floating-element el-4">G</div>
+        <div class="floating-element el-5">🧬</div>
+        <div class="floating-element el-6">🧬</div>
+    </div>
+
+    <div class="container">
+        <!-- Judul dengan Hiasan DNA -->
+        <div class="title-wrapper">
+            <div class="dna-icon">🧬</div>
+            <h1 class="title">MARI BELAJAR</h1>
+            <div class="dna-icon">🧬</div>
+        </div>
+        
+        <!-- Subjudul -->
+        <p class="subtitle">FASE F - GENETIKA</p>
+
+        <!-- Kotak Menu Utama -->
+        <div class="menu-box">
+            <a href="cara-main.html" class="btn">CARA MAIN</a>
+            <a href="cp-tp.html" class="btn">CP / TP</a>
+            <a href="pilih-permainan.html" class="btn btn-play">PILIH PERMAINAN</a>
+        </div>
+
+        <!-- Teks Kreator -->
+        <div class="creator-box">
+            Kreator: Naztarbaja
+        </div>
+    </div>
+
+</body>
+</html>
