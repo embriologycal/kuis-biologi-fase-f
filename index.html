@@ -26,17 +26,17 @@
             position: relative;
         }
 
-        /* Animasi Latar Belakang (Z-index dibuat negatif agar selalu di bawah) */
+        /* Animasi Latar Belakang */
         .bio-background {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; /* KUNCI: Agar tidak menimpa teks */
+            z-index: -1; 
             overflow: hidden;
             opacity: 0.1;
             font-family: 'Permanent Marker', cursive;
             font-size: 3rem;
             color: #2e7d32;
-            pointer-events: none; /* Agar tidak bisa diklik */
+            pointer-events: none;
         }
 
         .floating-element {
@@ -56,7 +56,7 @@
         .el-5 { top: 50%; left: 5%; animation-delay: 4s; }
         .el-6 { top: 60%; right: 8%; animation-delay: 1.5s; }
 
-        /* --- HEADER (Tombol Kanan Atas) --- */
+        /* --- HEADER KONTROL (Kanan Atas) --- */
         .top-controls {
             position: absolute;
             top: 20px;
@@ -69,7 +69,7 @@
         .icon-btn {
             background-color: white;
             border: 3px solid #1b5e20;
-            border-radius: 50%; /* Membuat tombol bulat */
+            border-radius: 50%; 
             width: 50px;
             height: 50px;
             font-size: 1.5rem;
@@ -94,7 +94,7 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            z-index: 1; /* Pastikan konten di atas background */
+            z-index: 1;
         }
 
         .title-wrapper {
@@ -200,13 +200,13 @@
             background-color: #66bb6a;
         }
 
-        /* Tombol Pilih Permainan (Warna Ungu Bioteknologi) */
+        /* Tombol Pilih Permainan */
         .btn-play {
-            border-color: #6a1b9a; /* Ungu gelap */
+            border-color: #6a1b9a; 
             color: #6a1b9a;
             font-size: 2.5rem;
             padding: 20px 15px;
-            background-color: #f3e5f5; /* Ungu sangat muda */
+            background-color: #f3e5f5; 
         }
 
         .btn-play::after {
@@ -218,7 +218,7 @@
             box-shadow: 3px 3px 0px #6a1b9a;
         }
 
-        /* --- POP-UP KREATOR (Tersembunyi secara default) --- */
+        /* --- POP-UP KREATOR --- */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -313,7 +313,7 @@
 </head>
 <body>
 
-    <!-- Background Elemen Biologi (Tidak akan menimpa teks) -->
+    <!-- Background -->
     <div class="bio-background">
         <div class="floating-element el-1">A</div>
         <div class="floating-element el-2">T</div>
@@ -323,12 +323,11 @@
         <div class="floating-element el-6">🧬</div>
     </div>
 
-    <!-- Tombol Kontrol Kanan Atas -->
+    <!-- Kontrol Kanan Atas -->
     <div class="top-controls">
-        <!-- Tombol Komunitas / Kreator -->
         <button class="icon-btn" id="open-creator" title="Info Kreator">👥</button>
-        <!-- Tombol Mute / Unmute -->
         <button class="icon-btn" id="mute-btn" title="Mute/Unmute Musik">🔊</button>
+        <button class="icon-btn" id="fullscreen-btn" title="Layar Penuh">⛶</button>
     </div>
 
     <div class="container">
@@ -341,7 +340,7 @@
         
         <p class="subtitle">FASE F - GENETIKA</p>
 
-        <!-- Menu Utama -->
+        <!-- Menu -->
         <div class="menu-box">
             <a href="cara-main.html" class="btn">CARA MAIN</a>
             <a href="cp-tp.html" class="btn">CP / TP</a>
@@ -349,14 +348,13 @@
         </div>
     </div>
 
-    <!-- POP-UP KREATOR (Tersembunyi) -->
+    <!-- Pop-up Kreator -->
     <div class="modal-overlay" id="creator-modal">
         <div class="modal-content">
             <span class="close-btn" id="close-creator">&times;</span>
             <h2 class="modal-title">Tentang Kreator</h2>
             
             <div class="creator-info">
-                <!-- Tempat identitas yang akan kamu isi nanti -->
                 <p><b>Naztarbaja</b></p>
                 <p style="font-size: 1rem; color: #666; margin-top: 5px;">
                     (Silakan isi deskripsi kelompok, sekolah, atau kelas di sini nanti)
@@ -364,7 +362,6 @@
             </div>
 
             <div class="social-links">
-                <!-- Ikon Instagram dan TikTok -->
                 <a href="#" class="social-item" target="_blank">
                     <span class="social-icon">📸</span> @.naztarbaja
                 </a>
@@ -375,7 +372,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT UNTUK INTERAKSI (Mute & Pop-up) -->
+    <!-- SCRIPT INTERAKSI -->
     <script>
         // --- 1. Logika Tombol Mute ---
         const muteBtn = document.getElementById('mute-btn');
@@ -384,11 +381,9 @@
         muteBtn.addEventListener('click', () => {
             isMuted = !isMuted;
             if (isMuted) {
-                muteBtn.innerText = '🔇'; // Ganti ikon ke mute
-                // Logika untuk mematikan audio (bisa ditambahkan nanti)
+                muteBtn.innerText = '🔇';
             } else {
-                muteBtn.innerText = '🔊'; // Ganti ikon ke unmute
-                // Logika untuk menyalakan audio (bisa ditambahkan nanti)
+                muteBtn.innerText = '🔊';
             }
         });
 
@@ -397,20 +392,43 @@
         const openCreatorBtn = document.getElementById('open-creator');
         const closeCreatorBtn = document.getElementById('close-creator');
 
-        // Buka pop-up
         openCreatorBtn.addEventListener('click', () => {
             creatorModal.classList.add('active');
         });
 
-        // Tutup pop-up via tombol X
         closeCreatorBtn.addEventListener('click', () => {
             creatorModal.classList.remove('active');
         });
 
-        // Tutup pop-up jika klik di luar kotak
         creatorModal.addEventListener('click', (e) => {
             if (e.target === creatorModal) {
                 creatorModal.classList.remove('active');
+            }
+        });
+
+        // --- 3. Logika Tombol Layar Penuh (Fullscreen) ---
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                // Jika belum fullscreen, minta browser untuk fullscreen
+                document.documentElement.requestFullscreen().catch((err) => {
+                    console.log(`Gagal mengaktifkan layar penuh: ${err.message}`);
+                });
+                fullscreenBtn.innerText = '🗗'; // Ubah ikon jadi "keluar layar penuh"
+            } else {
+                // Jika sudah fullscreen, keluar dari fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    fullscreenBtn.innerText = '⛶'; // Kembalikan ikon semula
+                }
+            }
+        });
+
+        // Mendeteksi jika user keluar dari fullscreen dengan tombol ESC
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                fullscreenBtn.innerText = '⛶'; // Pastikan ikon kembali normal
             }
         });
     </script>
