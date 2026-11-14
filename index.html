@@ -150,18 +150,6 @@
             position: relative;
         }
 
-        .menu-box::before {
-            content: "🧬";
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            font-size: 2rem;
-            background: #fff;
-            border-radius: 50%;
-            padding: 5px;
-            z-index: 2;
-        }
-
         /* Tombol Menu */
         .btn {
             display: block;
@@ -323,6 +311,13 @@
         <div class="floating-element el-6">🧬</div>
     </div>
 
+    <!-- Elemen Audio (Tersembunyi) -->
+    <!-- Nanti ganti "lagu.mp3" dengan nama file lagu yang kamu upload ke GitHub -->
+    <audio id="bg-music" loop>
+        <source src="lagu.mp3" type="audio/mpeg">
+        Browser kamu tidak mendukung elemen audio.
+    </audio>
+
     <!-- Kontrol Kanan Atas -->
     <div class="top-controls">
         <button class="icon-btn" id="open-creator" title="Info Kreator">👥</button>
@@ -340,7 +335,7 @@
         
         <p class="subtitle">FASE F - GENETIKA</p>
 
-        <!-- Menu -->
+        <!-- Menu (Hiasan DNA di pojok kotak sudah dihilangkan) -->
         <div class="menu-box">
             <a href="cara-main.html" class="btn">CARA MAIN</a>
             <a href="cp-tp.html" class="btn">CP / TP</a>
@@ -374,16 +369,30 @@
 
     <!-- SCRIPT INTERAKSI -->
     <script>
-        // --- 1. Logika Tombol Mute ---
+        // --- 1. Logika Musik & Tombol Mute ---
         const muteBtn = document.getElementById('mute-btn');
+        const bgMusic = document.getElementById('bg-music');
         let isMuted = false;
 
-        muteBtn.addEventListener('click', () => {
+        // Browser modern memblokir autoplay. Lagu akan berputar saat pertama kali layar diklik.
+        document.body.addEventListener('click', function playMusic() {
+            if(bgMusic.paused) {
+                bgMusic.play().catch(e => console.log("Menunggu interaksi user untuk memutar musik."));
+            }
+            // Hapus event listener agar tidak terpanggil berulang kali
+            document.body.removeEventListener('click', playMusic);
+        });
+
+        muteBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Mencegah klik tombol memicu event playMusic di atas
             isMuted = !isMuted;
+            
             if (isMuted) {
                 muteBtn.innerText = '🔇';
+                bgMusic.muted = true; // Matikan suara
             } else {
                 muteBtn.innerText = '🔊';
+                bgMusic.muted = false; // Nyalakan suara
             }
         });
 
@@ -392,7 +401,8 @@
         const openCreatorBtn = document.getElementById('open-creator');
         const closeCreatorBtn = document.getElementById('close-creator');
 
-        openCreatorBtn.addEventListener('click', () => {
+        openCreatorBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             creatorModal.classList.add('active');
         });
 
@@ -409,26 +419,24 @@
         // --- 3. Logika Tombol Layar Penuh (Fullscreen) ---
         const fullscreenBtn = document.getElementById('fullscreen-btn');
         
-        fullscreenBtn.addEventListener('click', () => {
+        fullscreenBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             if (!document.fullscreenElement) {
-                // Jika belum fullscreen, minta browser untuk fullscreen
                 document.documentElement.requestFullscreen().catch((err) => {
                     console.log(`Gagal mengaktifkan layar penuh: ${err.message}`);
                 });
-                fullscreenBtn.innerText = '🗗'; // Ubah ikon jadi "keluar layar penuh"
+                fullscreenBtn.innerText = '🗗'; 
             } else {
-                // Jika sudah fullscreen, keluar dari fullscreen
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                    fullscreenBtn.innerText = '⛶'; // Kembalikan ikon semula
+                    fullscreenBtn.innerText = '⛶'; 
                 }
             }
         });
 
-        // Mendeteksi jika user keluar dari fullscreen dengan tombol ESC
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                fullscreenBtn.innerText = '⛶'; // Pastikan ikon kembali normal
+                fullscreenBtn.innerText = '⛶'; 
             }
         });
     </script>
