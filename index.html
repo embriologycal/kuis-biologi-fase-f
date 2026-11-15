@@ -24,7 +24,7 @@
         .el-3 { bottom: 15%; left: 15%; animation-delay: 1s; } .el-4 { bottom: 25%; right: 10%; animation-delay: 3s; }
         .el-5 { top: 50%; left: 5%; animation-delay: 4s; } .el-6 { top: 60%; right: 8%; animation-delay: 1.5s; }
 
-        /* Header Kontrol */
+        /* Header Kontrol (Hanya Komunitas & Mute) */
         .top-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; }
         .icon-btn {
             background-color: white; border: 3px solid #1b5e20; border-radius: 50%; 
@@ -90,10 +90,10 @@
 
     <audio id="bg-music" loop><source src="musik.mp3" type="audio/mpeg"></audio>
 
+    <!-- Kontrol Kanan Atas (Tanpa Fullscreen) -->
     <div class="top-controls">
         <button class="icon-btn" id="open-creator">👥</button>
         <button class="icon-btn" id="mute-btn">🔊</button>
-        <button class="icon-btn" id="fullscreen-btn">⛶</button>
     </div>
 
     <div class="container">
@@ -124,23 +124,30 @@
     </div>
 
     <script>
-        // --- 1. Logika Musik ---
+        // --- 1. Logika Musik & Mute ---
         const muteBtn = document.getElementById('mute-btn');
         const bgMusic = document.getElementById('bg-music');
+        
+        // Ambil memori waktu dan mute
         const savedTime = localStorage.getItem('musicTime');
         const isMutedStr = localStorage.getItem('musicMuted');
 
         if (savedTime !== null) bgMusic.currentTime = parseFloat(savedTime);
-        if (isMutedStr === 'true') { bgMusic.muted = true; muteBtn.innerText = '🔇'; } else { bgMusic.muted = false; muteBtn.innerText = '🔊'; }
+        if (isMutedStr === 'true') { bgMusic.muted = true; muteBtn.innerText = '🔇'; } 
+        else { bgMusic.muted = false; muteBtn.innerText = '🔊'; }
 
+        // Putar lagu saat layar diklik
         document.body.addEventListener('click', function playMusic() {
             if(bgMusic.paused) bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
             document.body.removeEventListener('click', playMusic);
         });
+        
+        // Simpan waktu lagu
         setInterval(() => { if(!bgMusic.paused) localStorage.setItem('musicTime', bgMusic.currentTime); }, 500);
 
         muteBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); bgMusic.muted = !bgMusic.muted;
+            e.stopPropagation(); 
+            bgMusic.muted = !bgMusic.muted;
             muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
             localStorage.setItem('musicMuted', bgMusic.muted);
         });
@@ -150,36 +157,6 @@
         document.getElementById('open-creator').addEventListener('click', (e) => { e.stopPropagation(); creatorModal.classList.add('active'); });
         document.getElementById('close-creator').addEventListener('click', () => creatorModal.classList.remove('active'));
         creatorModal.addEventListener('click', (e) => { if (e.target === creatorModal) creatorModal.classList.remove('active'); });
-
-        // --- 3. Logika Fullscreen ---
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        
-        // Cek memori fullscreen
-        if (sessionStorage.getItem('isFullscreen') === 'true') {
-            fullscreenBtn.innerText = '🗗';
-        }
-
-        fullscreenBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch((err) => console.log(err));
-                fullscreenBtn.innerText = '🗗'; 
-                sessionStorage.setItem('isFullscreen', 'true');
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                    fullscreenBtn.innerText = '⛶'; 
-                    sessionStorage.setItem('isFullscreen', 'false');
-                }
-            }
-        });
-
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                fullscreenBtn.innerText = '⛶'; 
-                sessionStorage.setItem('isFullscreen', 'false');
-            }
-        });
     </script>
 </body>
 </html>
