@@ -5,313 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pilih Permainan - Mari Belajar</title>
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
-    
     <style>
-        /* Pengaturan Dasar */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             background: linear-gradient(135deg, #fff3e0 0%, #eef7ee 100%);
-            font-family: 'Patrick Hand', cursive;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #1a2e1a;
-            overflow: hidden;
-            position: relative;
+            font-family: 'Patrick Hand', cursive; display: flex; justify-content: center;
+            align-items: center; min-height: 100vh; color: #1a2e1a; overflow: hidden; position: relative;
         }
-
-        /* Animasi Latar Belakang */
         .bio-background {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; 
-            overflow: hidden;
-            opacity: 0.15;
-            font-family: 'Permanent Marker', cursive;
-            font-size: 3rem;
-            pointer-events: none;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden; opacity: 0.15;
+            font-family: 'Permanent Marker', cursive; font-size: 3rem; pointer-events: none;
         }
+        .floating-element { position: absolute; animation: float 8s infinite ease-in-out alternate; }
+        @keyframes float { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-20px) rotate(10deg); } }
+        .el-1 { top: 15%; left: 10%; color: #2e7d32; } .el-2 { top: 25%; right: 15%; color: #f57c00; animation-delay: 1s; }
+        .el-3 { bottom: 20%; left: 15%; color: #d32f2f; animation-delay: 2s; } .el-4 { bottom: 30%; right: 10%; color: #2e7d32; animation-delay: 0.5s; }
+        .el-5 { top: 50%; left: 5%; color: #fbc02d; animation-delay: 1.5s; } .el-6 { top: 60%; right: 8%; color: #1976d2; animation-delay: 2.5s; }
 
-        .floating-element {
-            position: absolute;
-            animation: float 8s infinite ease-in-out alternate;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-20px) rotate(10deg); }
-        }
-
-        .el-1 { top: 15%; left: 10%; color: #2e7d32; }
-        .el-2 { top: 25%; right: 15%; color: #f57c00; animation-delay: 1s; }
-        .el-3 { bottom: 20%; left: 15%; color: #d32f2f; animation-delay: 2s; }
-        .el-4 { bottom: 30%; right: 10%; color: #2e7d32; animation-delay: 0.5s; }
-        .el-5 { top: 50%; left: 5%; color: #fbc02d; animation-delay: 1.5s; }
-        .el-6 { top: 60%; right: 8%; color: #1976d2; animation-delay: 2.5s; }
-
-        /* --- HEADER KONTROL (Kanan Atas) --- */
-        .top-controls {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 10;
-        }
-
+        .top-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; }
         .icon-btn {
-            background-color: white;
-            border: 3px solid #1b5e20;
-            border-radius: 50%; 
-            width: 50px;
-            height: 50px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 2px 2px 0px #81c784;
-            transition: all 0.2s ease;
+            background-color: white; border: 3px solid #1b5e20; border-radius: 50%; 
+            width: 50px; height: 50px; font-size: 1.5rem; cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 2px 2px 0px #81c784; transition: all 0.2s ease;
         }
+        .icon-btn:hover { background-color: #e8f5e9; transform: translateY(-2px); }
 
-        .icon-btn:hover {
-            background-color: #e8f5e9;
-            transform: translateY(-2px);
-        }
-
-        /* --- KONTEN UTAMA --- */
-        .container {
-            width: 90%;
-            max-width: 700px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            z-index: 1;
-        }
-
+        .container { width: 90%; max-width: 700px; display: flex; flex-direction: column; align-items: center; padding: 20px; z-index: 1; }
         .arena-box {
-            border: 5px solid #1b5e20;
-            border-radius: 30px;
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 50px 30px 30px 30px; 
-            width: 100%;
-            box-shadow: 10px 10px 0px #f57c00;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 20px; 
+            border: 5px solid #1b5e20; border-radius: 30px; background-color: rgba(255, 255, 255, 0.95);
+            padding: 50px 30px 30px 30px; width: 100%; box-shadow: 10px 10px 0px #f57c00;
+            position: relative; display: flex; flex-direction: column; gap: 20px; 
         }
-
         .arena-box::before {
-            content: "🚩 PILIH PERMAINAN 🚩";
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #f57c00;
-            color: white;
-            padding: 5px 30px;
-            border-radius: 20px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            white-space: nowrap;
+            content: "🚩 PILIH PERMAINAN 🚩"; position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            background-color: #f57c00; color: white; padding: 5px 30px; border-radius: 20px;
+            font-size: 1.3rem; font-weight: bold; letter-spacing: 2px; white-space: nowrap;
         }
-
-        /* Tombol Kartu Lomba */
         .btn-lomba {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 20px 30px;
-            font-family: 'Patrick Hand', cursive;
-            font-size: 2.2rem;
-            font-weight: bold;
-            background-color: #fff;
-            border: 3px dashed #1b5e20;
-            border-radius: 15px;
-            cursor: pointer;
-            text-decoration: none;
-            color: #1b5e20;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
+            display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 20px 30px;
+            font-family: 'Patrick Hand', cursive; font-size: 2.2rem; font-weight: bold; background-color: #fff;
+            border: 3px dashed #1b5e20; border-radius: 15px; cursor: pointer; text-decoration: none;
+            color: #1b5e20; transition: all 0.2s ease; position: relative; overflow: hidden;
         }
-
-        .btn-lomba::before {
-            content: "";
-            position: absolute;
-            left: 0; top: 0; bottom: 0; width: 10px;
-            background-color: #f57c00;
-        }
-
-        .btn-lomba:hover {
-            background-color: #fff8e1;
-            transform: scale(1.02) translateY(-3px);
-            box-shadow: 0px 6px 0px #f57c00;
-            border-style: solid;
-        }
-
-        .btn-lomba:active {
-            transform: translateY(2px);
-            box-shadow: none;
-        }
-
-        .btn-icon {
-            font-size: 2.5rem;
-        }
-
-        /* Tombol Kembali */
+        .btn-lomba::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background-color: #f57c00; }
+        .btn-lomba:hover { background-color: #fff8e1; transform: scale(1.02) translateY(-3px); box-shadow: 0px 6px 0px #f57c00; border-style: solid; }
+        .btn-lomba:active { transform: translateY(2px); box-shadow: none; }
+        .btn-icon { font-size: 2.5rem; }
         .btn-back {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            font-size: 1.5rem;
-            color: #1b5e20;
-            text-decoration: none;
-            font-weight: bold;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
+            display: inline-block; margin-top: 15px; padding: 10px 20px; font-size: 1.5rem;
+            color: #1b5e20; text-decoration: none; font-weight: bold; border-bottom: 2px solid transparent; transition: all 0.2s;
         }
-
-        .btn-back:hover {
-            border-bottom: 2px solid #1b5e20;
-            color: #f57c00;
-        }
-
+        .btn-back:hover { border-bottom: 2px solid #1b5e20; color: #f57c00; }
     </style>
 </head>
 <body>
-
-    <!-- Background -->
     <div class="bio-background">
-        <div class="floating-element el-1">🧬</div>
-        <div class="floating-element el-2">🏆</div>
-        <div class="floating-element el-3">🚩</div>
-        <div class="floating-element el-4">🧬</div>
-        <div class="floating-element el-5">⭐</div>
-        <div class="floating-element el-6">🧬</div>
+        <div class="floating-element el-1">🧬</div><div class="floating-element el-2">🏆</div>
+        <div class="floating-element el-3">🚩</div><div class="floating-element el-4">🧬</div>
+        <div class="floating-element el-5">⭐</div><div class="floating-element el-6">🧬</div>
     </div>
 
-    <!-- Elemen Audio -->
-    <audio id="bg-music" loop>
-        <source src="musik.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="bg-music" loop><source src="musik.mp3" type="audio/mpeg"></audio>
 
-    <!-- Kontrol Kanan Atas -->
     <div class="top-controls">
-        <button class="icon-btn" id="mute-btn" title="Mute/Unmute Musik">🔊</button>
-        <button class="icon-btn" id="fullscreen-btn" title="Layar Penuh">⛶</button>
+        <button class="icon-btn" id="mute-btn">🔊</button>
+        <button class="icon-btn" id="fullscreen-btn">⛶</button>
     </div>
 
-    <!-- Konten Utama -->
     <div class="container">
         <div class="arena-box">
-            <a href="tarik-tambang.html" class="btn-lomba">
-                <span>TARIK TAMBANG</span>
-                <span class="btn-icon">🪢</span>
-            </a>
-
-            <a href="family-100.html" class="btn-lomba">
-                <span>FAMILY 100</span>
-                <span class="btn-icon">💯</span>
-            </a>
+            <a href="tarik-tambang.html" class="btn-lomba"><span>TARIK TAMBANG</span><span class="btn-icon">🪢</span></a>
+            <a href="family-100.html" class="btn-lomba"><span>FAMILY 100</span><span class="btn-icon">💯</span></a>
         </div>
-
         <a href="index.html" class="btn-back">⬅ Kembali ke Menu</a>
     </div>
 
-    <!-- SCRIPT INTERAKSI -->
     <script>
         // --- 1. Logika Musik ---
         const bgMusic = document.getElementById('bg-music');
         const muteBtn = document.getElementById('mute-btn');
-        
         const savedTime = localStorage.getItem('musicTime');
         const isMutedStr = localStorage.getItem('musicMuted');
 
         if (savedTime !== null) bgMusic.currentTime = parseFloat(savedTime);
-        
-        if (isMutedStr === 'true') {
-            bgMusic.muted = true;
-            muteBtn.innerText = '🔇';
-        } else {
-            bgMusic.muted = false;
-            muteBtn.innerText = '🔊';
-        }
+        if (isMutedStr === 'true') { bgMusic.muted = true; muteBtn.innerText = '🔇'; } else { bgMusic.muted = false; muteBtn.innerText = '🔊'; }
 
-        // Putar lagu saat halaman diklik (menghindari blokir autoplay)
         document.body.addEventListener('click', function playMusic() {
             if(bgMusic.paused) bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
             document.body.removeEventListener('click', playMusic);
         });
+        setInterval(() => { if(!bgMusic.paused) localStorage.setItem('musicTime', bgMusic.currentTime); }, 500);
 
-        setInterval(() => {
-            if(!bgMusic.paused) localStorage.setItem('musicTime', bgMusic.currentTime);
-        }, 500);
-
-        // --- 2. Tombol Mute ---
         muteBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            bgMusic.muted = !bgMusic.muted;
+            e.stopPropagation(); bgMusic.muted = !bgMusic.muted;
             muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
-            localStorage.setItem('musicMuted', bgMusic.muted); 
+            localStorage.setItem('musicMuted', bgMusic.muted);
         });
 
-        // --- 3. Logika Fullscreen Permanen ---
+        // --- 2. Logika Fullscreen ---
         const fullscreenBtn = document.getElementById('fullscreen-btn');
-
-        // Cek apakah sebelumnya pengguna sudah masuk mode fullscreen
-        const wasFullscreen = sessionStorage.getItem('isFullscreen') === 'true';
-
-        // Jika iya, update ikon tombol jadi "Keluar Fullscreen"
-        if (wasFullscreen) {
+        
+        if (sessionStorage.getItem('isFullscreen') === 'true') {
             fullscreenBtn.innerText = '🗗';
         }
 
-        // Fungsi untuk masuk fullscreen
-        function goFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch((err) => {
-                    console.log(`Gagal: ${err.message}`);
-                });
-            }
-        }
-
-        // Browser melarang fullscreen otomatis, jadi kita picu saat layar diklik pertama kali
-        document.body.addEventListener('click', function autoFullscreenOnClick() {
-            if (wasFullscreen && !document.fullscreenElement) {
-                goFullscreen();
-            }
-            // Hapus event listener agar tidak terpanggil terus menerus
-            document.body.removeEventListener('click', autoFullscreenOnClick);
-        });
-
-        // Tombol manual Fullscreen
         fullscreenBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (!document.fullscreenElement) {
-                goFullscreen();
-                sessionStorage.setItem('isFullscreen', 'true');
+                document.documentElement.requestFullscreen().catch((err) => console.log(err));
                 fullscreenBtn.innerText = '🗗'; 
+                sessionStorage.setItem('isFullscreen', 'true');
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                    sessionStorage.setItem('isFullscreen', 'false');
                     fullscreenBtn.innerText = '⛶'; 
+                    sessionStorage.setItem('isFullscreen', 'false');
                 }
             }
         });
 
-        // Mendeteksi jika user keluar fullscreen pakai tombol ESC
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 fullscreenBtn.innerText = '⛶'; 
@@ -319,6 +133,5 @@
             }
         });
     </script>
-
 </body>
 </html>
