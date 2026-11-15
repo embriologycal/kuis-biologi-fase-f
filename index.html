@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mari Belajar - Fase F (Genetika)</title>
+    <title>Mari Belajar - Tarik Tambang</title>
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,7 +14,7 @@
             min-height: 100vh; color: #1a2e1a; overflow: hidden; position: relative;
         }
         
-        /* Latar Belakang Animasi */
+        /* Latar Belakang */
         .bio-background {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; overflow: hidden; opacity: 0.1;
@@ -24,7 +24,6 @@
         @keyframes float { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-30px) rotate(15deg); } }
         .el-1 { top: 10%; left: 10%; } .el-2 { top: 20%; right: 15%; animation-delay: 2s; }
         .el-3 { bottom: 15%; left: 15%; animation-delay: 1s; } .el-4 { bottom: 25%; right: 10%; animation-delay: 3s; }
-        .el-5 { top: 50%; left: 5%; animation-delay: 4s; } .el-6 { top: 60%; right: 8%; animation-delay: 1.5s; }
 
         /* Header Kontrol */
         .top-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; }
@@ -37,17 +36,12 @@
         .icon-btn:hover { background-color: #e8f5e9; transform: translateY(-2px); }
 
         /* Kontainer Halaman (Single Page) */
-        .page-section { 
-            display: none; 
-            width: 100%; justify-content: center; align-items: center; height: 100vh;
-        }
-        .page-section.active { 
-            display: flex; animation: fadeIn 0.5s ease; 
-        }
+        .page-section { display: none; width: 100%; justify-content: center; align-items: center; height: 100vh; overflow-y: auto; }
+        .page-section.active { display: flex; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-        /* --- DESAIN MENU UTAMA --- */
-        .container-main { width: 90%; max-width: 600px; display: flex; flex-direction: column; align-items: center; z-index: 1; }
+        /* --- DESAIN MENU & PILIH (Sama seperti sebelumnya) --- */
+        .container-main { width: 90%; max-width: 600px; display: flex; flex-direction: column; align-items: center; z-index: 1; padding: 20px;}
         .title-wrapper { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; width: 100%; }
         .dna-icon { font-size: 3.5rem; animation: spin-pulse 4s infinite linear; }
         @keyframes spin-pulse { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1); } }
@@ -71,8 +65,7 @@
         .btn-play::after { background-color: #ab47bc; }
         .btn-play:hover { background-color: #e1bee7; box-shadow: 3px 3px 0px #6a1b9a; }
 
-        /* --- DESAIN PILIH PERMAINAN --- */
-        .container-arena { width: 90%; max-width: 700px; display: flex; flex-direction: column; align-items: center; z-index: 1; }
+        .container-arena { width: 90%; max-width: 700px; display: flex; flex-direction: column; align-items: center; z-index: 1; padding: 20px;}
         .arena-box {
             border: 5px solid #1b5e20; border-radius: 30px; background-color: rgba(255, 255, 255, 0.95);
             padding: 50px 30px 30px 30px; width: 100%; box-shadow: 10px 10px 0px #f57c00;
@@ -83,15 +76,7 @@
             background-color: #f57c00; color: white; padding: 5px 30px; border-radius: 20px;
             font-size: 1.3rem; font-weight: bold; letter-spacing: 2px; white-space: nowrap;
         }
-
-        /* --- TOMBOL GAME (DIPERBARUI DENGAN TOMBOL INFO) --- */
-        .game-row {
-            display: flex;
-            align-items: stretch; /* Agar tinggi tombol sama */
-            gap: 15px;
-            width: 100%;
-        }
-
+        .game-row { display: flex; align-items: stretch; gap: 15px; width: 100%; }
         .btn-lomba {
             display: flex; align-items: center; justify-content: space-between; flex: 1; padding: 20px 30px;
             font-family: 'Patrick Hand', cursive; font-size: 2.2rem; font-weight: bold; background-color: #fff;
@@ -102,37 +87,135 @@
         .btn-lomba:hover { background-color: #fff8e1; transform: scale(1.02) translateY(-3px); box-shadow: 0px 6px 0px #f57c00; border-style: solid; }
         .btn-lomba:active { transform: translateY(2px); box-shadow: none; }
         .btn-icon { font-size: 2.5rem; }
-
-        /* Tombol Info Kecil (?) */
         .btn-info {
-            width: 60px;
-            background-color: #fff;
-            border: 3px solid #f57c00;
-            border-radius: 15px;
-            font-size: 2rem;
-            color: #f57c00;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 0 #e65100;
+            width: 70px; background-color: #fff; border: 3px solid #f57c00; border-radius: 15px;
+            font-size: 2rem; color: #f57c00; cursor: pointer; display: flex; justify-content: center; align-items: center;
+            transition: all 0.2s ease; box-shadow: 0 4px 0 #e65100;
         }
-        .btn-info:hover {
-            background-color: #fff3e0;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 0 #e65100;
-        }
-        .btn-info:active {
-            transform: translateY(2px);
-            box-shadow: none;
-        }
-        
+        .btn-info:hover { background-color: #fff3e0; transform: translateY(-2px); box-shadow: 0 6px 0 #e65100; }
+        .btn-info:active { transform: translateY(3px); box-shadow: none; }
         .btn-back {
             display: inline-block; margin-top: 15px; padding: 10px 20px; font-size: 1.5rem;
             color: #1b5e20; text-decoration: none; font-weight: bold; border-bottom: 2px solid transparent; transition: all 0.2s; cursor: pointer; background: none; border: none;
         }
         .btn-back:hover { border-bottom: 2px solid #1b5e20; color: #f57c00; }
+
+        /* ================= DESAIN SETUP TARIK TAMBANG ================= */
+        .setup-box {
+            background-color: white; border: 4px solid #1b5e20; border-radius: 20px;
+            padding: 30px; width: 90%; max-width: 600px; box-shadow: 8px 8px 0px #81c784;
+            display: flex; flex-direction: column; gap: 20px; z-index: 1;
+        }
+        .setup-title { font-family: 'Permanent Marker', cursive; font-size: 2.5rem; text-align: center; color: #1b5e20; }
+        
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        .input-group label { font-size: 1.3rem; font-weight: bold; }
+        .input-group input, .input-group select {
+            padding: 10px; font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
+            border: 2px solid #81c784; border-radius: 8px; outline: none;
+        }
+        .input-group input:focus, .input-group select:focus { border-color: #1b5e20; }
+
+        .timer-options { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 5px; }
+        .timer-btn {
+            padding: 8px 15px; font-family: 'Patrick Hand', cursive; font-size: 1.2rem;
+            background-color: #fff; border: 2px solid #81c784; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .timer-btn.selected { background-color: #1b5e20; color: white; border-color: #1b5e20; }
+
+        .btn-start {
+            background-color: #f57c00; color: white; font-size: 1.8rem; font-weight: bold;
+            padding: 15px; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 0 #e65100; margin-top: 10px;
+        }
+        .btn-start:hover { background-color: #fb8c00; transform: translateY(-2px); box-shadow: 0 6px 0 #e65100; }
+        .btn-start:active { transform: translateY(4px); box-shadow: none; }
+
+        /* ================= DESAIN GAME TARIK TAMBANG ================= */
+        .game-container-tt {
+            width: 95%; max-width: 1200px; height: 95vh; display: flex; flex-direction: column; z-index: 1; position: relative;
+        }
+
+        /* Timer di Atas */
+        .timer-display {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            font-family: 'Permanent Marker', cursive; font-size: 3rem; color: #d32f2f;
+            background-color: rgba(255, 255, 255, 0.9); padding: 5px 30px; border-radius: 20px;
+            border: 3px solid #d32f2f; box-shadow: 0 4px 0 #b71c1c; z-index: 20;
+        }
+
+        /* Area Tarik Tambang */
+        .tug-of-war-area {
+            flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: flex-start;
+            position: relative; border: 4px solid #006064; border-radius: 20px;
+            background-color: #e0f7fa; overflow: hidden; margin-top: 60px; margin-bottom: 20px;
+        }
+
+        /* Nama Tim */
+        .team-names { display: flex; justify-content: space-between; width: 100%; padding: 20px; z-index: 5; }
+        .team-name-badge {
+            font-size: 2rem; font-weight: bold; padding: 10px 30px; border-radius: 15px; color: white;
+        }
+        .team-a-badge { background-color: #d32f2f; box-shadow: 0 4px 0 #b71c1c; }
+        .team-b-badge { background-color: #1976d2; box-shadow: 0 4px 0 #0d47a1; }
+
+        /* Visualisasi Tali & Praktikan */
+        .rope-container {
+            position: absolute; top: 50%; left: 0; width: 100%; height: 100px;
+            transform: translateY(-50%); display: flex; align-items: center; justify-content: center;
+        }
+        
+        .rope-visual {
+            position: absolute; width: 110%; height: 15px; background-color: #8d6e63;
+            border-radius: 10px; border: 2px solid #4e342e; transition: transform 0.3s ease;
+            z-index: 1;
+        }
+        .rope-knot {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            width: 30px; height: 30px; background-color: #ffeb3b; border-radius: 50%;
+            border: 4px solid #f57f17; z-index: 2;
+        }
+
+        .team-visual {
+            width: 50%; display: flex; justify-content: flex-end; align-items: center; padding-right: 20%;
+            z-index: 3; transition: transform 0.3s ease;
+        }
+        .team-b-visual {
+            justify-content: flex-start; padding-right: 0; padding-left: 20%;
+        }
+        
+        .practitioners { font-size: 5rem; display: flex; gap: -10px; }
+        .practitioners span { margin: 0 -10px; text-shadow: 2px 2px 0 rgba(0,0,0,0.2); }
+
+        /* Panel Pertanyaan */
+        .question-panel {
+            text-align: center; width: 90%; margin: 0 auto 20px auto; z-index: 5;
+        }
+        .question-box {
+            background-color: white; border: 3px solid #006064; border-radius: 15px;
+            padding: 20px; font-size: 1.8rem; font-weight: bold; margin-bottom: 20px;
+            box-shadow: 0 6px 0 #006064;
+        }
+
+        /* Area Jawaban (Kiri & Kanan) */
+        .answers-area { display: flex; justify-content: space-between; width: 100%; padding: 0 20px; gap: 40px; }
+        .answer-column { display: flex; flex-direction: column; gap: 10px; width: 45%; }
+        
+        .answer-btn {
+            padding: 15px; font-family: 'Patrick Hand', cursive; font-size: 1.5rem; font-weight: bold;
+            background-color: #fff; border: 3px solid #006064; border-radius: 10px; cursor: pointer;
+            text-align: left; transition: all 0.2s; position: relative; overflow: hidden;
+        }
+        .answer-btn:hover { background-color: #e0f7fa; transform: scale(1.02); }
+        
+        /* Warna Tim A dan B saat menjawab */
+        .answer-btn.btn-a { border-color: #d32f2f; }
+        .answer-btn.btn-a:hover { background-color: #ffebee; }
+        .answer-btn.btn-b { border-color: #1976d2; }
+        .answer-btn.btn-b:hover { background-color: #e3f2fd; }
+
+        .answer-btn.correct { background-color: #4caf50 !important; color: white; border-color: #2e7d32 !important; }
+        .answer-btn.wrong { background-color: #f44336 !important; color: white; border-color: #c62828 !important; }
 
         /* --- POP-UP (MODAL) --- */
         .modal-overlay {
@@ -142,33 +225,22 @@
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content {
             background-color: #fff; border: 4px solid #1b5e20; border-radius: 10px; padding: 25px;
-            width: 90%; max-width: 400px; text-align: center; box-shadow: 8px 8px 0px #81c784;
-            position: relative; transform: translateY(-20px); transition: all 0.3s ease;
+            width: 90%; max-width: 450px; text-align: center; box-shadow: 8px 8px 0px #81c784;
+            position: relative; transform: translateY(-20px); transition: all 0.3s ease; color: #1a2e1a;
         }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #1b5e20; font-weight: bold; }
         .modal-title { font-size: 2rem; color: #1b5e20; margin-bottom: 15px; border-bottom: 2px dashed #81c784; padding-bottom: 10px; }
-        .creator-info { font-size: 1.2rem; margin-bottom: 20px; line-height: 1.5; text-align: left; }
-        .social-links { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .social-item {
-            display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; color: #1b5e20;
-            text-decoration: none; background-color: #e8f5e9; padding: 10px; border-radius: 5px; border: 2px solid #66bb6a; transition: all 0.2s;
-        }
-        .social-item:hover { background-color: #c8e6c9; }
-        .social-icon { font-size: 1.5rem; }
+        .modal-text { font-size: 1.2rem; margin-bottom: 20px; line-height: 1.5; text-align: left; }
     </style>
 </head>
 <body>
     <div class="bio-background">
         <div class="floating-element el-1">A</div><div class="floating-element el-2">T</div>
         <div class="floating-element el-3">C</div><div class="floating-element el-4">G</div>
-        <div class="floating-element el-5">🧬</div><div class="floating-element el-6">🧬</div>
     </div>
 
-    <!-- Audio Utama -->
     <audio id="bg-music" loop><source src="lagu.mp3" type="audio/mpeg"></audio>
 
-    <!-- Kontrol Kanan Atas -->
     <div class="top-controls">
         <button class="icon-btn" id="open-creator">👥</button>
         <button class="icon-btn" id="mute-btn">🔊</button>
@@ -193,101 +265,278 @@
     <div class="page-section" id="page-select">
         <div class="container-arena">
             <div class="arena-box">
-                
-                <!-- Baris Game 1: Tarik Tambang -->
                 <div class="game-row">
-                    <a href="tarik-tambang.html" class="btn-lomba">
+                    <button class="btn-lomba" onclick="switchPage('page-tt-setup')">
                         <span>TARIK TAMBANG</span><span class="btn-icon">🪢</span>
-                    </a>
-                    <button class="btn-info" onclick="openModal('modal-tarik')">❓</button>
+                    </button>
+                    <button class="btn-info" onclick="openModal('modal-tarik'); event.stopPropagation();">?</button>
                 </div>
-
-                <!-- Baris Game 2: Family 100 -->
                 <div class="game-row">
-                    <a href="family-100.html" class="btn-lomba">
+                    <button class="btn-lomba" onclick="alert('Belum siap')">
                         <span>FAMILY 100</span><span class="btn-icon">💯</span>
-                    </a>
-                    <button class="btn-info" onclick="openModal('modal-family')">❓</button>
+                    </button>
+                    <button class="btn-info" onclick="openModal('modal-family'); event.stopPropagation();">?</button>
                 </div>
-
             </div>
             <button class="btn-back" onclick="switchPage('page-main')">⬅ Kembali ke Menu</button>
         </div>
     </div>
 
-    <!-- ================= MODAL CARA MAIN TARIK TAMBANG ================= -->
+    <!-- ================= HALAMAN 3: SETUP TARIK TAMBANG ================= -->
+    <div class="page-section" id="page-tt-setup">
+        <div class="setup-box">
+            <h1 class="setup-title">PENGATURAN PERTANDINGAN</h1>
+            
+            <div class="input-group">
+                <label>Nama Tim Kiri (Merah):</label>
+                <input type="text" id="input-team-a" placeholder="Contoh: Tim Helix" value="Tim Helix">
+            </div>
+            <div class="input-group">
+                <label>Nama Tim Kanan (Biru):</label>
+                <input type="text" id="input-team-b" placeholder="Contoh: Tim RNA" value="Tim RNA">
+            </div>
+
+            <div class="input-group">
+                <label>Pilih Waktu (Detik):</label>
+                <div class="timer-options">
+                    <button class="timer-btn" onclick="selectTime(30, this)">30</button>
+                    <button class="timer-btn selected" onclick="selectTime(60, this)">60</button>
+                    <button class="timer-btn" onclick="selectTime(90, this)">90</button>
+                    <button class="timer-btn" onclick="selectTime(120, this)">120</button>
+                    <button class="timer-btn" onclick="selectTime(150, this)">150</button>
+                    <button class="timer-btn" onclick="selectTime(180, this)">180</button>
+                </div>
+            </div>
+
+            <button class="btn-start" onclick="startGameTT()">MULAI PERTANDINGAN!</button>
+            <button class="btn-back" style="align-self:center;" onclick="switchPage('page-select')">⬅ Batal</button>
+        </div>
+    </div>
+
+    <!-- ================= HALAMAN 4: GAME TARIK TAMBANG ================= -->
+    <div class="page-section" id="page-tt-game">
+        <div class="game-container-tt">
+            <!-- Timer -->
+            <div class="timer-display" id="tt-timer">01:00</div>
+
+            <!-- Area Tarik Tambang (Visual) -->
+            <div class="tug-of-war-area">
+                <div class="team-names">
+                    <div class="team-name-badge team-a-badge" id="display-team-a">TIM A</div>
+                    <div class="team-name-badge team-b-badge" id="display-team-b">TIM B</div>
+                </div>
+
+                <div class="rope-container">
+                    <!-- Visual Tali (digerakkan pakai JS) -->
+                    <div class="rope-visual" id="rope-visual">
+                        <div class="rope-knot"></div>
+                    </div>
+                    
+                    <!-- Anggota Tim Kiri -->
+                    <div class="team-visual" id="visual-team-a">
+                        <div class="practitioners">
+                            <span>👨‍🔬</span><span>👩‍🔬</span><span>👨‍🔬</span>
+                        </div>
+                    </div>
+                    <!-- Anggota Tim Kanan -->
+                    <div class="team-visual team-b-visual" id="visual-team-b">
+                        <div class="practitioners">
+                            <span>👩‍🔬</span><span>👨‍🔬</span><span>👩‍🔬</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pertanyaan -->
+            <div class="question-panel">
+                <div class="question-box" id="question-text">
+                    Soal akan muncul di sini...
+                </div>
+            </div>
+
+            <!-- Pilihan Jawaban (Kiri A, B - Kanan C, D) -->
+            <div class="answers-area">
+                <!-- Jawaban Tim A (Kiri) -->
+                <div class="answer-column">
+                    <button class="answer-btn btn-a" onclick="answerTT('A', this)">A. Pilihan Pertama</button>
+                    <button class="answer-btn btn-a" onclick="answerTT('B', this)">B. Pilihan Kedua</button>
+                </div>
+                <!-- Jawaban Tim B (Kanan) -->
+                <div class="answer-column">
+                    <button class="answer-btn btn-b" onclick="answerTT('C', this)">C. Pilihan Ketiga</button>
+                    <button class="answer-btn btn-b" onclick="answerTT('D', this)">D. Pilihan Keempat</button>
+                </div>
+            </div>
+            
+            <button class="btn-back" style="align-self:center; margin-top: 10px;" onclick="endGameTT()">⬅ Hentikan Permainan</button>
+        </div>
+    </div>
+
+    <!-- ================= MODAL ================= -->
     <div class="modal-overlay" id="modal-tarik">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('modal-tarik')">&times;</span>
             <h2 class="modal-title">Cara Main: Tarik Tambang</h2>
-            <div class="creator-info">
-                <p>(Nanti tulisan cara main Tarik Tambang kamu isi di sini).</p>
-                <p style="margin-top:10px;">Contoh: Setiap pemain harus menjawab pertanyaan dengan benar untuk menarik tali ke arah timnya.</p>
+            <div class="modal-text">
+                <p>1. Pilih waktu dan masukkan nama tim.</p>
+                <p>2. Tim A (Kiri) dan Tim B (Kanan) bergantian menekan jawaban.</p>
+                <p>3. Jawaban benar = tali tertarik ke pihakmu. Jawaban salah = tali tertarik ke lawan.</p>
+                <p>4. Tim yang tali/simpulnya melewati batas kemenangan atau memiliki poin terbanyak saat waktu habis, adalah pemenangnya!</p>
             </div>
         </div>
     </div>
 
-    <!-- ================= MODAL CARA MAIN FAMILY 100 ================= -->
-    <div class="modal-overlay" id="modal-family">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modal-family')">&times;</span>
-            <h2 class="modal-title">Cara Main: Family 100</h2>
-            <div class="creator-info">
-                <p>(Nanti tulisan cara main Family 100 kamu isi di sini).</p>
-                <p style="margin-top:10px;">Contoh: Tebak jawaban paling populer dari survei tentang genetika untuk mendapatkan poin.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================= MODAL KREATOR ================= -->
     <div class="modal-overlay" id="creator-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('creator-modal')">&times;</span>
             <h2 class="modal-title">Tentang Kreator</h2>
-            <div class="creator-info" style="text-align:center;">
+            <div class="modal-text" style="text-align:center;">
                 <p><b>Naztarbaja</b></p>
-                <p style="font-size: 1rem; color: #666; margin-top: 5px;">(Deskripsi kelompok di sini)</p>
-            </div>
-            <div class="social-links">
-                <a href="#" class="social-item"><span class="social-icon">📸</span> @.naztarbaja</a>
-                <a href="#" class="social-item"><span class="social-icon">🎵</span> @.naztarbaja</a>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT -->
     <script>
-        // --- 1. Logika Pindah Halaman (Single Page) ---
+        // --- 1. Logika Pindah Halaman ---
         function switchPage(pageId) {
             const pages = document.querySelectorAll('.page-section');
             pages.forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
 
-        // --- 2. Logika Buka & Tutup Modal (Pop-up) ---
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-            event.stopPropagation(); // Mencegah klik tombol memicu event klik body
+        // --- 2. Logika Setup Tarik Tambang ---
+        let selectedTime = 60; // default 60 detik
+
+        function selectTime(seconds, btnElement) {
+            selectedTime = seconds;
+            // Hapus class 'selected' dari semua tombol
+            document.querySelectorAll('.timer-btn').forEach(btn => btn.classList.remove('selected'));
+            // Tambahkan class 'selected' ke tombol yang diklik
+            btnElement.classList.add('selected');
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
+        function startGameTT() {
+            // Ambil nama tim
+            const teamA = document.getElementById('input-team-a').value || 'Tim Merah';
+            const teamB = document.getElementById('input-team-b').value || 'Tim Biru';
+            
+            // Tampilkan nama tim di game
+            document.getElementById('display-team-a').innerText = teamA;
+            document.getElementById('display-team-b').innerText = teamB;
+
+            // Pindah ke halaman game
+            switchPage('page-tt-game');
+            
+            // Mulai timer
+            startTimer(selectedTime);
+            
+            // Reset posisi tali
+            ropePosition = 0;
+            updateRopeVisual();
         }
 
-        // Menutup modal jika area gelap di luar kotak diklik
+        // --- 3. Logika Waktu & Timer ---
+        let timeLeft = 60;
+        let timerInterval;
+
+        function startTimer(duration) {
+            timeLeft = duration;
+            updateTimerDisplay();
+            
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endGameTT();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('tt-timer').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // --- 4. Logika Gameplay Tarik Tambang (Sederhana) ---
+        // Nilai negatif = kiri, positif = kanan
+        let ropePosition = 0; 
+
+        function answerTT(option, btnElement) {
+            // Contoh logika: Anggap jawaban 'A' dan 'C' adalah benar (Nanti diganti dengan data spreadsheet)
+            const correctAnswers = ['A', 'C'];
+            const isCorrect = correctAnswers.includes(option);
+
+            if (isCorrect) {
+                // Jika benar, tarik tali ke tim yang menjawab
+                if (option === 'A' || option === 'B') {
+                    ropePosition -= 10; // Tim Kiri menang tarik
+                } else {
+                    ropePosition += 10; // Tim Kanan menang tarik
+                }
+                btnElement.classList.add('correct');
+            } else {
+                // Jika salah, tarik tali ke arah lawan
+                if (option === 'A' || option === 'B') {
+                    ropePosition += 10; // Tim Kanan tarik
+                } else {
+                    ropePosition -= 10; // Tim Kiri tarik
+                }
+                btnElement.classList.add('wrong');
+            }
+
+            // Batasi pergerakan tali (misal maksimal 40%)
+            if (ropePosition < -40) ropePosition = -40;
+            if (ropePosition > 40) ropePosition = 40;
+
+            updateRopeVisual();
+
+            // Cek kemenangan
+            if (ropePosition <= -40) {
+                clearInterval(timerInterval);
+                setTimeout(() => alert(`🏆 TIM MERAH (${document.getElementById('display-team-a').innerText}) MENANG!`), 300);
+            } else if (ropePosition >= 40) {
+                clearInterval(timerInterval);
+                setTimeout(() => alert(`🏆 TIM BIRU (${document.getElementById('display-team-b').innerText}) MENANG!`), 300);
+            }
+
+            // Reset tombol setelah 1 detik agar bisa main lagi (sementara)
+            setTimeout(() => {
+                btnElement.classList.remove('correct', 'wrong');
+                // Di game sungguhan, di sini kita akan memuat soal berikutnya dari array/spreadsheet
+            }, 1000);
+        }
+
+        function updateRopeVisual() {
+            // Geser visual tali
+            const rope = document.getElementById('rope-visual');
+            const teamA = document.getElementById('visual-team-a');
+            const teamB = document.getElementById('visual-team-b');
+            
+            rope.style.transform = `translateX(${ropePosition}%)`;
+            teamA.style.transform = `translateX(${ropePosition}%)`;
+            teamB.style.transform = `translateX(${ropePosition}%)`;
+        }
+
+        function endGameTT() {
+            clearInterval(timerInterval);
+            switchPage('page-select');
+        }
+
+        // --- 5. Logika UI Umum (Modal & Musik) ---
+        function openModal(modalId) { document.getElementById(modalId).classList.add('active'); }
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+        
         const modals = document.querySelectorAll('.modal-overlay');
         modals.forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.remove('active');
-                }
-            });
+            modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
         });
 
-        // --- 3. Logika Musik & Mute ---
         const muteBtn = document.getElementById('mute-btn');
         const bgMusic = document.getElementById('bg-music');
-        
         document.body.addEventListener('click', function playMusic() {
             if(bgMusic.paused) bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
             document.body.removeEventListener('click', playMusic);
@@ -299,10 +548,9 @@
             muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
         });
 
-        // --- 4. Logika Kreator ---
         document.getElementById('open-creator').addEventListener('click', (e) => { 
             e.stopPropagation(); 
-            openModal('creator-modal'); 
+            openModal('creator-modal');
         });
     </script>
 </body>
