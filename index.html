@@ -147,63 +147,30 @@
             background-color: rgba(0,0,0,0.2); border-right: 2px dashed #333; transform: translateX(-50%); z-index: 1;
         }
 
-        /* ================= TALI DNA HELIKS ================= */
+        /* ================= TALI DNA SVG ================= */
         .rope-container {
-            position: absolute; bottom: 30px; left: 0; width: 100%; height: 60px;
+            position: absolute; bottom: 45px; /* Posisi Tali */
+            left: 0; width: 100%; height: 60px;
             display: flex; align-items: center; justify-content: center;
             z-index: 2; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        .dna-helix {
-            width: 100%; height: 100%; position: relative; display: flex; align-items: center;
+        .svg-rope {
+            width: 100%; height: 100%;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
         }
 
-        /* Untaian Merah */
-        .strand-red {
-            position: absolute; width: 100%; height: 40px; 
-            border-top: 10px solid #d32f2f; 
-            border-bottom: 10px solid #d32f2f;
-            border-radius: 50%;
-            animation: twistRed 3s infinite linear;
-        }
-
-        /* Untaian Biru Muda */
-        .strand-blue {
-            position: absolute; width: 100%; height: 40px; 
-            border-top: 10px solid #81d4fa; 
-            border-bottom: 10px solid #81d4fa;
-            border-radius: 50%;
-            animation: twistBlue 3s infinite linear;
-        }
-
-        /* Animasi 3D Heliks */
-        @keyframes twistRed {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            25% { transform: rotateX(20deg) rotateY(10deg); }
-            50% { transform: rotateX(0deg) rotateY(0deg) scaleY(-1); }
-            75% { transform: rotateX(-20deg) rotateY(-10deg); }
-            100% { transform: rotateX(0deg) rotateY(0deg); }
-        }
-
-        @keyframes twistBlue {
-            0% { transform: rotateX(0deg) rotateY(0deg) scaleY(-1); }
-            25% { transform: rotateX(-20deg) rotateY(-10deg); }
-            50% { transform: rotateX(0deg) rotateY(0deg); }
-            75% { transform: rotateX(20deg) rotateY(10deg); }
-            100% { transform: rotateX(0deg) rotateY(0deg) scaleY(-1); }
-        }
-
-        /* Simpul/Tengah Tali */
+        /* Simpul/Tengah Tali (Kuning) */
         .dna-knot {
             position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            width: 20px; height: 50px; background-color: #ffeb3b;
-            border: 4px solid #f57f17; border-radius: 8px; z-index: 5;
+            width: 18px; height: 45px; background-color: #ffeb3b;
+            border: 3px solid #f57f17; border-radius: 8px; z-index: 5;
             box-shadow: 0 0 10px rgba(0,0,0,0.4);
         }
 
         /* Visual Tim (Karakter & Nama) */
         .team-wrapper {
-            position: absolute; bottom: 45px; /* Emoji diturunkan sejajar tali */
+            position: absolute; bottom: 50px; /* Emoji Sejajar dengan Tali */
             width: 50%; display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 10; 
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -214,7 +181,7 @@
         /* Nama Tim */
         .team-name-badge {
             font-size: 1.1rem; font-weight: bold; padding: 4px 15px; border-radius: 10px;
-            color: white; margin-bottom: -10px; z-index: 4; white-space: nowrap;
+            color: white; margin-bottom: 0px; z-index: 4; white-space: nowrap;
             box-shadow: 0 2px 0 rgba(0,0,0,0.3);
         }
         .team-a-badge { background-color: #d32f2f; }
@@ -386,12 +353,16 @@
             <div class="tug-of-war-area">
                 <div class="center-line"></div>
 
-                <!-- Tali DNA Heliks 3D -->
+                <!-- Tali DNA SVG (Merah & Biru Muda) -->
                 <div class="rope-container" id="rope-visual">
-                    <div class="dna-helix">
-                        <div class="strand-red"></div>
-                        <div class="strand-blue"></div>
-                    </div>
+                    <svg class="svg-rope" viewBox="0 0 1000 100" preserveAspectRatio="none">
+                        <!-- Pita Biru Muda (Belakang) -->
+                        <path d="M0,50 Q50,10 100,50 T200,50 T300,50 T400,50 T500,50 T600,50 T700,50 T800,50 T900,50 T1000,50" 
+                              fill="none" stroke="#81d4fa" stroke-width="15" stroke-linecap="round"/>
+                        <!-- Pita Merah (Depan) -->
+                        <path d="M0,50 Q50,90 100,50 T200,50 T300,50 T400,50 T500,50 T600,50 T700,50 T800,50 T900,50 T1000,50" 
+                              fill="none" stroke="#d32f2f" stroke-width="15" stroke-linecap="round"/>
+                    </svg>
                     <div class="dna-knot"></div>
                 </div>
                 
@@ -414,6 +385,7 @@
 
             <!-- Area Soal & Jawaban -->
             <div class="quiz-area">
+                <!-- Kolom Kiri (Soal A) - 4 Pilihan -->
                 <div class="quiz-column">
                     <div class="question-box q-a-box" id="question-a">Memuat soal...</div>
                     <button class="answer-btn btn-a" id="opt-a-0" onclick="answerTT(0, 'a', this)">A. Pilihan</button>
@@ -422,6 +394,7 @@
                     <button class="answer-btn btn-a" id="opt-a-3" onclick="answerTT(3, 'a', this)">D. Pilihan</button>
                 </div>
 
+                <!-- Kolom Kanan (Soal B) - 4 Pilihan -->
                 <div class="quiz-column">
                     <div class="question-box q-b-box" id="question-b">Memuat soal...</div>
                     <button class="answer-btn btn-b" id="opt-b-0" onclick="answerTT(0, 'b', this)">A. Pilihan</button>
@@ -431,6 +404,7 @@
                 </div>
             </div>
 
+            <!-- Tombol Hentikan Permainan (Kecil) -->
             <button class="btn-end-game" onclick="endGameTT()">Hentikan Permainan</button>
         </div>
     </div>
