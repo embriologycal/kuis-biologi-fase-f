@@ -100,17 +100,15 @@
             border: 5px solid #1b5e20;
             border-radius: 30px;
             background-color: rgba(255, 255, 255, 0.95);
-            /* Padding atas ditambah agar tidak terlalu mepet karena judul dihapus */
             padding: 50px 30px 30px 30px; 
             width: 100%;
             box-shadow: 10px 10px 0px #f57c00;
             position: relative;
             display: flex;
             flex-direction: column;
-            gap: 20px; /* Jarak antar tombol */
+            gap: 20px; 
         }
 
-        /* Label di atas kotak (sudah diganti) */
         .arena-box::before {
             content: "🚩 PILIH PERMAINAN 🚩";
             position: absolute;
@@ -217,7 +215,6 @@
     <!-- Konten Utama -->
     <div class="container">
         <div class="arena-box">
-            <!-- Judul besar "PILIH PERMAINAN" sudah dihapus, langsung ke tombol -->
             <a href="tarik-tambang.html" class="btn-lomba">
                 <span>TARIK TAMBANG</span>
                 <span class="btn-icon">🪢</span>
@@ -234,19 +231,15 @@
 
     <!-- SCRIPT INTERAKSI -->
     <script>
-        // --- 1. Logika Melanjutkan Musik ---
+        // --- 1. Logika Musik ---
         const bgMusic = document.getElementById('bg-music');
         const muteBtn = document.getElementById('mute-btn');
         
-        // Ambil memori waktu lagu dan status mute
         const savedTime = localStorage.getItem('musicTime');
         const isMutedStr = localStorage.getItem('musicMuted');
 
-        // Setel ulang lagu
-        if (savedTime !== null) {
-            bgMusic.currentTime = parseFloat(savedTime);
-        }
-
+        if (savedTime !== null) bgMusic.currentTime = parseFloat(savedTime);
+        
         if (isMutedStr === 'true') {
             bgMusic.muted = true;
             muteBtn.innerText = '🔇';
@@ -255,24 +248,14 @@
             muteBtn.innerText = '🔊';
         }
 
-        // MEMUTAR LAGU OTOMATIS SAAT PINDAH HALAMAN
-        // Kita coba putar langsung, jika diblokir browser, baru tunggu klik
-        bgMusic.play().catch(e => {
-            console.log("Autoplay diblokir, menunggu klik user.");
-            // Jika diblokir, putar saat layar diklik di mana saja
-            document.body.addEventListener('click', function playMusic() {
-                if(bgMusic.paused) {
-                    bgMusic.play().catch(err => console.log(err));
-                }
-                document.body.removeEventListener('click', playMusic);
-            });
+        // Putar lagu saat halaman diklik (menghindari blokir autoplay)
+        document.body.addEventListener('click', function playMusic() {
+            if(bgMusic.paused) bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
+            document.body.removeEventListener('click', playMusic);
         });
 
-        // Simpan waktu lagu setiap 500ms agar saat pindah halaman selanjutnya pas
         setInterval(() => {
-            if(!bgMusic.paused) {
-                localStorage.setItem('musicTime', bgMusic.currentTime);
-            }
+            if(!bgMusic.paused) localStorage.setItem('musicTime', bgMusic.currentTime);
         }, 500);
 
         // --- 2. Tombol Mute ---
@@ -280,29 +263,59 @@
             e.stopPropagation();
             bgMusic.muted = !bgMusic.muted;
             muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
-            localStorage.setItem('musicMuted', bgMusic.muted); // Simpan status mute
+            localStorage.setItem('musicMuted', bgMusic.muted); 
         });
 
-        // --- 3. Tombol Layar Penuh ---
+        // --- 3. Logika Fullscreen Permanen ---
         const fullscreenBtn = document.getElementById('fullscreen-btn');
-        fullscreenBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
+
+        // Cek apakah sebelumnya pengguna sudah masuk mode fullscreen
+        const wasFullscreen = sessionStorage.getItem('isFullscreen') === 'true';
+
+        // Jika iya, update ikon tombol jadi "Keluar Fullscreen"
+        if (wasFullscreen) {
+            fullscreenBtn.innerText = '🗗';
+        }
+
+        // Fungsi untuk masuk fullscreen
+        function goFullscreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch((err) => {
                     console.log(`Gagal: ${err.message}`);
                 });
+            }
+        }
+
+        // Browser melarang fullscreen otomatis, jadi kita picu saat layar diklik pertama kali
+        document.body.addEventListener('click', function autoFullscreenOnClick() {
+            if (wasFullscreen && !document.fullscreenElement) {
+                goFullscreen();
+            }
+            // Hapus event listener agar tidak terpanggil terus menerus
+            document.body.removeEventListener('click', autoFullscreenOnClick);
+        });
+
+        // Tombol manual Fullscreen
+        fullscreenBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!document.fullscreenElement) {
+                goFullscreen();
+                sessionStorage.setItem('isFullscreen', 'true');
                 fullscreenBtn.innerText = '🗗'; 
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
+                    sessionStorage.setItem('isFullscreen', 'false');
                     fullscreenBtn.innerText = '⛶'; 
                 }
             }
         });
 
+        // Mendeteksi jika user keluar fullscreen pakai tombol ESC
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 fullscreenBtn.innerText = '⛶'; 
+                sessionStorage.setItem('isFullscreen', 'false');
             }
         });
     </script>
