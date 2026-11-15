@@ -8,23 +8,12 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background-color: #eef7ee; 
+            background-color: #0d1b2a; /* Latar gelap khas Family 100 */
             font-family: 'Patrick Hand', cursive;
             display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; color: #1a2e1a; overflow: hidden; position: relative;
+            min-height: 100vh; color: white; overflow: hidden; position: relative;
         }
         
-        /* Latar Belakang Biologi */
-        .bio-background {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; overflow: hidden; opacity: 0.1;
-            font-family: 'Permanent Marker', cursive; font-size: 3rem; color: #2e7d32; pointer-events: none;
-        }
-        .floating-element { position: absolute; animation: float 10s infinite ease-in-out alternate; }
-        @keyframes float { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-30px) rotate(15deg); } }
-        .el-1 { top: 10%; left: 10%; } .el-2 { top: 20%; right: 15%; animation-delay: 2s; }
-        .el-3 { bottom: 15%; left: 15%; animation-delay: 1s; } .el-4 { bottom: 25%; right: 10%; animation-delay: 3s; }
-
         /* Header Kontrol */
         .top-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; }
         .icon-btn {
@@ -37,78 +26,89 @@
 
         /* ================= DESAIN GAME FAMILY 100 ================= */
         .game-container {
-            width: 95%; max-width: 900px; background-color: #0d1b2a; /* Latar gelap khas Family 100 */
+            width: 95%; max-width: 1000px; height: 95vh; background-color: #0d1b2a;
             border: 5px solid #f57c00; border-radius: 20px; padding: 20px;
-            box-shadow: 0 0 20px rgba(245, 124, 0, 0.5); display: flex; flex-direction: column; align-items: center;
-            z-index: 1; color: white; position: relative;
+            box-shadow: 0 0 20px rgba(245, 124, 0, 0.5); display: flex; flex-direction: column;
+            z-index: 1; position: relative;
         }
 
+        /* Header Skor & Timer */
         .game-header {
             display: flex; justify-content: space-between; align-items: center; width: 100%;
-            margin-bottom: 20px; border-bottom: 2px solid #1b263b; padding-bottom: 10px;
+            margin-bottom: 15px; border-bottom: 2px solid #1b263b; padding-bottom: 10px;
         }
 
-        .game-title {
-            font-family: 'Permanent Marker', cursive; font-size: 2.5rem; color: #fbc02d;
-            text-shadow: 2px 2px 0px #b71c1c;
+        .team-score {
+            display: flex; flex-direction: column; align-items: center;
+            background-color: #1b263b; padding: 10px 30px; border-radius: 15px;
+            border: 2px solid #415a77; min-width: 150px;
         }
+        .team-name { font-size: 1.2rem; font-weight: bold; color: #e0e1dd; }
+        .team-points { font-size: 2.5rem; font-weight: bold; color: #fbc02d; font-family: 'Permanent Marker', cursive; }
 
-        .score-box {
-            background-color: #1b263b; padding: 10px 20px; border-radius: 10px;
-            border: 2px solid #fbc02d; font-size: 2rem; font-weight: bold; color: #fbc02d;
+        /* Papan Ronde */
+        .round-board {
+            background-color: #1b263b; padding: 15px 40px; border-radius: 15px;
+            border: 2px solid #fbc02d; text-align: center;
         }
+        .round-title { font-size: 1rem; color: #e0e1dd; }
+        .round-points { font-size: 2rem; font-weight: bold; color: #4caf50; }
 
-        /* Papan Pertanyaan */
-        .question-board {
-            background-color: #1b263b; width: 100%; text-align: center; padding: 15px;
-            border-radius: 10px; font-size: 1.5rem; margin-bottom: 20px; border: 2px solid #415a77;
-            min-height: 80px; display: flex; justify-content: center; align-items: center;
+        /* Area Soal */
+        .question-area {
+            text-align: center; margin-bottom: 20px;
+        }
+        .question-text {
+            background-color: #1b263b; display: inline-block; padding: 15px 30px;
+            border-radius: 10px; font-size: 1.5rem; font-weight: bold; border: 2px solid #415a77;
         }
 
         /* Daftar Jawaban */
         .answers-list {
-            display: flex; flex-direction: column; gap: 10px; width: 100%; margin-bottom: 20px;
+            display: flex; flex-direction: column; gap: 10px; width: 100%; margin-bottom: 20px; flex: 1;
         }
 
         .answer-item {
             display: flex; justify-content: space-between; align-items: center;
             background-color: #1b263b; border: 2px solid #415a77; border-radius: 10px;
-            padding: 15px 20px; font-size: 1.5rem; cursor: pointer; transition: all 0.2s;
+            padding: 12px 20px; font-size: 1.3rem; cursor: pointer; transition: all 0.2s;
             position: relative; overflow: hidden;
         }
 
-        .answer-item:hover {
-            background-color: #2b3a4a;
-        }
+        .answer-item:hover { background-color: #2b3a4a; }
 
-        /* Efek saat jawaban dibuka (Reveal) */
         .answer-item.revealed {
             background-color: #0d47a1; border-color: #64b5f6; cursor: default;
         }
         .answer-item.revealed .answer-text { opacity: 1; }
         .answer-item.revealed .answer-points { opacity: 1; }
         
-        .answer-text {
-            opacity: 0.3; transition: opacity 0.3s; text-align: left; font-weight: bold;
-        }
-        .answer-points {
-            opacity: 0.3; transition: opacity 0.3s; font-weight: bold; color: #fbc02d; font-size: 1.8rem;
-        }
+        .answer-text { opacity: 0.3; transition: opacity 0.3s; text-align: left; font-weight: bold; }
+        .answer-points { opacity: 0.3; transition: opacity 0.3s; font-weight: bold; color: #fbc02d; font-size: 1.5rem; }
 
-        /* Kontrol Game */
-        .game-controls {
-            display: flex; gap: 15px; margin-top: 10px; width: 100%; justify-content: center;
+        /* Tanda X (Kesalahan) */
+        .strikes-container {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            display: flex; gap: 20px; font-size: 8rem; font-family: 'Permanent Marker', cursive;
+            color: #d32f2f; text-shadow: 5px 5px 0px #000; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 20;
+        }
+        .strikes-container.active { opacity: 1; animation: pop 0.3s ease; }
+        @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0.5); } 100% { transform: translate(-50%, -50%) scale(1); } }
+
+        /* Kontrol Host */
+        .host-controls {
+            display: flex; gap: 15px; justify-content: center; margin-top: auto;
         }
 
         .btn-game {
-            font-family: 'Patrick Hand', cursive; font-size: 1.5rem; font-weight: bold;
-            padding: 10px 25px; border-radius: 8px; cursor: pointer; border: none;
+            font-family: 'Patrick Hand', cursive; font-size: 1.2rem; font-weight: bold;
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; border: none;
             transition: all 0.2s; box-shadow: 0 4px 0 rgba(0,0,0,0.5);
         }
         .btn-game:active { transform: translateY(4px); box-shadow: none; }
 
-        .btn-reset { background-color: #c62828; color: white; }
-        .btn-reset:hover { background-color: #e53935; }
+        .btn-strike { background-color: #c62828; color: white; font-size: 1.5rem; }
+        .btn-strike:hover { background-color: #e53935; }
 
         .btn-next { background-color: #fbc02d; color: #1a2e1a; }
         .btn-next:hover { background-color: #fdd835; }
@@ -116,111 +116,238 @@
         .btn-exit { background-color: #546e7a; color: white; }
         .btn-exit:hover { background-color: #78909c; }
 
-        /* --- POP-UP (MODAL) --- */
+        /* --- MODAL REBUT JAWABAN --- */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8);
             display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content {
-            background-color: #fff; border: 4px solid #1b5e20; border-radius: 10px; padding: 25px;
-            width: 90%; max-width: 450px; text-align: center; box-shadow: 8px 8px 0px #81c784;
-            position: relative; transform: translateY(-20px); transition: all 0.3s ease; color: #1a2e1a;
+            background-color: #1b263b; border: 4px solid #d32f2f; border-radius: 15px; padding: 30px;
+            width: 90%; max-width: 500px; text-align: center; position: relative;
         }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #1b5e20; font-weight: bold; }
-        .modal-title { font-size: 2rem; color: #1b5e20; margin-bottom: 15px; border-bottom: 2px dashed #81c784; padding-bottom: 10px; }
+        .modal-title { font-size: 2.5rem; color: #d32f2f; margin-bottom: 15px; font-family: 'Permanent Marker', cursive; }
+        .modal-text { font-size: 1.2rem; margin-bottom: 20px; }
+        
+        .btn-rebut-yes { background-color: #4caf50; color: white; font-size: 1.3rem; margin-right: 10px;}
+        .btn-rebut-no { background-color: #d32f2f; color: white; font-size: 1.3rem; }
     </style>
 </head>
 <body>
-    <div class="bio-background">
-        <div class="floating-element el-1">A</div><div class="floating-element el-2">T</div>
-        <div class="floating-element el-3">C</div><div class="floating-element el-4">G</div>
-    </div>
-
-    <audio id="bg-music" loop><source src="lagu.mp3" type="audio/mpeg"></audio>
-
     <div class="top-controls">
-        <button class="icon-btn" id="mute-btn">🔊</button>
+        <button class="icon-btn" onclick="window.location.href='index.html'" title="Keluar">⬅</button>
     </div>
 
-    <!-- ================= GAME FAMILY 100 ================= -->
     <div class="game-container">
+        <!-- Header Skor -->
         <div class="game-header">
-            <button class="btn-game btn-exit" onclick="window.location.href='index.html'">⬅ Keluar</button>
-            <h1 class="game-title">FAMILY 100</h1>
-            <div class="score-box">SCORE: <span id="score-display">0</span></div>
-        </div>
-
-        <div class="question-board" id="question-text">
-            (Pertanyaan akan muncul di sini)
-        </div>
-
-        <div class="answers-list">
-            <div class="answer-item" onclick="revealAnswer(this, 30)">
-                <span class="answer-text">Jawaban 1</span>
-                <span class="answer-points">30</span>
+            <div class="team-score">
+                <span class="team-name">TIM A</span>
+                <span class="team-points" id="score-a">0</span>
             </div>
-            <div class="answer-item" onclick="revealAnswer(this, 25)">
-                <span class="answer-text">Jawaban 2</span>
-                <span class="answer-points">25</span>
+            <div class="round-board">
+                <div class="round-title">POIN RONDE</div>
+                <div class="round-points" id="round-points">0</div>
             </div>
-            <div class="answer-item" onclick="revealAnswer(this, 20)">
-                <span class="answer-text">Jawaban 3</span>
-                <span class="answer-points">20</span>
-            </div>
-            <div class="answer-item" onclick="revealAnswer(this, 15)">
-                <span class="answer-text">Jawaban 4</span>
-                <span class="answer-points">15</span>
-            </div>
-            <div class="answer-item" onclick="revealAnswer(this, 10)">
-                <span class="answer-text">Jawaban 5</span>
-                <span class="answer-points">10</span>
+            <div class="team-score">
+                <span class="team-name">TIM B</span>
+                <span class="team-points" id="score-b">0</span>
             </div>
         </div>
 
-        <div class="game-controls">
-            <button class="btn-game btn-reset" onclick="resetGame()">Reset Game</button>
-            <button class="btn-game btn-next" onclick="alert('Fitur ganti soal akan dibuat nanti!')">Soal Baru</button>
+        <!-- Area Pertanyaan -->
+        <div class="question-area">
+            <div class="question-text" id="question-text">Memuat soal...</div>
+        </div>
+
+        <!-- Daftar Jawaban -->
+        <div class="answers-list" id="answers-container">
+            <!-- Akan diisi oleh JavaScript -->
+        </div>
+
+        <!-- Tanda X -->
+        <div class="strikes-container" id="strikes-display">
+            <span>X</span><span>X</span><span>X</span>
+        </div>
+
+        <!-- Kontrol Host -->
+        <div class="host-controls">
+            <button class="btn-game btn-exit" onclick="window.location.href='index.html'">Keluar</button>
+            <button class="btn-game btn-strike" onclick="addStrike()">Tambah X</button>
+            <button class="btn-game btn-next" onclick="loadNextQuestion()">Soal Baru</button>
+        </div>
+    </div>
+
+    <!-- Modal Rebut Jawaban -->
+    <div class="modal-overlay" id="modal-rebut">
+        <div class="modal-content">
+            <h2 class="modal-title">REBUT JAWABAN!</h2>
+            <p class="modal-text">Tim lawan mendapat 1 kesempatan. Apakah mereka berhasil menebak?</p>
+            <button class="btn-game btn-rebut-yes" onclick="handleRebut(true)">Berhasil</button>
+            <button class="btn-game btn-rebut-no" onclick="handleRebut(false)">Gagal</button>
         </div>
     </div>
 
     <script>
-        // --- 1. Logika Musik & Mute ---
-        const muteBtn = document.getElementById('mute-btn');
-        const bgMusic = document.getElementById('bg-music');
-        let isMuted = false;
+        // ==========================================
+        // BANK SOAL FAMILY 100
+        // ==========================================
+        const bankSoal = [
+            {
+                soal: "Sebutkan istilah yang berkaitan dengan genetika!",
+                jawaban: [
+                    { teks: "Gen", poin: 30 },
+                    { teks: "DNA", poin: 25 },
+                    { teks: "Kromosom", poin: 20 },
+                    { teks: "Alel", poin: 15 },
+                    { teks: "Genotipe", poin: 10 }
+                ]
+            },
+            {
+                soal: "Sebutkan contoh sifat yang diwariskan dari orang tua!",
+                jawaban: [
+                    { teks: "Golongan darah", poin: 30 },
+                    { teks: "Warna mata", poin: 25 },
+                    { teks: "Bentuk rambut", poin: 20 },
+                    { teks: "Warna kulit", poin: 15 },
+                    { teks: "Bentuk cuping telinga", poin: 10 }
+                ]
+            },
+            {
+                soal: "Sebutkan istilah dalam persilangan genetika!",
+                jawaban: [
+                    { teks: "Dominan", poin: 30 },
+                    { teks: "Resesif", poin: 25 },
+                    { teks: "Homozigot", poin: 20 },
+                    { teks: "Heterozigot", poin: 15 },
+                    { teks: "Gamet", poin: 10 }
+                ]
+            },
+            {
+                soal: "Sebutkan jenis pola pewarisan sifat!",
+                jawaban: [
+                    { teks: "Dominansi penuh", poin: 25 },
+                    { teks: "Dominansi tidak sempurna", poin: 25 },
+                    { teks: "Kodominansi", poin: 20 },
+                    { teks: "Poligenik", poin: 15 },
+                    { teks: "Terpaut seks", poin: 15 }
+                ]
+            },
+            {
+                soal: "Sebutkan kelainan atau kondisi yang berkaitan dengan genetika!",
+                jawaban: [
+                    { teks: "Hemofilia", poin: 25 },
+                    { teks: "Buta warna", poin: 25 },
+                    { teks: "Albinisme", poin: 20 },
+                    { teks: "Talasemia", poin: 15 },
+                    { teks: "Anemia sel sabit", poin: 15 }
+                ]
+            }
+        ];
 
-        document.body.addEventListener('click', function playMusic() {
-            if(bgMusic.paused) bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
-            document.body.removeEventListener('click', playMusic);
-        });
+        let soalSekarang = null;
+        let poinRonde = 0;
+        let skorA = 0;
+        let skorB = 0;
+        let strikes = 0;
+        let timAktif = 'A'; // Bisa diganti manual oleh host
 
-        muteBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            bgMusic.muted = !bgMusic.muted;
-            muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
-        });
+        function loadNextQuestion() {
+            // Reset state
+            poinRonde = 0;
+            strikes = 0;
+            document.getElementById('round-points').innerText = poinRonde;
+            document.getElementById('strikes-display').classList.remove('active');
+            document.querySelectorAll('.answer-item').forEach(el => el.classList.remove('revealed'));
 
-        // --- 2. Logika Game Family 100 ---
-        let currentScore = 0;
+            // Ambil soal acak
+            const randomIndex = Math.floor(Math.random() * bankSoal.length);
+            soalSekarang = bankSoal[randomIndex];
 
-        function revealAnswer(element, points) {
+            // Render soal
+            document.getElementById('question-text').innerText = soalSekarang.soal;
+            
+            // Render jawaban
+            const container = document.getElementById('answers-container');
+            container.innerHTML = '';
+            
+            soalSekarang.jawaban.forEach((item, index) => {
+                const answerDiv = document.createElement('div');
+                answerDiv.className = 'answer-item';
+                answerDiv.onclick = () => revealAnswer(answerDiv, item.poin);
+                answerDiv.innerHTML = `
+                    <span class="answer-text">${index + 1}. ${item.teks}</span>
+                    <span class="answer-points">${item.poin}</span>
+                `;
+                container.appendChild(answerDiv);
+            });
+        }
+
+        function revealAnswer(element, poin) {
             if (element.classList.contains('revealed')) return;
             element.classList.add('revealed');
-            currentScore += points;
-            document.getElementById('score-display').innerText = currentScore;
+            poinRonde += poin;
+            document.getElementById('round-points').innerText = poinRonde;
+            
+            // Efek suara bisa ditambahkan di sini
         }
 
-        function resetGame() {
-            const answers = document.querySelectorAll('.answer-item');
-            answers.forEach(item => {
-                item.classList.remove('revealed');
-            });
-            currentScore = 0;
-            document.getElementById('score-display').innerText = currentScore;
-            document.getElementById('question-text').innerText = "(Pertanyaan akan muncul di sini)";
+        function addStrike() {
+            if (strikes < 3) {
+                strikes++;
+                document.getElementById('strikes-display').classList.add('active');
+                
+                // Sembunyikan X setelah 1.5 detik
+                setTimeout(() => {
+                    document.getElementById('strikes-display').classList.remove('active');
+                }, 1500);
+
+                if (strikes === 3) {
+                    // Jika 3 kesalahan, munculkan modal rebut
+                    setTimeout(() => {
+                        document.getElementById('modal-rebut').classList.add('active');
+                    }, 500);
+                }
+            }
         }
+
+        function handleRebut(berhasil) {
+            document.getElementById('modal-rebut').classList.remove('active');
+            
+            if (berhasil) {
+                // Tim lawan berhasil rebut
+                if (timAktif === 'A') {
+                    skorB += poinRonde;
+                    document.getElementById('score-b').innerText = skorB;
+                } else {
+                    skorA += poinRonde;
+                    document.getElementById('score-a').innerText = skorA;
+                }
+                alert("Tim Lawan berhasil merebut poin!");
+            } else {
+                // Tim lawan gagal rebut, poin tetap milik tim yang bermain
+                if (timAktif === 'A') {
+                    skorA += poinRonde;
+                    document.getElementById('score-a').innerText = skorA;
+                } else {
+                    skorB += poinRonde;
+                    document.getElementById('score-b').innerText = skorB;
+                }
+                alert("Tim Lawan gagal. Poin tetap milik tim yang bermain.");
+            }
+
+            // Reset ronde
+            poinRonde = 0;
+            strikes = 0;
+            document.getElementById('round-points').innerText = poinRonde;
+            document.getElementById('strikes-display').classList.remove('active');
+            
+            // Ganti giliran tim (opsional, bisa diubah manual)
+            timAktif = (timAktif === 'A') ? 'B' : 'A';
+        }
+
+        // Muat soal pertama saat halaman dibuka
+        window.onload = loadNextQuestion;
     </script>
 </body>
 </html>
