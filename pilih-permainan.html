@@ -15,7 +15,6 @@
         }
 
         body {
-            /* Latar belakang gradien nuansa perlombaan (Oranye ke Hijau Muda) */
             background: linear-gradient(135deg, #fff3e0 0%, #eef7ee 100%);
             font-family: 'Patrick Hand', cursive;
             display: flex;
@@ -27,7 +26,7 @@
             position: relative;
         }
 
-        /* Animasi Latar Belakang (DNA, Piala, Bendera) */
+        /* Animasi Latar Belakang */
         .bio-background {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -49,18 +48,47 @@
             100% { transform: translateY(-20px) rotate(10deg); }
         }
 
-        /* Elemen Latar */
-        .el-1 { top: 15%; left: 10%; color: #2e7d32; } /* DNA */
-        .el-2 { top: 25%; right: 15%; color: #f57c00; animation-delay: 1s; } /* Piala */
-        .el-3 { bottom: 20%; left: 15%; color: #d32f2f; animation-delay: 2s; } /* Bendera */
-        .el-4 { bottom: 30%; right: 10%; color: #2e7d32; animation-delay: 0.5s; } /* DNA */
-        .el-5 { top: 50%; left: 5%; color: #fbc02d; animation-delay: 1.5s; } /* Bintang */
-        .el-6 { top: 60%; right: 8%; color: #1976d2; animation-delay: 2.5s; } /* DNA */
+        .el-1 { top: 15%; left: 10%; color: #2e7d32; }
+        .el-2 { top: 25%; right: 15%; color: #f57c00; animation-delay: 1s; }
+        .el-3 { bottom: 20%; left: 15%; color: #d32f2f; animation-delay: 2s; }
+        .el-4 { bottom: 30%; right: 10%; color: #2e7d32; animation-delay: 0.5s; }
+        .el-5 { top: 50%; left: 5%; color: #fbc02d; animation-delay: 1.5s; }
+        .el-6 { top: 60%; right: 8%; color: #1976d2; animation-delay: 2.5s; }
+
+        /* --- HEADER KONTROL (Kanan Atas) --- */
+        .top-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .icon-btn {
+            background-color: white;
+            border: 3px solid #1b5e20;
+            border-radius: 50%; 
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 2px 2px 0px #81c784;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background-color: #e8f5e9;
+            transform: translateY(-2px);
+        }
 
         /* --- KONTEN UTAMA --- */
         .container {
             width: 90%;
-            max-width: 700px; /* Lebih lebar sedikit untuk kartu lomba */
+            max-width: 700px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -68,18 +96,16 @@
             z-index: 1;
         }
 
-        /* Pembungkus dengan border membulat seperti sketsa */
         .arena-box {
             border: 5px solid #1b5e20;
             border-radius: 30px;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             padding: 40px 30px;
             width: 100%;
-            box-shadow: 10px 10px 0px #f57c00; /* Bayangan oranye perlombaan */
+            box-shadow: 10px 10px 0px #f57c00;
             position: relative;
         }
 
-        /* Hiasan Bendera di atas kotak */
         .arena-box::before {
             content: "🚩 PEMILIHAN NOMOR UNDI 🚩";
             position: absolute;
@@ -118,7 +144,7 @@
             font-size: 2.2rem;
             font-weight: bold;
             background-color: #fff;
-            border: 3px dashed #1b5e20; /* Garis putus-putus ala tiket */
+            border: 3px dashed #1b5e20;
             border-radius: 15px;
             cursor: pointer;
             text-decoration: none;
@@ -128,7 +154,6 @@
             overflow: hidden;
         }
 
-        /* Hiasan garis kuning/oranye di kiri tombol */
         .btn-lomba::before {
             content: "";
             position: absolute;
@@ -137,10 +162,10 @@
         }
 
         .btn-lomba:hover {
-            background-color: #fff8e1; /* Kuning sangat muda */
+            background-color: #fff8e1;
             transform: scale(1.02) translateY(-3px);
             box-shadow: 0px 6px 0px #f57c00;
-            border-style: solid; /* Garis jadi solid saat di-hover */
+            border-style: solid;
         }
 
         .btn-lomba:active {
@@ -148,7 +173,6 @@
             box-shadow: none;
         }
 
-        /* Ikon di dalam tombol */
         .btn-icon {
             font-size: 2.5rem;
         }
@@ -175,7 +199,7 @@
 </head>
 <body>
 
-    <!-- Background Elemen Biologi & Lomba -->
+    <!-- Background -->
     <div class="bio-background">
         <div class="floating-element el-1">🧬</div>
         <div class="floating-element el-2">🏆</div>
@@ -185,30 +209,105 @@
         <div class="floating-element el-6">🧬</div>
     </div>
 
+    <!-- Elemen Audio -->
+    <audio id="bg-music" loop>
+        <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Kontrol Kanan Atas -->
+    <div class="top-controls">
+        <button class="icon-btn" id="mute-btn" title="Mute/Unmute Musik">🔊</button>
+        <button class="icon-btn" id="fullscreen-btn" title="Layar Penuh">⛶</button>
+    </div>
+
     <!-- Konten Utama -->
     <div class="container">
-        <!-- Kotak Arena -->
         <div class="arena-box">
             <h1 class="title">PILIH PERMAINAN</h1>
 
-            <!-- Tombol Tarik Tambang -->
-            <!-- Nanti ganti href dengan link halaman tarik tambang -->
             <a href="tarik-tambang.html" class="btn-lomba">
                 <span>TARIK TAMBANG</span>
                 <span class="btn-icon">🪢</span>
             </a>
 
-            <!-- Tombol Family 100 -->
-            <!-- Nanti ganti href dengan link halaman family 100 -->
             <a href="family-100.html" class="btn-lomba">
                 <span>FAMILY 100</span>
                 <span class="btn-icon">💯</span>
             </a>
         </div>
 
-        <!-- Tombol Kembali ke Menu -->
         <a href="index.html" class="btn-back">⬅ Kembali ke Menu</a>
     </div>
+
+    <!-- SCRIPT INTERAKSI -->
+    <script>
+        // --- 1. Logika Melanjutkan Musik ---
+        const bgMusic = document.getElementById('bg-music');
+        const muteBtn = document.getElementById('mute-btn');
+        
+        // Ambil memori waktu lagu dan status mute dari halaman sebelumnya
+        const savedTime = localStorage.getItem('musicTime');
+        const isMutedStr = localStorage.getItem('musicMuted');
+
+        // Setel ulang lagu
+        if (savedTime !== null) {
+            bgMusic.currentTime = parseFloat(savedTime);
+        }
+
+        if (isMutedStr === 'true') {
+            bgMusic.muted = true;
+            muteBtn.innerText = '🔇';
+        } else {
+            bgMusic.muted = false;
+            muteBtn.innerText = '🔊';
+        }
+
+        // Putar lagu saat halaman diklik (karena kebijakan browser)
+        document.body.addEventListener('click', function playMusic() {
+            if(bgMusic.paused) {
+                bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
+            }
+            document.body.removeEventListener('click', playMusic);
+        });
+
+        // Simpan waktu lagu setiap 500ms agar saat pindah halaman lanjutannya pas
+        setInterval(() => {
+            if(!bgMusic.paused) {
+                localStorage.setItem('musicTime', bgMusic.currentTime);
+            }
+        }, 500);
+
+        // --- 2. Tombol Mute ---
+        muteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            bgMusic.muted = !bgMusic.muted;
+            muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
+            localStorage.setItem('musicMuted', bgMusic.muted); // Simpan status mute
+        });
+
+        // --- 3. Tombol Layar Penuh ---
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        fullscreenBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch((err) => {
+                    console.log(`Gagal: ${err.message}`);
+                });
+                fullscreenBtn.innerText = '🗗'; 
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    fullscreenBtn.innerText = '⛶'; 
+                }
+            }
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                fullscreenBtn.innerText = '⛶'; 
+            }
+        });
+    </script>
 
 </body>
 </html>
