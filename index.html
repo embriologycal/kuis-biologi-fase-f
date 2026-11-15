@@ -38,15 +38,11 @@
 
         /* Kontainer Halaman (Single Page) */
         .page-section { 
-            display: none; /* Sembunyikan secara default */
-            width: 100%; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh;
+            display: none; 
+            width: 100%; justify-content: center; align-items: center; height: 100vh;
         }
         .page-section.active { 
-            display: flex; /* Hanya tampilkan yang aktif */
-            animation: fadeIn 0.5s ease; 
+            display: flex; animation: fadeIn 0.5s ease; 
         }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
@@ -87,8 +83,17 @@
             background-color: #f57c00; color: white; padding: 5px 30px; border-radius: 20px;
             font-size: 1.3rem; font-weight: bold; letter-spacing: 2px; white-space: nowrap;
         }
+
+        /* --- TOMBOL GAME (DIPERBARUI DENGAN TOMBOL INFO) --- */
+        .game-row {
+            display: flex;
+            align-items: stretch; /* Agar tinggi tombol sama */
+            gap: 15px;
+            width: 100%;
+        }
+
         .btn-lomba {
-            display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 20px 30px;
+            display: flex; align-items: center; justify-content: space-between; flex: 1; padding: 20px 30px;
             font-family: 'Patrick Hand', cursive; font-size: 2.2rem; font-weight: bold; background-color: #fff;
             border: 3px dashed #1b5e20; border-radius: 15px; cursor: pointer; text-decoration: none;
             color: #1b5e20; transition: all 0.2s ease; position: relative; overflow: hidden;
@@ -97,6 +102,31 @@
         .btn-lomba:hover { background-color: #fff8e1; transform: scale(1.02) translateY(-3px); box-shadow: 0px 6px 0px #f57c00; border-style: solid; }
         .btn-lomba:active { transform: translateY(2px); box-shadow: none; }
         .btn-icon { font-size: 2.5rem; }
+
+        /* Tombol Info Kecil (?) */
+        .btn-info {
+            width: 60px;
+            background-color: #fff;
+            border: 3px solid #f57c00;
+            border-radius: 15px;
+            font-size: 2rem;
+            color: #f57c00;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 0 #e65100;
+        }
+        .btn-info:hover {
+            background-color: #fff3e0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 #e65100;
+        }
+        .btn-info:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
         
         .btn-back {
             display: inline-block; margin-top: 15px; padding: 10px 20px; font-size: 1.5rem;
@@ -104,7 +134,7 @@
         }
         .btn-back:hover { border-bottom: 2px solid #1b5e20; color: #f57c00; }
 
-        /* --- POP-UP KREATOR --- */
+        /* --- POP-UP (MODAL) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);
             display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s ease;
@@ -118,7 +148,7 @@
         .modal-overlay.active .modal-content { transform: translateY(0); }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #1b5e20; font-weight: bold; }
         .modal-title { font-size: 2rem; color: #1b5e20; margin-bottom: 15px; border-bottom: 2px dashed #81c784; padding-bottom: 10px; }
-        .creator-info { font-size: 1.2rem; margin-bottom: 20px; line-height: 1.5; }
+        .creator-info { font-size: 1.2rem; margin-bottom: 20px; line-height: 1.5; text-align: left; }
         .social-links { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
         .social-item {
             display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; color: #1b5e20;
@@ -163,19 +193,58 @@
     <div class="page-section" id="page-select">
         <div class="container-arena">
             <div class="arena-box">
-                <a href="tarik-tambang.html" class="btn-lomba"><span>TARIK TAMBANG</span><span class="btn-icon">🪢</span></a>
-                <a href="family-100.html" class="btn-lomba"><span>FAMILY 100</span><span class="btn-icon">💯</span></a>
+                
+                <!-- Baris Game 1: Tarik Tambang -->
+                <div class="game-row">
+                    <a href="tarik-tambang.html" class="btn-lomba">
+                        <span>TARIK TAMBANG</span><span class="btn-icon">🪢</span>
+                    </a>
+                    <button class="btn-info" onclick="openModal('modal-tarik')">❓</button>
+                </div>
+
+                <!-- Baris Game 2: Family 100 -->
+                <div class="game-row">
+                    <a href="family-100.html" class="btn-lomba">
+                        <span>FAMILY 100</span><span class="btn-icon">💯</span>
+                    </a>
+                    <button class="btn-info" onclick="openModal('modal-family')">❓</button>
+                </div>
+
             </div>
             <button class="btn-back" onclick="switchPage('page-main')">⬅ Kembali ke Menu</button>
         </div>
     </div>
 
-    <!-- Pop-up Kreator -->
+    <!-- ================= MODAL CARA MAIN TARIK TAMBANG ================= -->
+    <div class="modal-overlay" id="modal-tarik">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-tarik')">&times;</span>
+            <h2 class="modal-title">Cara Main: Tarik Tambang</h2>
+            <div class="creator-info">
+                <p>(Nanti tulisan cara main Tarik Tambang kamu isi di sini).</p>
+                <p style="margin-top:10px;">Contoh: Setiap pemain harus menjawab pertanyaan dengan benar untuk menarik tali ke arah timnya.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL CARA MAIN FAMILY 100 ================= -->
+    <div class="modal-overlay" id="modal-family">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-family')">&times;</span>
+            <h2 class="modal-title">Cara Main: Family 100</h2>
+            <div class="creator-info">
+                <p>(Nanti tulisan cara main Family 100 kamu isi di sini).</p>
+                <p style="margin-top:10px;">Contoh: Tebak jawaban paling populer dari survei tentang genetika untuk mendapatkan poin.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL KREATOR ================= -->
     <div class="modal-overlay" id="creator-modal">
         <div class="modal-content">
-            <span class="close-btn" id="close-creator">&times;</span>
+            <span class="close-btn" onclick="closeModal('creator-modal')">&times;</span>
             <h2 class="modal-title">Tentang Kreator</h2>
-            <div class="creator-info">
+            <div class="creator-info" style="text-align:center;">
                 <p><b>Naztarbaja</b></p>
                 <p style="font-size: 1rem; color: #666; margin-top: 5px;">(Deskripsi kelompok di sini)</p>
             </div>
@@ -190,36 +259,51 @@
     <script>
         // --- 1. Logika Pindah Halaman (Single Page) ---
         function switchPage(pageId) {
-            // Sembunyikan semua halaman
             const pages = document.querySelectorAll('.page-section');
             pages.forEach(page => page.classList.remove('active'));
-            
-            // Tampilkan halaman yang dituju
             document.getElementById(pageId).classList.add('active');
         }
 
-        // --- 2. Logika Musik & Mute ---
+        // --- 2. Logika Buka & Tutup Modal (Pop-up) ---
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            event.stopPropagation(); // Mencegah klik tombol memicu event klik body
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Menutup modal jika area gelap di luar kotak diklik
+        const modals = document.querySelectorAll('.modal-overlay');
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // --- 3. Logika Musik & Mute ---
         const muteBtn = document.getElementById('mute-btn');
         const bgMusic = document.getElementById('bg-music');
         
-        // Putar lagu saat layar pertama kali diklik
         document.body.addEventListener('click', function playMusic() {
             if(bgMusic.paused) bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
             document.body.removeEventListener('click', playMusic);
         });
 
-        // Tombol Mute
         muteBtn.addEventListener('click', (e) => {
             e.stopPropagation(); 
             bgMusic.muted = !bgMusic.muted;
             muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
         });
 
-        // --- 3. Logika Kreator ---
-        const creatorModal = document.getElementById('creator-modal');
-        document.getElementById('open-creator').addEventListener('click', (e) => { e.stopPropagation(); creatorModal.classList.add('active'); });
-        document.getElementById('close-creator').addEventListener('click', () => creatorModal.classList.remove('active'));
-        creatorModal.addEventListener('click', (e) => { if (e.target === creatorModal) creatorModal.classList.remove('active'); });
+        // --- 4. Logika Kreator ---
+        document.getElementById('open-creator').addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            openModal('creator-modal'); 
+        });
     </script>
 </body>
 </html>
