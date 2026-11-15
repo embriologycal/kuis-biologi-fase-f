@@ -8,7 +8,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background-color: #eef7ee; /* Nuansa Hijau Biologi */
+            background-color: #eef7ee; 
             font-family: 'Patrick Hand', cursive;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh; color: #1a2e1a; overflow: hidden; position: relative;
@@ -24,7 +24,6 @@
         @keyframes float { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-30px) rotate(15deg); } }
         .el-1 { top: 10%; left: 10%; } .el-2 { top: 20%; right: 15%; animation-delay: 2s; }
         .el-3 { bottom: 15%; left: 15%; animation-delay: 1s; } .el-4 { bottom: 25%; right: 10%; animation-delay: 3s; }
-        .el-5 { top: 50%; left: 5%; animation-delay: 4s; } .el-6 { top: 60%; right: 8%; animation-delay: 1.5s; }
 
         /* Header Kontrol */
         .top-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; }
@@ -36,11 +35,31 @@
         }
         .icon-btn:hover { background-color: #e8f5e9; transform: translateY(-2px); }
 
+        /* --- SETUP LAYAR (PEMBERIAN NAMA) --- */
+        .setup-container {
+            width: 90%; max-width: 500px; background-color: #0d1b2a; border: 5px solid #1b5e20; border-radius: 20px;
+            padding: 40px 30px; color: white; text-align: center; z-index: 10; box-shadow: 0 0 20px rgba(27, 94, 32, 0.7);
+        }
+        .setup-title { font-family: 'Permanent Marker', cursive; font-size: 2.5rem; color: #4caf50; margin-bottom: 20px; }
+        .input-group { display: flex; flex-direction: column; text-align: left; margin-bottom: 15px; }
+        .input-group label { font-size: 1.2rem; color: #e0e1dd; margin-bottom: 5px; }
+        .input-group input { 
+            padding: 12px; font-family: 'Patrick Hand', cursive; font-size: 1.3rem; 
+            border-radius: 8px; border: none; outline: none;
+        }
+        .btn-start-game {
+            background-color: #4caf50; color: white; font-family: 'Patrick Hand', cursive;
+            font-size: 1.8rem; font-weight: bold; padding: 15px; border-radius: 10px;
+            cursor: pointer; border: none; margin-top: 10px; transition: 0.2s; width: 100%;
+        }
+        .btn-start-game:hover { background-color: #388e3c; }
+
         /* ================= DESAIN GAME FAMILY 100 ================= */
         .game-container {
-            width: 95%; max-width: 1100px; height: 95vh; background-color: #0d1b2a; /* Tetap gelap khas Family 100 */
+            display: none; /* Disembunyikan sampai setup selesai */
+            width: 95%; max-width: 1100px; height: 95vh; background-color: #0d1b2a;
             border: 5px solid #1b5e20; border-radius: 20px; padding: 20px;
-            box-shadow: 0 0 20px rgba(27, 94, 32, 0.7); display: flex; flex-direction: column;
+            box-shadow: 0 0 20px rgba(27, 94, 32, 0.7); flex-direction: column;
             z-index: 1; position: relative; color: white;
         }
 
@@ -53,18 +72,23 @@
         .team-score {
             display: flex; flex-direction: column; align-items: center;
             background-color: #1b263b; padding: 10px 30px; border-radius: 15px;
-            border: 2px solid #81c784; min-width: 150px;
+            border: 2px solid #81c784; min-width: 150px; transition: 0.3s;
+        }
+        /* Sorotan Giliran Aktif */
+        .team-score.active-turn {
+            border-color: #fbc02d; box-shadow: 0 0 15px #fbc02d; transform: scale(1.05);
         }
         .team-name { font-size: 1.2rem; font-weight: bold; color: #e0e1dd; }
         .team-points { font-size: 2.5rem; font-weight: bold; color: #4caf50; font-family: 'Permanent Marker', cursive; }
 
-        /* Papan Ronde */
+        /* Papan Ronde & Giliran */
         .round-board {
-            background-color: #1b263b; padding: 15px 40px; border-radius: 15px;
+            background-color: #1b263b; padding: 10px 30px; border-radius: 15px;
             border: 2px solid #4caf50; text-align: center;
         }
         .round-title { font-size: 1rem; color: #e0e1dd; }
         .round-points { font-size: 2rem; font-weight: bold; color: #fbc02d; }
+        .turn-text { font-size: 1.2rem; font-weight: bold; color: #fbc02d; margin-top: 5px; font-family: 'Permanent Marker', cursive;}
 
         /* Area Soal */
         .question-area {
@@ -89,7 +113,7 @@
         }
         .btn-submit:hover { background-color: #a5d6a7; }
 
-        /* Daftar Jawaban (Tersembunyi) */
+        /* Daftar Jawaban */
         .answers-list {
             display: flex; flex-direction: column; gap: 10px; width: 100%; margin-bottom: 20px; flex: 1;
         }
@@ -110,19 +134,11 @@
         .answer-content { flex: 1; padding-left: 20px; text-align: left; font-weight: bold; font-size: 1.5rem; }
         
         /* Kotak Pertanyaan (?) sebelum dibuka */
-        .hidden-box {
-            color: #fbc02d; font-size: 2rem; letter-spacing: 5px;
-        }
-
-        .answer-points {
-            font-weight: bold; color: #fbc02d; font-size: 1.8rem; opacity: 0;
-            transition: opacity 0.4s;
-        }
+        .hidden-box { color: #fbc02d; font-size: 2rem; letter-spacing: 5px; }
+        .answer-points { font-weight: bold; color: #fbc02d; font-size: 1.8rem; opacity: 0; transition: opacity 0.4s; }
 
         /* Efek saat jawaban dibuka */
-        .answer-item.revealed {
-            background-color: #2e7d32; border-color: #4caf50; transform: scale(1.02);
-        }
+        .answer-item.revealed { background-color: #2e7d32; border-color: #4caf50; transform: scale(1.02); }
         .answer-item.revealed .hidden-box { display: none; }
         .answer-item.revealed .answer-content { color: white; }
         .answer-item.revealed .answer-points { opacity: 1; }
@@ -176,7 +192,6 @@
     <div class="bio-background">
         <div class="floating-element el-1">A</div><div class="floating-element el-2">T</div>
         <div class="floating-element el-3">C</div><div class="floating-element el-4">G</div>
-        <div class="floating-element el-5">🧬</div><div class="floating-element el-6">🧬</div>
     </div>
 
     <!-- Header Kontrol -->
@@ -185,19 +200,35 @@
         <button class="icon-btn" onclick="window.location.href='index.html'" title="Keluar">⬅</button>
     </div>
 
-    <div class="game-container">
+    <!-- ================= LAYAR SETUP ================= -->
+    <div class="setup-container" id="setup-screen">
+        <h1 class="setup-title">SIAPA YANG BERMAIN?</h1>
+        <div class="input-group">
+            <label>Nama Tim A (Kiri):</label>
+            <input type="text" id="input-name-a" value="Tim Merah">
+        </div>
+        <div class="input-group">
+            <label>Nama Tim B (Kanan):</label>
+            <input type="text" id="input-name-b" value="Tim Biru">
+        </div>
+        <button class="btn-start-game" onclick="startGame()">MULAI PERTANDINGAN</button>
+    </div>
+
+    <!-- ================= GAME CONTAINER ================= -->
+    <div class="game-container" id="game-screen">
         <!-- Header Skor -->
         <div class="game-header">
-            <div class="team-score">
-                <span class="team-name">TIM A</span>
+            <div class="team-score active-turn" id="team-box-a">
+                <span class="team-name" id="display-name-a">TIM A</span>
                 <span class="team-points" id="score-a">0</span>
             </div>
             <div class="round-board">
                 <div class="round-title">POIN RONDE</div>
                 <div class="round-points" id="round-points">0</div>
+                <div class="turn-text" id="turn-display">GILIRAN: TIM A</div>
             </div>
-            <div class="team-score">
-                <span class="team-name">TIM B</span>
+            <div class="team-score" id="team-box-b">
+                <span class="team-name" id="display-name-b">TIM B</span>
                 <span class="team-points" id="score-b">0</span>
             </div>
         </div>
@@ -209,7 +240,7 @@
 
         <!-- Input Jawaban Host -->
         <div class="input-area">
-            <input type="text" id="input-jawaban" class="input-jawaban" placeholder="Ketik jawaban di sini..." onkeypress="handleKeyPress(event)">
+            <input type="text" id="input-jawaban" class="input-jawaban" placeholder="Ketik jawaban..." onkeypress="handleKeyPress(event)">
             <button class="btn-submit" onclick="cekInputJawaban()">Kirim</button>
         </div>
 
@@ -234,7 +265,7 @@
     <div class="modal-overlay" id="modal-rebut">
         <div class="modal-content">
             <h2 class="modal-title">REBUT JAWABAN!</h2>
-            <p class="modal-text">Tim lawan mendapat 1 kesempatan. Apakah mereka berhasil menebak?</p>
+            <p class="modal-text" id="modal-rebut-text">Tim lawan mendapat 1 kesempatan. Apakah mereka berhasil menebak?</p>
             <button class="btn-game btn-rebut-yes" onclick="handleRebut(true)">Berhasil</button>
             <button class="btn-game btn-rebut-no" onclick="handleRebut(false)">Gagal</button>
         </div>
@@ -303,22 +334,62 @@
         let skorB = 0;
         let strikes = 0;
         let timAktif = 'A'; 
+        let namaTimA = "TIM A";
+        let namaTimB = "TIM B";
+        let sedangRebutan = false;
+
+        // Mulai Game dari Layar Setup
+        function startGame() {
+            namaTimA = document.getElementById('input-name-a').value || "TIM A";
+            namaTimB = document.getElementById('input-name-b').value || "TIM B";
+            
+            document.getElementById('display-name-a').innerText = namaTimA;
+            document.getElementById('display-name-b').innerText = namaTimB;
+
+            document.getElementById('setup-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'flex';
+
+            loadNextQuestion();
+            updateTurnDisplay();
+        }
+
+        function updateTurnDisplay() {
+            if (sedangRebutan) {
+                let timLawan = (timAktif === 'A') ? namaTimB : namaTimA;
+                document.getElementById('turn-display').innerText = `REBUTAN: ${timLawan}`;
+                document.getElementById('turn-display').style.color = '#d32f2f';
+            } else {
+                let timSekarang = (timAktif === 'A') ? namaTimA : namaTimB;
+                document.getElementById('turn-display').innerText = `GILIRAN: ${timSekarang}`;
+                document.getElementById('turn-display').style.color = '#fbc02d';
+            }
+
+            // Sorotan Kotak Skor
+            if (timAktif === 'A') {
+                document.getElementById('team-box-a').classList.add('active-turn');
+                document.getElementById('team-box-b').classList.remove('active-turn');
+            } else {
+                document.getElementById('team-box-b').classList.add('active-turn');
+                document.getElementById('team-box-a').classList.remove('active-turn');
+            }
+        }
 
         function loadNextQuestion() {
             poinRonde = 0;
             strikes = 0;
+            sedangRebutan = false;
             document.getElementById('round-points').innerText = poinRonde;
             document.getElementById('strikes-display').classList.remove('active');
             document.getElementById('input-jawaban').value = '';
+            document.getElementById('input-jawaban').disabled = false;
+            
+            updateTurnDisplay();
 
-            // Ambil soal acak
             const randomIndex = Math.floor(Math.random() * bankSoal.length);
             soalSekarang = bankSoal[randomIndex];
 
-            // Render soal
             document.getElementById('question-text').innerText = soalSekarang.soal;
             
-            // Render kotak jawaban tersembunyi
             const container = document.getElementById('answers-container');
             container.innerHTML = '';
             
@@ -334,17 +405,18 @@
             });
         }
 
-        // Fungsi Cek Input Jawaban
         function handleKeyPress(e) {
-            if (e.key === 'Enter') {
-                cekInputJawaban();
-            }
+            if (e.key === 'Enter') cekInputJawaban();
         }
 
         function cekInputJawaban() {
+            if (sedangRebutan) {
+                alert("Sedang dalam mode rebutan. Harap selesaikan rebutan.");
+                return;
+            }
+
             const input = document.getElementById('input-jawaban');
             const jawabanUser = input.value.toLowerCase().trim();
-            
             if (!jawabanUser) return;
 
             const answersList = document.querySelectorAll('.answer-item');
@@ -352,28 +424,19 @@
 
             soalSekarang.jawaban.forEach((item, index) => {
                 if (item.teks.toLowerCase() === jawabanUser && !answersList[index].classList.contains('revealed')) {
-                    // Buka kotak jawaban
                     answersList[index].classList.add('revealed');
-                    
-                    // Ganti teks ? dengan teks asli
                     answersList[index].querySelector('.answer-content').innerText = item.teks;
-                    
-                    // Tambah poin
                     poinRonde += item.poin;
                     document.getElementById('round-points').innerText = poinRonde;
-                    
                     ketemu = true;
                 }
             });
 
             if (ketemu) {
-                input.value = ''; // Kosongkan input jika benar
+                input.value = ''; 
             } else {
-                // Jika jawaban salah, picu animasi X
                 addStrike();
                 input.value = ''; 
-                input.placeholder = "Jawaban tidak ada! Coba lagi...";
-                setTimeout(() => { input.placeholder = "Ketik jawaban di sini..."; }, 2000);
             }
         }
 
@@ -388,10 +451,20 @@
 
                 if (strikes === 3) {
                     setTimeout(() => {
-                        document.getElementById('modal-rebut').classList.add('active');
+                        mulaiRebutan();
                     }, 500);
                 }
             }
+        }
+
+        function mulaiRebutan() {
+            sedangRebutan = true;
+            updateTurnDisplay();
+            
+            let timLawan = (timAktif === 'A') ? namaTimB : namaTimA;
+            document.getElementById('modal-rebut-text').innerText = `${timLawan} mendapat 1 kesempatan. Apakah mereka berhasil menebak?`;
+            document.getElementById('modal-rebut').classList.add('active');
+            document.getElementById('input-jawaban').disabled = true; // Matikan input sementara
         }
 
         function handleRebut(berhasil) {
@@ -405,7 +478,7 @@
                     skorA += poinRonde;
                     document.getElementById('score-a').innerText = skorA;
                 }
-                alert("Tim Lawan berhasil merebut poin!");
+                // alert("Tim Lawan berhasil merebut poin!");
             } else {
                 if (timAktif === 'A') {
                     skorA += poinRonde;
@@ -414,18 +487,15 @@
                     skorB += poinRonde;
                     document.getElementById('score-b').innerText = skorB;
                 }
-                alert("Tim Lawan gagal. Poin tetap milik tim yang bermain.");
+                // alert("Tim Lawan gagal. Poin tetap milik tim yang bermain.");
             }
 
-            poinRonde = 0;
-            strikes = 0;
-            document.getElementById('round-points').innerText = poinRonde;
-            document.getElementById('strikes-display').classList.remove('active');
-            
+            // Ganti Giliran
             timAktif = (timAktif === 'A') ? 'B' : 'A';
+            loadNextQuestion(); // Otomatis muat soal baru untuk tim berikutnya
         }
 
-        // --- Logika Layar Penuh (Fullscreen) ---
+        // --- Logika Layar Penuh ---
         const fullscreenBtn = document.getElementById('fullscreen-btn');
         fullscreenBtn.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -444,9 +514,6 @@
                 fullscreenBtn.innerText = '⛶';
             }
         });
-
-        // Muat soal pertama saat halaman dibuka
-        window.onload = loadNextQuestion;
     </script>
 </body>
 </html>
