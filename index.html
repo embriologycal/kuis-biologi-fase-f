@@ -130,15 +130,15 @@
         .timer-display {
             position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
             font-family: 'Permanent Marker', cursive; font-size: 3rem; color: #d32f2f;
-            background-color: rgba(255, 255, 255, 0.9); padding: 5px 30px; border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.95); padding: 5px 30px; border-radius: 20px;
             border: 3px solid #d32f2f; box-shadow: 0 4px 0 #b71c1c; z-index: 20;
         }
 
-        /* Area Tarik Tambang (Tinggi ditambah agar emoji tidak nutupin) */
+        /* Area Tarik Tambang */
         .tug-of-war-area {
-            width: 100%; height: 250px; display: flex; flex-direction: column; justify-content: flex-end;
+            width: 100%; height: 220px; display: flex; flex-direction: column; justify-content: flex-end;
             position: relative; border: 4px solid #006064; border-radius: 20px;
-            background-color: #e0f7fa; margin-top: 60px; margin-bottom: 20px;
+            background-color: #e0f7fa; margin-top: 50px; margin-bottom: 20px; overflow: hidden;
         }
 
         /* Garis Tengah Arena */
@@ -147,30 +147,39 @@
             background-color: rgba(0,0,0,0.2); border-right: 2px dashed #333; transform: translateX(-50%); z-index: 1;
         }
 
-        /* ================= TALI DNA SVG ================= */
+        /* ================= TALI DNA MERAH - BIRU ================= */
         .rope-container {
-            position: absolute; bottom: 60px; /* Posisi tali di area bawah */
-            left: 0; width: 100%; height: 80px;
+            position: absolute; bottom: 40px; left: 0; width: 100%; height: 50px;
             display: flex; align-items: center; justify-content: center;
             z-index: 2; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        .svg-rope {
+        .dna-rope {
             width: 100%; height: 100%;
-            filter: drop-shadow(0 10px 5px rgba(0,0,0,0.3));
+            /* Pola kotak miring Merah - Biru Muda */
+            background-image: repeating-linear-gradient(
+                -45deg,
+                #d32f2f, /* Merah */
+                #d32f2f 15px,
+                #81d4fa, /* Biru Muda */
+                #81d4fa 30px
+            );
+            border-top: 4px solid #333;
+            border-bottom: 4px solid #333;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.2);
         }
 
-        /* Simpul/Tengah Tali (Kuning) */
+        /* Simpul/Tengah Tali */
         .dna-knot {
             position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            width: 20px; height: 60px; background-color: #ffeb3b;
-            border: 4px solid #f57f17; border-radius: 10px; z-index: 5;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            width: 25px; height: 60px; background-color: #ffeb3b;
+            border: 4px solid #f57f17; border-radius: 8px; z-index: 5;
+            box-shadow: 0 0 10px rgba(0,0,0,0.4);
         }
 
         /* Visual Tim (Karakter & Nama) */
         .team-wrapper {
-            position: absolute; bottom: 110px; /* Posisi emoji di atas tali */
+            position: absolute; bottom: 85px; /* Posisi di atas tali, aman dari soal */
             width: 50%; display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 10; 
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -178,16 +187,16 @@
         .team-a-wrapper { left: 0; padding-right: 20%; } 
         .team-b-wrapper { right: 0; padding-left: 20%; } 
 
-        /* Nama Tim (Diperkecil) */
+        /* Nama Tim */
         .team-name-badge {
-            font-size: 1rem; font-weight: bold; padding: 3px 12px; border-radius: 10px;
-            color: white; margin-bottom: 2px; z-index: 4; white-space: nowrap;
+            font-size: 1.1rem; font-weight: bold; padding: 4px 15px; border-radius: 10px;
+            color: white; margin-bottom: 5px; z-index: 4; white-space: nowrap;
             box-shadow: 0 2px 0 rgba(0,0,0,0.3);
         }
         .team-a-badge { background-color: #d32f2f; }
         .team-b-badge { background-color: #1976d2; }
 
-        /* Karakter Emoji (Diperkecil agar tidak menutupi soal) */
+        /* Karakter Emoji */
         .practitioners { 
             font-size: 4rem; display: flex; gap: 0px; 
             animation: wiggle 1.5s infinite alternate; 
@@ -204,14 +213,14 @@
 
         .question-box {
             background-color: white; border: 3px solid #333; border-radius: 15px;
-            padding: 15px; font-size: 1.4rem; font-weight: bold; text-align: center;
+            padding: 15px; font-size: 1.3rem; font-weight: bold; text-align: center;
             box-shadow: 0 4px 0 #999; min-height: 80px; display: flex; align-items: center; justify-content: center;
         }
         .q-a-box { border-color: #d32f2f; box-shadow: 0 4px 0 #b71c1c; }
         .q-b-box { border-color: #1976d2; box-shadow: 0 4px 0 #0d47a1; }
 
         .answer-btn {
-            padding: 12px 15px; font-family: 'Patrick Hand', cursive; font-size: 1.3rem; font-weight: bold;
+            padding: 12px 15px; font-family: 'Patrick Hand', cursive; font-size: 1.2rem; font-weight: bold;
             background-color: #fff; border: 3px solid #333; border-radius: 10px; cursor: pointer;
             text-align: left; transition: all 0.2s; box-shadow: 0 4px 0 #999;
         }
@@ -225,6 +234,15 @@
 
         .answer-btn.correct { background-color: #4caf50 !important; color: white; border-color: #2e7d32 !important; }
         .answer-btn.wrong { background-color: #f44336 !important; color: white; border-color: #c62828 !important; }
+
+        /* Tombol Hentikan Permainan (Diperkecil) */
+        .btn-end-game {
+            align-self: center; margin-top: 10px; padding: 5px 15px;
+            font-family: 'Patrick Hand', cursive; font-size: 1rem; font-weight: bold;
+            color: #666; background: none; border: none; cursor: pointer; text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .btn-end-game:hover { color: #d32f2f; }
 
         /* --- MODAL --- */
         .modal-overlay {
@@ -344,25 +362,9 @@
             <div class="tug-of-war-area">
                 <div class="center-line"></div>
 
-                <!-- Tali DNA (Animasi SVG) -->
+                <!-- Tali DNA Merah-Biru -->
                 <div class="rope-container" id="rope-visual">
-                    <svg class="svg-rope" viewBox="0 0 1000 100" preserveAspectRatio="none">
-                        <defs>
-                            <!-- Pattern untuk efek tangga DNA -->
-                            <pattern id="dna-pattern" width="40" height="100" patternUnits="userSpaceOnUse">
-                                <line x1="20" y1="0" x2="20" y2="100" stroke="#ccc" stroke-width="4" />
-                            </pattern>
-                        </defs>
-                        <!-- Pita Biru/Putih Belakang -->
-                        <path d="M0,50 Q50,10 100,50 T200,50 T300,50 T400,50 T500,50 T600,50 T700,50 T800,50 T900,50 T1000,50" 
-                              fill="none" stroke="#e0f7fa" stroke-width="30" stroke-linecap="round"/>
-                        <!-- Pita Merah Depan -->
-                        <path d="M0,50 Q50,90 100,50 T200,50 T300,50 T400,50 T500,50 T600,50 T700,50 T800,50 T900,50 T1000,50" 
-                              fill="none" stroke="#d32f2f" stroke-width="30" stroke-linecap="round"/>
-                        <!-- Garis Tengah (Efek Tangga) -->
-                        <path d="M0,50 Q50,10 100,50 T200,50 T300,50 T400,50 T500,50 T600,50 T700,50 T800,50 T900,50 T1000,50" 
-                              fill="none" stroke="url(#dna-pattern)" stroke-width="15"/>
-                    </svg>
+                    <div class="dna-rope"></div>
                     <div class="dna-knot"></div>
                 </div>
                 
@@ -404,7 +406,8 @@
                 </div>
             </div>
 
-            <button class="btn-back" style="align-self:center; margin-top: 10px;" onclick="endGameTT()">⬅ Hentikan Permainan</button>
+            <!-- Tombol Hentikan Permainan (Kecil) -->
+            <button class="btn-end-game" onclick="endGameTT()">Hentikan Permainan</button>
         </div>
     </div>
 
@@ -430,7 +433,6 @@
             <h2 class="modal-title" style="border:none; margin-bottom:5px;" id="winner-reason">PEMENANGNYA ADALAH</h2>
             <div class="winner-name" id="winner-name">Tim A</div>
             
-            <!-- STATISTIK KEDUA TIM -->
             <div class="stats-container">
                 <div class="team-stat-box">
                     <div class="team-stat-title" id="stat-name-a">Tim A</div>
@@ -460,7 +462,7 @@
 
     <script>
         // ==========================================
-        // KUMPULAN SOAL (NANTI BISA DIISI DARI SPREADSHEET)
+        // KUMPULAN SOAL
         // ==========================================
         const daftarSoal = [
             { soal: "Apa kepanjangan dari DNA?", pilihan: ["Deoxyribonucleic Acid", "Dinucleic Acid", "Deoxyribose Acid", "Dioxy Acid"], jawaban: 0 },
