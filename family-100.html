@@ -39,22 +39,22 @@
         .setup-container {
             width: 90%; max-width: 600px; background-color: #0d1b2a; border: 5px solid #1b5e20; border-radius: 20px;
             padding: 40px 30px; color: white; text-align: center; z-index: 10; box-shadow: 0 0 20px rgba(27, 94, 32, 0.7);
+            display: flex; flex-direction: column; align-items: center;
         }
         .setup-title { font-family: 'Permanent Marker', cursive; font-size: 2.5rem; color: #4caf50; margin-bottom: 20px; }
         
-        .dice-area { display: flex; justify-content: center; gap: 40px; margin: 30px 0; }
-        .team-dice { display: flex; flex-direction: column; align-items: center; }
+        .dice-area { display: flex; justify-content: center; margin: 30px 0; }
         .dice-box { 
-            width: 100px; height: 100px; background-color: white; border-radius: 15px;
-            display: flex; justify-content: center; align-items: center; font-size: 4rem; color: #0d1b2a; font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); margin-bottom: 10px;
+            width: 120px; height: 120px; background-color: white; border-radius: 20px;
+            display: flex; justify-content: center; align-items: center; font-size: 6rem; color: #0d1b2a; font-weight: bold;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4); margin-bottom: 10px;
         }
         .dice-box.rolling { animation: spin 0.5s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .btn-dadu {
             background-color: #fbc02d; color: #0d1b2a; font-family: 'Patrick Hand', cursive;
-            font-size: 1.5rem; font-weight: bold; padding: 15px 30px; border-radius: 10px;
+            font-size: 1.8rem; font-weight: bold; padding: 15px 40px; border-radius: 12px;
             cursor: pointer; border: none; transition: 0.2s; margin-top: 20px;
         }
         .btn-dadu:hover { background-color: #fdd835; transform: translateY(-2px); }
@@ -68,7 +68,6 @@
             z-index: 1; position: relative; color: white;
         }
 
-        /* Header */
         .game-header {
             display: flex; justify-content: space-between; align-items: center; width: 100%;
             margin-bottom: 15px; border-bottom: 2px solid #1b5e20; padding-bottom: 10px;
@@ -82,7 +81,6 @@
         .team-name { font-size: 1.2rem; font-weight: bold; color: #e0e1dd; }
         .team-points { font-size: 2.5rem; font-weight: bold; color: #4caf50; font-family: 'Permanent Marker', cursive; }
 
-        /* Timer & Ronde */
         .center-board { text-align: center; }
         .timer-display {
             font-family: 'Permanent Marker', cursive; font-size: 3rem; color: #d32f2f;
@@ -91,14 +89,13 @@
         }
         .turn-text { font-size: 1.5rem; font-weight: bold; color: #fbc02d; font-family: 'Permanent Marker', cursive;}
 
-        /* Area Soal */
         .question-area { text-align: center; margin-bottom: 10px; }
         .question-text {
             background-color: #1b263b; display: inline-block; padding: 10px 30px;
             border-radius: 10px; font-size: 1.5rem; font-weight: bold; border: 2px solid #81c784;
+            min-width: 300px;
         }
 
-        /* Input Jawaban */
         .input-area { text-align: center; margin-bottom: 15px; display: flex; justify-content: center; gap: 10px; }
         .input-jawaban {
             width: 50%; padding: 10px 15px; font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
@@ -110,7 +107,6 @@
         }
         .btn-submit:hover { background-color: #a5d6a7; }
 
-        /* Daftar Jawaban */
         .answers-list { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-bottom: 20px; flex: 1; }
         .answer-item {
             display: flex; justify-content: space-between; align-items: center;
@@ -130,7 +126,6 @@
         .answer-item.revealed .answer-content { color: white; }
         .answer-item.revealed .answer-points { opacity: 1; }
 
-        /* Tanda X */
         .strikes-container {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             display: flex; gap: 20px; font-size: 10rem; font-family: 'Permanent Marker', cursive;
@@ -139,7 +134,6 @@
         .strikes-container.active { opacity: 1; animation: pop 0.3s ease; }
         @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0.5); } 100% { transform: translate(-50%, -50%) scale(1); } }
 
-        /* Tombol Bawah */
         .host-controls { display: flex; gap: 15px; justify-content: center; margin-top: auto; }
         .btn-game {
             font-family: 'Patrick Hand', cursive; font-size: 1.2rem; font-weight: bold;
@@ -151,21 +145,25 @@
         .btn-strike:hover { background-color: #e53935; }
         .btn-next { background-color: #fbc02d; color: #1a2e1a; }
         .btn-next:hover { background-color: #fdd835; }
+        .btn-show-q { background-color: #4caf50; color: white; font-size: 1.5rem; }
+        .btn-show-q:hover { background-color: #388e3c; }
 
-        /* --- MODAL GANTI GILIRAN --- */
+        /* --- MODALS --- */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85);
             display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content {
-            background-color: #1b263b; border: 4px solid #fbc02d; border-radius: 15px; padding: 30px;
-            width: 90%; max-width: 500px; text-align: center; position: relative;
+            background-color: #1b263b; border: 4px solid #fbc02d; border-radius: 15px; padding: 40px;
+            width: 90%; max-width: 600px; text-align: center; position: relative; transform: scale(0.8); transition: 0.3s;
         }
-        .modal-title { font-size: 2.5rem; color: #fbc02d; margin-bottom: 15px; font-family: 'Permanent Marker', cursive; }
-        .modal-text { font-size: 1.2rem; margin-bottom: 20px; }
-        .btn-action { background-color: #4caf50; color: white; font-size: 1.3rem; margin-right: 10px;}
-        .btn-cancel { background-color: #d32f2f; color: white; font-size: 1.3rem; }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-title { font-size: 3rem; color: #fbc02d; margin-bottom: 15px; font-family: 'Permanent Marker', cursive; }
+        .modal-text { font-size: 1.5rem; margin-bottom: 30px; }
+        
+        .btn-action { background-color: #4caf50; color: white; font-size: 1.8rem; padding: 15px 40px; }
+        .btn-action:hover { background-color: #388e3c; }
     </style>
 </head>
 <body>
@@ -181,25 +179,27 @@
 
     <!-- ================= LAYAR SETUP & DADU ================= -->
     <div class="setup-container" id="setup-screen">
-        <h1 class="setup-title">LEMPAR DADU UNTUK MENENTUKAN GILIRAN!</h1>
+        <h1 class="setup-title">TENTUKAN GILIRAN!</h1>
         
-        <div class="input-group" style="text-align:center; margin-bottom:20px;">
-            <input type="text" id="input-name-a" placeholder="Nama Tim 1" value="Tim Merah" style="padding:10px; font-family:Patrick Hand; font-size:1.2rem; border-radius:8px; text-align:center; margin-right:10px;">
-            <input type="text" id="input-name-b" placeholder="Nama Tim 2" value="Tim Biru" style="padding:10px; font-family:Patrick Hand; font-size:1.2rem; border-radius:8px; text-align:center;">
+        <div style="margin-bottom:20px; display:flex; gap:10px;">
+            <input type="text" id="input-name-a" placeholder="Nama Tim 1" value="Tim Merah" style="padding:10px; font-family:Patrick Hand; font-size:1.2rem; border-radius:8px; text-align:center; width:150px;">
+            <input type="text" id="input-name-b" placeholder="Nama Tim 2" value="Tim Biru" style="padding:10px; font-family:Patrick Hand; font-size:1.2rem; border-radius:8px; text-align:center; width:150px;">
         </div>
 
         <div class="dice-area">
-            <div class="team-dice">
-                <div class="dice-box" id="dice-a">🎲</div>
-                <span id="label-name-a">Tim Merah</span>
-            </div>
-            <div class="team-dice">
-                <div class="dice-box" id="dice-b">🎲</div>
-                <span id="label-name-b">Tim Biru</span>
-            </div>
+            <div class="dice-box" id="dice-main">🎲</div>
         </div>
 
         <button class="btn-dadu" id="roll-btn" onclick="rollDice()">LEMPAR DADU!</button>
+    </div>
+
+    <!-- ================= MODAL PEMENANG DADU ================= -->
+    <div class="modal-overlay" id="modal-jeda">
+        <div class="modal-content" style="border-color: #4caf50;">
+            <h2 class="modal-title" id="jeda-title" style="color: #4caf50;">TIM MERAH MAIN DULU!</h2>
+            <p class="modal-text">Bersiaplah untuk berdiskusi. Juru bicara akan mengetikkan jawaban.</p>
+            <button class="btn-game btn-action" onclick="startGame()">MULAI!</button>
+        </div>
     </div>
 
     <!-- ================= GAME CONTAINER ================= -->
@@ -220,12 +220,12 @@
         </div>
 
         <div class="question-area">
-            <div class="question-text" id="question-text">Memuat soal...</div>
+            <div class="question-text" id="question-text">Soal disembunyikan. Klik "Tampilkan Soal" untuk memulai.</div>
         </div>
 
         <div class="input-area">
-            <input type="text" id="input-jawaban" class="input-jawaban" placeholder="Juru Bicara: Ketik jawaban..." onkeypress="handleKeyPress(event)">
-            <button class="btn-submit" onclick="cekInputJawaban()">Kirim</button>
+            <input type="text" id="input-jawaban" class="input-jawaban" placeholder="Juru Bicara: Ketik jawaban..." onkeypress="handleKeyPress(event)" disabled>
+            <button class="btn-submit" onclick="cekInputJawaban()" disabled id="btn-submit">Kirim</button>
         </div>
 
         <div class="answers-list" id="answers-container"></div>
@@ -233,6 +233,7 @@
         <div class="strikes-container" id="strikes-display"><span>X</span><span>X</span><span>X</span></div>
 
         <div class="host-controls">
+            <button class="btn-game btn-show-q" id="btn-show-q" onclick="tampilkanSoal()">Tampilkan Soal & Mulai Waktu</button>
             <button class="btn-game btn-strike" onclick="tambahXManual()">Tambah X (Salah)</button>
             <button class="btn-game btn-next" onclick="loadNextQuestion()">Soal Baru</button>
         </div>
@@ -249,7 +250,7 @@
 
     <script>
         // ==========================================
-        // BANK SOAL (Waktu bisa diatur per soal di sini)
+        // BANK SOAL (Atur waktuUtama & waktuRebut di sini)
         // ==========================================
         const bankSoal = [
             {
@@ -281,76 +282,81 @@
         
         let timerInterval;
         let waktuTersisa = 0;
-        let modeRebut = false; // Menandai apakah ini giliran kedua (waktu lebih sedikit)
+        let modeRebut = false;
         let jawabanTerbuka = 0;
 
         // --- FUNGSI DADU ---
         function rollDice() {
             document.getElementById('roll-btn').disabled = true;
-            let diceA = document.getElementById('dice-a');
-            let diceB = document.getElementById('dice-b');
-            diceA.classList.add('rolling');
-            diceB.classList.add('rolling');
+            let dice = document.getElementById('dice-main');
+            dice.classList.add('rolling');
 
             namaTimA = document.getElementById('input-name-a').value || "TIM A";
             namaTimB = document.getElementById('input-name-b').value || "TIM B";
-            document.getElementById('label-name-a').innerText = namaTimA;
-            document.getElementById('label-name-b').innerText = namaTimB;
 
             let count = 0;
             let interval = setInterval(() => {
-                diceA.innerText = Math.floor(Math.random() * 6) + 1;
-                diceB.innerText = Math.floor(Math.random() * 6) + 1;
+                dice.innerText = Math.floor(Math.random() * 6) + 1;
                 count++;
                 if (count > 15) {
                     clearInterval(interval);
-                    tentukanPemenangDadu(parseInt(diceA.innerText), parseInt(diceB.innerText));
+                    tentukanPemenangDadu(parseInt(dice.innerText));
                 }
             }, 100);
         }
 
-        function tentukanPemenangDadu(valA, valB) {
-            document.getElementById('dice-a').classList.remove('rolling');
-            document.getElementById('dice-b').classList.remove('rolling');
+        function tentukanPemenangDadu(angka) {
+            document.getElementById('dice-main').classList.remove('rolling');
             
-            // Jika seri, lempar ulang otomatis
-            if (valA === valB) {
-                setTimeout(() => {
-                    alert("Dadu Seri! Lempar ulang.");
-                    document.getElementById('roll-btn').disabled = false;
-                }, 500);
-                return;
-            }
-
-            timMulai = (valA > valB) ? 'A' : 'B';
+            let isGanjil = (angka % 2 !== 0);
+            timMulai = isGanjil ? 'A' : 'B';
             timGiliran = timMulai;
 
-            setTimeout(() => {
-                document.getElementById('setup-screen').style.display = 'none';
-                document.getElementById('game-screen').style.display = 'flex';
-                
-                document.getElementById('display-name-a').innerText = namaTimA;
-                document.getElementById('display-name-b').innerText = namaTimB;
+            let namaPemenang = isGanjil ? namaTimA : namaTimB;
 
-                loadNextQuestion();
-            }, 1000);
+            setTimeout(() => {
+                document.getElementById('jeda-title').innerText = `${namaPemenang} MAIN DULU!`;
+                document.getElementById('modal-jeda').classList.add('active');
+            }, 500);
+        }
+
+        function startGame() {
+            document.getElementById('modal-jeda').classList.remove('active');
+            document.getElementById('setup-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'flex';
+            
+            document.getElementById('display-name-a').innerText = namaTimA;
+            document.getElementById('display-name-b').innerText = namaTimB;
+
+            loadNextQuestion();
         }
 
         // --- LOGIKA GAME ---
         function loadNextQuestion() {
             clearInterval(timerInterval);
             modeRebut = false;
-            timGiliran = timMulai; // Setiap soal baru, yang menang dadu jalan duluan
+            timGiliran = timMulai; 
             jawabanTerbuka = 0;
             strikes = 0;
             document.getElementById('strikes-display').classList.remove('active');
-            document.getElementById('input-jawaban').disabled = false;
+            
+            // Disable input sampai tombol "Tampilkan Soal" ditekan
+            document.getElementById('input-jawaban').disabled = true;
+            document.getElementById('btn-submit').disabled = true;
             document.getElementById('input-jawaban').value = '';
             
+            // Tampilkan tombol show question, sembunyikan tombol next
+            document.getElementById('btn-show-q').style.display = 'inline-block';
+            document.getElementById('btn-show-q').disabled = false;
+            document.getElementById('btn-show-q').innerText = 'Tampilkan Soal & Mulai Waktu';
+
+            // Ambil soal
             const randomIndex = Math.floor(Math.random() * bankSoal.length);
             soalSekarang = bankSoal[randomIndex];
 
-            document.getElementById('question-text').innerText = soalSekarang.soal;
+            // Sembunyikan teks soal
+            document.getElementById('question-text').innerText = "Soal disembunyikan. Host klik tombol di bawah untuk memulai.";
+            document.getElementById('timer-display').innerText = soalSekarang.waktuUtama;
             
             const container = document.getElementById('answers-container');
             container.innerHTML = '';
@@ -367,6 +373,20 @@
             });
 
             updateTurnUI();
+        }
+
+        function tampilkanSoal() {
+            document.getElementById('question-text').innerText = soalSekarang.soal;
+            
+            // Aktifkan input
+            document.getElementById('input-jawaban').disabled = false;
+            document.getElementById('btn-submit').disabled = false;
+            document.getElementById('input-jawaban').focus();
+
+            // Sembunyikan tombol tampilkan soal
+            document.getElementById('btn-show-q').style.display = 'none';
+
+            // Mulai Timer
             mulaiTimer(soalSekarang.waktuUtama);
         }
 
@@ -402,12 +422,11 @@
 
         function waktuHabis() {
             document.getElementById('input-jawaban').disabled = true;
+            document.getElementById('btn-submit').disabled = true;
             
-            // Jika waktu habis tapi belum semua jawaban terbuka
             if (jawabanTerbuka < soalSekarang.jawaban.length) {
                 document.getElementById('modal-waktu').classList.add('active');
             } else {
-                // Jika waktu habis pas semua jawaban terbuka, langsung kasih poin
                 beriPoinDanLanjut();
             }
         }
@@ -416,14 +435,14 @@
             document.getElementById('modal-waktu').classList.remove('active');
             
             if (!modeRebut) {
-                // Pindah ke tim lawan dengan waktu lebih sedikit
                 modeRebut = true;
                 timGiliran = (timGiliran === 'A') ? 'B' : 'A';
                 document.getElementById('input-jawaban').disabled = false;
+                document.getElementById('btn-submit').disabled = false;
+                document.getElementById('input-jawaban').focus();
                 updateTurnUI();
                 mulaiTimer(soalSekarang.waktuRebut || 15);
             } else {
-                // Jika sudah mode rebut dan waktu habis lagi, berikan poin yang sudah didapat ke tim pertama
                 beriPoinDanLanjut();
             }
         }
@@ -449,25 +468,13 @@
 
             if (ketemu) {
                 input.value = ''; 
-                // Jika semua jawaban sudah terbuka, hentikan waktu dan beri poin
                 if (jawabanTerbuka === soalSekarang.jawaban.length) {
                     clearInterval(timerInterval);
                     beriPoinDanLanjut();
                 }
             } else {
-                // Salah
-                strikes++;
-                document.getElementById('strikes-display').classList.add('active');
-                setTimeout(() => {
-                    document.getElementById('strikes-display').classList.remove('active');
-                }, 1500);
+                tambahXManual();
                 input.value = '';
-                
-                // Jika 3 kali salah, langsung anggap waktu habis
-                if (strikes >= 3) {
-                    clearInterval(timerInterval);
-                    waktuHabis();
-                }
             }
         }
 
@@ -488,7 +495,6 @@
         }
 
         function beriPoinDanLanjut() {
-            // Hitung total poin dari jawaban yang terbuka
             let totalPoin = 0;
             const answersList = document.querySelectorAll('.answer-item');
             soalSekarang.jawaban.forEach((item, index) => {
@@ -497,7 +503,6 @@
                 }
             });
 
-            // Berikan ke tim yang sedang giliran
             if (timGiliran === 'A') {
                 skorA += totalPoin;
                 document.getElementById('score-a').innerText = skorA;
@@ -506,7 +511,6 @@
                 document.getElementById('score-b').innerText = skorB;
             }
 
-            // Lanjut ke soal baru setelah jeda sebentar
             setTimeout(() => {
                 alert(`Poin ${totalPoin} diberikan ke tim yang menjawab! Lanjut ke soal berikutnya.`);
                 loadNextQuestion();
