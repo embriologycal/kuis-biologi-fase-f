@@ -100,36 +100,31 @@
             border: 5px solid #1b5e20;
             border-radius: 30px;
             background-color: rgba(255, 255, 255, 0.95);
-            padding: 40px 30px;
+            /* Padding atas ditambah agar tidak terlalu mepet karena judul dihapus */
+            padding: 50px 30px 30px 30px; 
             width: 100%;
             box-shadow: 10px 10px 0px #f57c00;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Jarak antar tombol */
         }
 
+        /* Label di atas kotak (sudah diganti) */
         .arena-box::before {
-            content: "🚩 PEMILIHAN NOMOR UNDI 🚩";
+            content: "🚩 PILIH PERMAINAN 🚩";
             position: absolute;
             top: -20px;
             left: 50%;
             transform: translateX(-50%);
             background-color: #f57c00;
             color: white;
-            padding: 5px 20px;
+            padding: 5px 30px;
             border-radius: 20px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
             letter-spacing: 2px;
             white-space: nowrap;
-        }
-
-        .title {
-            font-family: 'Permanent Marker', cursive;
-            font-size: 3.5rem;
-            text-align: center;
-            color: #1b5e20;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 0px #ffe082;
-            transform: rotate(-1deg);
         }
 
         /* Tombol Kartu Lomba */
@@ -139,7 +134,6 @@
             justify-content: space-between;
             width: 100%;
             padding: 20px 30px;
-            margin-bottom: 20px;
             font-family: 'Patrick Hand', cursive;
             font-size: 2.2rem;
             font-weight: bold;
@@ -180,7 +174,7 @@
         /* Tombol Kembali */
         .btn-back {
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 15px;
             padding: 10px 20px;
             font-size: 1.5rem;
             color: #1b5e20;
@@ -210,6 +204,7 @@
     </div>
 
     <!-- Elemen Audio -->
+    <!-- Pastikan nama file musiknya sama dengan yang ada di GitHub -->
     <audio id="bg-music" loop>
         <source src="musik.mp3" type="audio/mpeg">
     </audio>
@@ -223,8 +218,7 @@
     <!-- Konten Utama -->
     <div class="container">
         <div class="arena-box">
-            <h1 class="title">PILIH PERMAINAN</h1>
-
+            <!-- Judul besar "PILIH PERMAINAN" sudah dihapus, langsung ke tombol -->
             <a href="tarik-tambang.html" class="btn-lomba">
                 <span>TARIK TAMBANG</span>
                 <span class="btn-icon">🪢</span>
@@ -245,7 +239,7 @@
         const bgMusic = document.getElementById('bg-music');
         const muteBtn = document.getElementById('mute-btn');
         
-        // Ambil memori waktu lagu dan status mute dari halaman sebelumnya
+        // Ambil memori waktu lagu dan status mute
         const savedTime = localStorage.getItem('musicTime');
         const isMutedStr = localStorage.getItem('musicMuted');
 
@@ -262,15 +256,20 @@
             muteBtn.innerText = '🔊';
         }
 
-        // Putar lagu saat halaman diklik (karena kebijakan browser)
-        document.body.addEventListener('click', function playMusic() {
-            if(bgMusic.paused) {
-                bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
-            }
-            document.body.removeEventListener('click', playMusic);
+        // MEMUTAR LAGU OTOMATIS SAAT PINDAH HALAMAN
+        // Kita coba putar langsung, jika diblokir browser, baru tunggu klik
+        bgMusic.play().catch(e => {
+            console.log("Autoplay diblokir, menunggu klik user.");
+            // Jika diblokir, putar saat layar diklik di mana saja
+            document.body.addEventListener('click', function playMusic() {
+                if(bgMusic.paused) {
+                    bgMusic.play().catch(err => console.log(err));
+                }
+                document.body.removeEventListener('click', playMusic);
+            });
         });
 
-        // Simpan waktu lagu setiap 500ms agar saat pindah halaman lanjutannya pas
+        // Simpan waktu lagu setiap 500ms agar saat pindah halaman selanjutnya pas
         setInterval(() => {
             if(!bgMusic.paused) {
                 localStorage.setItem('musicTime', bgMusic.currentTime);
