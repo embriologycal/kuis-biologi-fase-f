@@ -25,7 +25,7 @@
         .el-1 { top: 10%; left: 10%; } .el-2 { top: 20%; right: 15%; animation-delay: 2s; }
         .el-3 { bottom: 15%; left: 15%; animation-delay: 1s; } .el-4 { bottom: 25%; right: 10%; animation-delay: 3s; }
 
-        /* Header Kontrol (Dikecilkan) */
+        /* Header Kontrol */
         .top-controls { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; z-index: 10; }
         .icon-btn {
             background-color: white; border: 2px solid #1b5e20; border-radius: 50%; 
@@ -49,9 +49,7 @@
             border-radius: 8px; text-align: center; width: 150px; border: none; outline: none;
         }
 
-        .round-options {
-            display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;
-        }
+        .round-options { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
         .round-btn {
             background-color: #1b263b; color: white; border: 2px solid #81c784;
             padding: 10px 20px; font-family: 'Patrick Hand', cursive; font-size: 1.2rem;
@@ -172,18 +170,34 @@
         .modal-content {
             background-color: #1b263b; border: 4px solid #fbc02d; border-radius: 15px; padding: 30px;
             width: 90%; max-width: 600px; text-align: center; position: relative; transform: scale(0.8); transition: 0.3s;
+            color: white;
         }
         .modal-overlay.active .modal-content { transform: scale(1); }
         .modal-title { font-size: 2.5rem; color: #fbc02d; margin-bottom: 15px; font-family: 'Permanent Marker', cursive; }
         .modal-text { font-size: 1.3rem; margin-bottom: 20px; }
         
-        .btn-action { background-color: #4caf50; color: white; font-size: 1.5rem; padding: 12px 30px; }
+        .btn-action { background-color: #4caf50; color: white; font-size: 1.5rem; padding: 12px 30px; margin: 5px;}
         .btn-action:hover { background-color: #388e3c; }
+        .btn-secondary { background-color: #546e7a; color: white; font-size: 1.5rem; padding: 12px 30px; margin: 5px;}
+        .btn-secondary:hover { background-color: #78909c; }
 
         /* Desain Pemenang */
-        .winner-animation { font-size: 6rem; margin-bottom: 10px; animation: bounce 1s infinite alternate; }
+        .winner-animation { font-size: 5rem; margin-bottom: 5px; animation: bounce 1s infinite alternate; }
         @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-20px); } }
         .winner-name { font-size: 3rem; font-weight: bold; color: #4caf50; font-family: 'Permanent Marker', cursive; margin-bottom: 10px;}
+        
+        /* Statistik Akhir */
+        .stats-container { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 20px; }
+        .team-stat-box { flex: 1; background-color: #0d1b2a; border-radius: 10px; padding: 15px; border: 2px solid #81c784; }
+        .stat-title { font-size: 1.2rem; font-weight: bold; color: #81c784; margin-bottom: 10px; }
+        .stat-row { display: flex; justify-content: space-between; font-size: 1.1rem; margin-bottom: 5px; }
+
+        /* Tabel Rekap Jawaban */
+        .recap-container { max-height: 60vh; overflow-y: auto; text-align: left; margin-bottom: 20px; }
+        .recap-item { background-color: #0d1b2a; padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 2px solid #415a77; }
+        .recap-soal { font-size: 1.2rem; font-weight: bold; color: #fbc02d; margin-bottom: 10px; }
+        .recap-jawaban-list { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .recap-jawaban { font-size: 1rem; color: #e0e1dd; }
     </style>
 </head>
 <body>
@@ -265,7 +279,7 @@
         </div>
     </div>
 
-    <!-- Modal Ganti Tim (Salah 3x / Waktu Habis) -->
+    <!-- Modal Ganti Tim -->
     <div class="modal-overlay" id="modal-waktu">
         <div class="modal-content">
             <h2 class="modal-title" id="modal-waktu-title">3 KALI SALAH!</h2>
@@ -280,15 +294,43 @@
             <div class="winner-animation">🏆</div>
             <h2 class="modal-title">PEMENANGNYA!</h2>
             <div class="winner-name" id="winner-name">Tim A</div>
-            <p class="modal-text">Selamat! Pertandingan telah selesai.</p>
-            <button class="btn-game btn-action" onclick="window.location.reload()">Main Lagi</button>
-            <button class="btn-game btn-action" style="background-color:#546e7a; margin-top:10px;" onclick="window.location.href='index.html'">Kembali ke Menu</button>
+            
+            <!-- STATISTIK KEDUA TIM -->
+            <div class="stats-container">
+                <div class="team-stat-box">
+                    <div class="stat-title" id="stat-name-a">Tim A</div>
+                    <div class="stat-row"><span>Total Poin:</span> <span id="stat-poin-a" style="color:#4caf50; font-weight:bold;">0</span></div>
+                    <div class="stat-row"><span>Jawaban Benar:</span> <span id="stat-benar-a">0</span></div>
+                    <div class="stat-row"><span>Kesalahan (X):</span> <span id="stat-salah-a">0</span></div>
+                </div>
+                <div class="team-stat-box">
+                    <div class="stat-title" id="stat-name-b">Tim B</div>
+                    <div class="stat-row"><span>Total Poin:</span> <span id="stat-poin-b" style="color:#4caf50; font-weight:bold;">0</span></div>
+                    <div class="stat-row"><span>Jawaban Benar:</span> <span id="stat-benar-b">0</span></div>
+                    <div class="stat-row"><span>Kesalahan (X):</span> <span id="stat-salah-b">0</span></div>
+                </div>
+            </div>
+
+            <button class="btn-game btn-action" onclick="tampilkanRekap()">Lihat Kunci Jawaban</button>
+            <button class="btn-game btn-secondary" onclick="window.location.reload()">Main Lagi</button>
+            <button class="btn-game btn-secondary" onclick="window.location.href='index.html'">Menu Utama</button>
+        </div>
+    </div>
+
+    <!-- Modal Rekap Jawaban -->
+    <div class="modal-overlay" id="modal-rekap">
+        <div class="modal-content" style="max-width: 800px;">
+            <h2 class="modal-title">KUNCI JAWABAN SEMUA RONDE</h2>
+            <div class="recap-container" id="recap-container">
+                <!-- Diisi oleh JS -->
+            </div>
+            <button class="btn-game btn-secondary" onclick="document.getElementById('modal-rekap').classList.remove('active'); document.getElementById('modal-pemenang').classList.add('active');">Tutup</button>
         </div>
     </div>
 
     <script>
         // ==========================================
-        // BANK SOAL
+        // BANK SOAL (Pastikan memiliki minimal sebanyak ronde)
         // ==========================================
         const bankSoal = [
             {
@@ -326,11 +368,23 @@
                     { teks: "Albinisme", poin: 20 }, { teks: "Talasemia", poin: 15 },
                     { teks: "Anemia sel sabit", poin: 15 }
                 ]
+            },
+            {
+                soal: "Sebutkan bagian dari nukleotida DNA!",
+                waktuUtama: 30, waktuRebut: 15,
+                jawaban: [
+                    { teks: "Gula deoksiribosa", poin: 30 }, { teks: "Gugus fosfat", poin: 25 },
+                    { teks: "Basa nitrogen", poin: 20 }, { teks: "Purin", poin: 15 },
+                    { teks: "Pirimidin", poin: 10 }
+                ]
             }
         ];
 
         let soalSekarang = null;
         let skorA = 0, skorB = 0;
+        let benarA = 0, benarB = 0;
+        let salahA = 0, salahB = 0;
+        
         let strikes = 0;
         let timMulai = 'A'; 
         let timGiliran = 'A';
@@ -343,6 +397,9 @@
         
         let maxRonde = 2;
         let rondeSekarang = 1;
+        
+        let soalTerpakai = []; // Menyimpan soal yang sudah dimainkan
+        let rekapSoal = []; // Menyimpan data soal & jawaban untuk rekap akhir
 
         function selectRound(num, btn) {
             maxRonde = num;
@@ -424,8 +481,20 @@
             document.getElementById('btn-show-q').style.display = 'inline-block';
             document.getElementById('round-info').innerText = `RONDE ${rondeSekarang} / ${maxRonde}`;
 
-            const randomIndex = Math.floor(Math.random() * bankSoal.length);
+            // Pilih soal yang belum terpakai
+            let availableIndexes = bankSoal.map((_, i) => i).filter(i => !soalTerpakai.includes(i));
+            if (availableIndexes.length === 0) {
+                // Jika soal habis, reset daftar terpakai (opsional, agar game tidak crash)
+                soalTerpakai = []; 
+                availableIndexes = bankSoal.map((_, i) => i);
+            }
+            
+            const randomIndex = availableIndexes[Math.floor(Math.random() * availableIndexes.length)];
+            soalTerpakai.push(randomIndex); // Tandai soal ini sudah terpakai
             soalSekarang = bankSoal[randomIndex];
+            
+            // Simpan ke rekap
+            rekapSoal.push(soalSekarang);
 
             document.getElementById('question-text').innerText = "Soal disembunyikan.";
             document.getElementById('timer-display').innerText = soalSekarang.waktuUtama;
@@ -494,9 +563,8 @@
             document.getElementById('btn-submit').disabled = true;
             
             if (jawabanTerbuka < soalSekarang.jawaban.length) {
-                // Ubah judul modal jika disebabkan waktu habis
                 document.getElementById('modal-waktu-title').innerText = "WAKTU HABIS!";
-                document.getElementById('modal-text-waktu').innerText = "Giliran tim berikutnya untuk mencoba sisa jawaban.";
+                document.getElementById('modal-text-waktu').innerText = "Tim lawan mendapat kesempatan untuk merebut sisa jawaban.";
                 document.getElementById('modal-waktu').classList.add('active');
             } else {
                 selesaikanRonde();
@@ -514,7 +582,6 @@
                 document.getElementById('input-jawaban').focus();
                 updateTurnUI();
                 
-                // Reset strikes untuk tim kedua
                 strikes = 0;
                 document.getElementById('strikes-display').classList.remove('active');
 
@@ -524,7 +591,7 @@
             }
         }
 
-        // FUNGSI CEK JAWABAN & ATURAN SALAH
+        // FUNGSI CEK JAWABAN & HITUNG STATISTIK
         function cekInputJawaban() {
             if (document.getElementById('input-jawaban').disabled) return;
             
@@ -554,11 +621,14 @@
             if (ketemu) {
                 input.value = ''; 
                 
+                // Update Skor & Jawaban Benar
                 if (timGiliran === 'A') {
                     skorA += poinDidapat;
+                    benarA++;
                     document.getElementById('score-a').innerText = skorA;
                 } else {
                     skorB += poinDidapat;
+                    benarB++;
                     document.getElementById('score-b').innerText = skorB;
                 }
 
@@ -568,13 +638,17 @@
                 }
             } else {
                 strikes++;
+                
+                // Update Statistik Salah
+                if (timGiliran === 'A') salahA++;
+                else salahB++;
+
                 document.getElementById('strikes-display').classList.add('active');
                 setTimeout(() => {
                     document.getElementById('strikes-display').classList.remove('active');
                 }, 1500);
                 input.value = '';
                 
-                // Tim 1 dapat 3 kesalahan, Tim 2 dapat 2 kesalahan (saat rebutan)
                 let maxStrikes = modeRebut ? 2 : 3;
 
                 if (strikes >= maxStrikes) {
@@ -583,10 +657,8 @@
                     document.getElementById('btn-submit').disabled = true;
 
                     if (modeRebut) {
-                        // Jika tim kedua sudah 2 kali salah, langsung selesaikan ronde
                         selesaikanRonde();
                     } else {
-                        // Jika tim pertama 3 kali salah, munculkan modal ganti giliran
                         document.getElementById('modal-waktu-title').innerText = "3 KALI SALAH!";
                         document.getElementById('modal-text-waktu').innerText = "Tim lawan mendapat kesempatan untuk merebut sisa jawaban (Jatah 2 kali salah).";
                         document.getElementById('modal-waktu').classList.add('active');
@@ -607,6 +679,7 @@
             }, 500);
         }
 
+        // FUNGSI TAMPILKAN PEMENANG & STATISTIK
         function tampilkanPemenangAkhir() {
             document.getElementById('game-screen').style.display = 'none';
             
@@ -616,7 +689,46 @@
             else pemenang = "SERI!";
 
             document.getElementById('winner-name').innerText = pemenang;
+            
+            // Isi Statistik Tim A
+            document.getElementById('stat-name-a').innerText = namaTimA;
+            document.getElementById('stat-poin-a').innerText = skorA;
+            document.getElementById('stat-benar-a').innerText = benarA;
+            document.getElementById('stat-salah-a').innerText = salahA;
+
+            // Isi Statistik Tim B
+            document.getElementById('stat-name-b').innerText = namaTimB;
+            document.getElementById('stat-poin-b').innerText = skorB;
+            document.getElementById('stat-benar-b').innerText = benarB;
+            document.getElementById('stat-salah-b').innerText = salahB;
+
             document.getElementById('modal-pemenang').classList.add('active');
+        }
+
+        // FUNGSI TAMPILKAN REKAP JAWABAN
+        function tampilkanRekap() {
+            document.getElementById('modal-pemenang').classList.remove('active');
+            
+            const container = document.getElementById('recap-container');
+            container.innerHTML = '';
+
+            rekapSoal.forEach((soal, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'recap-item';
+                
+                let jawabanHTML = '';
+                soal.jawaban.forEach(j => {
+                    jawabanHTML += `<div class="recap-jawaban">${j.teks} (${j.poin})</div>`;
+                });
+
+                itemDiv.innerHTML = `
+                    <div class="recap-soal">Ronde ${index + 1}: ${soal.soal}</div>
+                    <div class="recap-jawaban-list">${jawabanHTML}</div>
+                `;
+                container.appendChild(itemDiv);
+            });
+
+            document.getElementById('modal-rekap').classList.add('active');
         }
 
         // --- Logika Layar Penuh ---
