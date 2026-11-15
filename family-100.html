@@ -130,7 +130,7 @@
         /* Tanda X (Kesalahan) */
         .strikes-container {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            display: flex; gap: 20px; font-size: 8rem; font-family: 'Permanent Marker', cursive;
+            display: flex; gap: 20px; font-size: 10rem; font-family: 'Permanent Marker', cursive;
             color: #d32f2f; text-shadow: 5px 5px 0px #000; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 20;
         }
         .strikes-container.active { opacity: 1; animation: pop 0.3s ease; }
@@ -347,12 +347,10 @@
             
             if (!jawabanUser) return;
 
-            // Cari jawaban di soal saat ini
             const answersList = document.querySelectorAll('.answer-item');
             let ketemu = false;
 
             soalSekarang.jawaban.forEach((item, index) => {
-                // Cek apakah teks cocok dan kotak belum dibuka
                 if (item.teks.toLowerCase() === jawabanUser && !answersList[index].classList.contains('revealed')) {
                     // Buka kotak jawaban
                     answersList[index].classList.add('revealed');
@@ -370,10 +368,12 @@
 
             if (ketemu) {
                 input.value = ''; // Kosongkan input jika benar
-                // Bisa tambahkan suara benar di sini
             } else {
-                alert("Jawaban tidak ada di daftar, atau sudah dibuka!");
-                input.select(); // Blok teks agar mudah diketik ulang
+                // Jika jawaban salah, picu animasi X
+                addStrike();
+                input.value = ''; 
+                input.placeholder = "Jawaban tidak ada! Coba lagi...";
+                setTimeout(() => { input.placeholder = "Ketik jawaban di sini..."; }, 2000);
             }
         }
 
