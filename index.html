@@ -147,50 +147,74 @@
             background-color: rgba(0,0,0,0.2); border-right: 2px dashed #333; transform: translateX(-50%); z-index: 1;
         }
 
-        /* ================= TALI DNA MERAH - BIRU ================= */
+        /* ================= TALI DNA HELIKS ================= */
         .rope-container {
-            position: absolute; bottom: 40px; left: 0; width: 100%; height: 50px;
+            position: absolute; bottom: 30px; left: 0; width: 100%; height: 60px;
             display: flex; align-items: center; justify-content: center;
             z-index: 2; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        .dna-rope {
-            width: 100%; height: 100%;
-            /* Pola kotak miring Merah - Biru Muda */
-            background-image: repeating-linear-gradient(
-                -45deg,
-                #d32f2f, /* Merah */
-                #d32f2f 15px,
-                #81d4fa, /* Biru Muda */
-                #81d4fa 30px
-            );
-            border-top: 4px solid #333;
-            border-bottom: 4px solid #333;
-            box-shadow: inset 0 5px 10px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.2);
+        .dna-helix {
+            width: 100%; height: 100%; position: relative; display: flex; align-items: center;
+        }
+
+        /* Untaian Merah */
+        .strand-red {
+            position: absolute; width: 100%; height: 40px; 
+            border-top: 10px solid #d32f2f; 
+            border-bottom: 10px solid #d32f2f;
+            border-radius: 50%;
+            animation: twistRed 3s infinite linear;
+        }
+
+        /* Untaian Biru Muda */
+        .strand-blue {
+            position: absolute; width: 100%; height: 40px; 
+            border-top: 10px solid #81d4fa; 
+            border-bottom: 10px solid #81d4fa;
+            border-radius: 50%;
+            animation: twistBlue 3s infinite linear;
+        }
+
+        /* Animasi 3D Heliks */
+        @keyframes twistRed {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            25% { transform: rotateX(20deg) rotateY(10deg); }
+            50% { transform: rotateX(0deg) rotateY(0deg) scaleY(-1); }
+            75% { transform: rotateX(-20deg) rotateY(-10deg); }
+            100% { transform: rotateX(0deg) rotateY(0deg); }
+        }
+
+        @keyframes twistBlue {
+            0% { transform: rotateX(0deg) rotateY(0deg) scaleY(-1); }
+            25% { transform: rotateX(-20deg) rotateY(-10deg); }
+            50% { transform: rotateX(0deg) rotateY(0deg); }
+            75% { transform: rotateX(20deg) rotateY(10deg); }
+            100% { transform: rotateX(0deg) rotateY(0deg) scaleY(-1); }
         }
 
         /* Simpul/Tengah Tali */
         .dna-knot {
             position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            width: 25px; height: 60px; background-color: #ffeb3b;
+            width: 20px; height: 50px; background-color: #ffeb3b;
             border: 4px solid #f57f17; border-radius: 8px; z-index: 5;
             box-shadow: 0 0 10px rgba(0,0,0,0.4);
         }
 
         /* Visual Tim (Karakter & Nama) */
         .team-wrapper {
-            position: absolute; bottom: 85px; /* Posisi di atas tali, aman dari soal */
+            position: absolute; bottom: 45px; /* Emoji diturunkan sejajar tali */
             width: 50%; display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 10; 
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .team-a-wrapper { left: 0; padding-right: 20%; } 
-        .team-b-wrapper { right: 0; padding-left: 20%; } 
+        .team-a-wrapper { left: 0; padding-right: 25%; } 
+        .team-b-wrapper { right: 0; padding-left: 25%; } 
 
         /* Nama Tim */
         .team-name-badge {
             font-size: 1.1rem; font-weight: bold; padding: 4px 15px; border-radius: 10px;
-            color: white; margin-bottom: 5px; z-index: 4; white-space: nowrap;
+            color: white; margin-bottom: -10px; z-index: 4; white-space: nowrap;
             box-shadow: 0 2px 0 rgba(0,0,0,0.3);
         }
         .team-a-badge { background-color: #d32f2f; }
@@ -235,7 +259,7 @@
         .answer-btn.correct { background-color: #4caf50 !important; color: white; border-color: #2e7d32 !important; }
         .answer-btn.wrong { background-color: #f44336 !important; color: white; border-color: #c62828 !important; }
 
-        /* Tombol Hentikan Permainan (Diperkecil) */
+        /* Tombol Hentikan Permainan */
         .btn-end-game {
             align-self: center; margin-top: 10px; padding: 5px 15px;
             font-family: 'Patrick Hand', cursive; font-size: 1rem; font-weight: bold;
@@ -358,13 +382,16 @@
             <!-- Timer di Tengah Atas -->
             <div class="timer-display" id="tt-timer">01:00</div>
 
-            <!-- Area Tarik Tambang (Visual & Karakter) -->
+            <!-- Area Tarik Tambang -->
             <div class="tug-of-war-area">
                 <div class="center-line"></div>
 
-                <!-- Tali DNA Merah-Biru -->
+                <!-- Tali DNA Heliks 3D -->
                 <div class="rope-container" id="rope-visual">
-                    <div class="dna-rope"></div>
+                    <div class="dna-helix">
+                        <div class="strand-red"></div>
+                        <div class="strand-blue"></div>
+                    </div>
                     <div class="dna-knot"></div>
                 </div>
                 
@@ -387,7 +414,6 @@
 
             <!-- Area Soal & Jawaban -->
             <div class="quiz-area">
-                <!-- Kolom Kiri (Soal A) - 4 Pilihan -->
                 <div class="quiz-column">
                     <div class="question-box q-a-box" id="question-a">Memuat soal...</div>
                     <button class="answer-btn btn-a" id="opt-a-0" onclick="answerTT(0, 'a', this)">A. Pilihan</button>
@@ -396,7 +422,6 @@
                     <button class="answer-btn btn-a" id="opt-a-3" onclick="answerTT(3, 'a', this)">D. Pilihan</button>
                 </div>
 
-                <!-- Kolom Kanan (Soal B) - 4 Pilihan -->
                 <div class="quiz-column">
                     <div class="question-box q-b-box" id="question-b">Memuat soal...</div>
                     <button class="answer-btn btn-b" id="opt-b-0" onclick="answerTT(0, 'b', this)">A. Pilihan</button>
@@ -406,7 +431,6 @@
                 </div>
             </div>
 
-            <!-- Tombol Hentikan Permainan (Kecil) -->
             <button class="btn-end-game" onclick="endGameTT()">Hentikan Permainan</button>
         </div>
     </div>
