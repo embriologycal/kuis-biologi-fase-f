@@ -23,6 +23,7 @@
         .el-3 { bottom: 20%; left: 15%; color: #d32f2f; animation-delay: 2s; } .el-4 { bottom: 30%; right: 10%; color: #2e7d32; animation-delay: 0.5s; }
         .el-5 { top: 50%; left: 5%; color: #fbc02d; animation-delay: 1.5s; } .el-6 { top: 60%; right: 8%; color: #1976d2; animation-delay: 2.5s; }
 
+        /* Kontrol Kanan Atas (Tanpa Fullscreen) */
         .top-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; }
         .icon-btn {
             background-color: white; border: 3px solid #1b5e20; border-radius: 50%; 
@@ -69,9 +70,9 @@
 
     <audio id="bg-music" loop><source src="musik.mp3" type="audio/mpeg"></audio>
 
+    <!-- Kontrol Kanan Atas (Hanya Mute) -->
     <div class="top-controls">
         <button class="icon-btn" id="mute-btn">🔊</button>
-        <button class="icon-btn" id="fullscreen-btn">⛶</button>
     </div>
 
     <div class="container">
@@ -83,54 +84,29 @@
     </div>
 
     <script>
-        // --- 1. Logika Musik ---
+        // --- 1. Logika Musik & Mute ---
         const bgMusic = document.getElementById('bg-music');
         const muteBtn = document.getElementById('mute-btn');
+        
         const savedTime = localStorage.getItem('musicTime');
         const isMutedStr = localStorage.getItem('musicMuted');
 
         if (savedTime !== null) bgMusic.currentTime = parseFloat(savedTime);
-        if (isMutedStr === 'true') { bgMusic.muted = true; muteBtn.innerText = '🔇'; } else { bgMusic.muted = false; muteBtn.innerText = '🔊'; }
+        if (isMutedStr === 'true') { bgMusic.muted = true; muteBtn.innerText = '🔇'; } 
+        else { bgMusic.muted = false; muteBtn.innerText = '🔊'; }
 
         document.body.addEventListener('click', function playMusic() {
             if(bgMusic.paused) bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
             document.body.removeEventListener('click', playMusic);
         });
+        
         setInterval(() => { if(!bgMusic.paused) localStorage.setItem('musicTime', bgMusic.currentTime); }, 500);
 
         muteBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); bgMusic.muted = !bgMusic.muted;
+            e.stopPropagation(); 
+            bgMusic.muted = !bgMusic.muted;
             muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
             localStorage.setItem('musicMuted', bgMusic.muted);
-        });
-
-        // --- 2. Logika Fullscreen ---
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        
-        if (sessionStorage.getItem('isFullscreen') === 'true') {
-            fullscreenBtn.innerText = '🗗';
-        }
-
-        fullscreenBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch((err) => console.log(err));
-                fullscreenBtn.innerText = '🗗'; 
-                sessionStorage.setItem('isFullscreen', 'true');
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                    fullscreenBtn.innerText = '⛶'; 
-                    sessionStorage.setItem('isFullscreen', 'false');
-                }
-            }
-        });
-
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                fullscreenBtn.innerText = '⛶'; 
-                sessionStorage.setItem('isFullscreen', 'false');
-            }
         });
     </script>
 </body>
