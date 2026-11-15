@@ -60,92 +60,98 @@
         .btn-dadu:hover { background-color: #fdd835; transform: translateY(-2px); }
         .btn-dadu:disabled { background-color: #78909c; cursor: not-allowed; transform: none; }
 
-        /* ================= DESAIN GAME ================= */
+        /* ================= DESAIN GAME (DIPADATKAN) ================= */
         .game-container {
-            display: none; width: 95%; max-width: 1100px; height: 95vh; background-color: #0d1b2a;
-            border: 5px solid #1b5e20; border-radius: 20px; padding: 20px;
+            display: none; width: 98%; max-width: 1200px; height: 96vh; background-color: #0d1b2a;
+            border: 5px solid #1b5e20; border-radius: 20px; padding: 15px 25px;
             box-shadow: 0 0 20px rgba(27, 94, 32, 0.7); flex-direction: column;
             z-index: 1; position: relative; color: white;
         }
 
         .game-header {
             display: flex; justify-content: space-between; align-items: center; width: 100%;
-            margin-bottom: 15px; border-bottom: 2px solid #1b5e20; padding-bottom: 10px;
+            margin-bottom: 10px; border-bottom: 2px solid #1b5e20; padding-bottom: 5px;
         }
         .team-score {
             display: flex; flex-direction: column; align-items: center;
-            background-color: #1b263b; padding: 10px 30px; border-radius: 15px;
-            border: 2px solid #81c784; min-width: 150px; transition: 0.3s;
+            background-color: #1b263b; padding: 5px 20px; border-radius: 10px;
+            border: 2px solid #81c784; min-width: 120px; transition: 0.3s;
         }
-        .team-score.active-turn { border-color: #fbc02d; box-shadow: 0 0 15px #fbc02d; transform: scale(1.05); }
-        .team-name { font-size: 1.2rem; font-weight: bold; color: #e0e1dd; }
-        .team-points { font-size: 2.5rem; font-weight: bold; color: #4caf50; font-family: 'Permanent Marker', cursive; }
+        .team-score.active-turn { border-color: #fbc02d; box-shadow: 0 0 10px #fbc02d; transform: scale(1.02); }
+        .team-name { font-size: 1rem; font-weight: bold; color: #e0e1dd; }
+        .team-points { font-size: 2rem; font-weight: bold; color: #4caf50; font-family: 'Permanent Marker', cursive; }
 
         .center-board { text-align: center; }
         .timer-display {
-            font-family: 'Permanent Marker', cursive; font-size: 3rem; color: #d32f2f;
-            background-color: white; padding: 5px 30px; border-radius: 15px;
-            border: 3px solid #d32f2f; box-shadow: 0 4px 0 #b71c1c; display: inline-block; margin-bottom: 5px;
+            font-family: 'Permanent Marker', cursive; font-size: 2.5rem; color: #d32f2f;
+            background-color: white; padding: 2px 20px; border-radius: 10px;
+            border: 3px solid #d32f2f; display: inline-block;
         }
-        .turn-text { font-size: 1.5rem; font-weight: bold; color: #fbc02d; font-family: 'Permanent Marker', cursive;}
+        .turn-text { font-size: 1.2rem; font-weight: bold; color: #fbc02d; font-family: 'Permanent Marker', cursive; margin-top: 2px;}
 
-        .question-area { text-align: center; margin-bottom: 10px; }
+        /* Area Soal & Input (Lebih Ramping) */
+        .question-area { text-align: center; margin-bottom: 8px; }
         .question-text {
-            background-color: #1b263b; display: inline-block; padding: 10px 30px;
-            border-radius: 10px; font-size: 1.5rem; font-weight: bold; border: 2px solid #81c784;
+            background-color: #1b263b; display: inline-block; padding: 8px 25px;
+            border-radius: 10px; font-size: 1.3rem; font-weight: bold; border: 2px solid #81c784;
             min-width: 300px;
         }
 
-        .input-area { text-align: center; margin-bottom: 15px; display: flex; justify-content: center; gap: 10px; }
+        .input-area { text-align: center; margin-bottom: 10px; display: flex; justify-content: center; gap: 10px; }
         .input-jawaban {
-            width: 50%; padding: 10px 15px; font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
-            border-radius: 10px; border: 3px solid #81c784; outline: none; text-align: center;
+            width: 40%; padding: 8px 15px; font-family: 'Patrick Hand', cursive; font-size: 1.2rem;
+            border-radius: 8px; border: 3px solid #81c784; outline: none; text-align: center;
         }
         .btn-submit {
             background-color: #81c784; color: #0d1b2a; font-weight: bold; font-size: 1.2rem;
-            border: none; border-radius: 10px; padding: 10px 20px; cursor: pointer; transition: 0.2s;
+            border: none; border-radius: 8px; padding: 8px 20px; cursor: pointer; transition: 0.2s;
         }
         .btn-submit:hover { background-color: #a5d6a7; }
 
-        .answers-list { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-bottom: 20px; flex: 1; }
+        /* Daftar Jawaban (Flexbox agar muat banyak) */
+        .answers-list { display: flex; flex-direction: column; gap: 8px; width: 100%; flex: 1; justify-content: center; }
         .answer-item {
             display: flex; justify-content: space-between; align-items: center;
-            background-color: #1b263b; border: 2px solid #415a77; border-radius: 10px;
-            padding: 10px 20px; font-size: 1.3rem; transition: all 0.4s ease;
+            background-color: #1b263b; border: 2px solid #415a77; border-radius: 8px;
+            padding: 8px 15px; font-size: 1.2rem; transition: all 0.4s ease;
         }
         .answer-rank { 
             background-color: #81c784; color: #0d1b2a; font-weight: bold; 
-            width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
-            border-radius: 50%; font-size: 1.5rem;
+            width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;
+            border-radius: 50%; font-size: 1.2rem;
         }
-        .answer-content { flex: 1; padding-left: 20px; text-align: left; font-weight: bold; font-size: 1.5rem; }
-        .hidden-box { color: #fbc02d; font-size: 2rem; letter-spacing: 5px; }
-        .answer-points { font-weight: bold; color: #fbc02d; font-size: 1.8rem; opacity: 0; transition: opacity 0.4s; }
+        .answer-content { flex: 1; padding-left: 15px; text-align: left; font-weight: bold; font-size: 1.3rem; }
+        .hidden-box { color: #fbc02d; font-size: 1.5rem; letter-spacing: 5px; }
+        .answer-points { font-weight: bold; color: #fbc02d; font-size: 1.5rem; opacity: 0; transition: opacity 0.4s; }
+        
+        /* Efek Terbuka */
         .answer-item.revealed { background-color: #2e7d32; border-color: #4caf50; }
-        .answer-item.revealed .hidden-box { display: none; }
+        .answer-item.revealed .hidden-box { display: none; } /* Sembunyikan ? */
         .answer-item.revealed .answer-content { color: white; }
         .answer-item.revealed .answer-points { opacity: 1; }
 
+        /* Tanda X */
         .strikes-container {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            display: flex; gap: 20px; font-size: 10rem; font-family: 'Permanent Marker', cursive;
+            display: flex; gap: 20px; font-size: 8rem; font-family: 'Permanent Marker', cursive;
             color: #d32f2f; text-shadow: 5px 5px 0px #000; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 20;
         }
         .strikes-container.active { opacity: 1; animation: pop 0.3s ease; }
         @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0.5); } 100% { transform: translate(-50%, -50%) scale(1); } }
 
-        .host-controls { display: flex; gap: 15px; justify-content: center; margin-top: auto; }
+        /* Kontrol Bawah */
+        .host-controls { display: flex; gap: 15px; justify-content: center; margin-top: 10px; }
         .btn-game {
-            font-family: 'Patrick Hand', cursive; font-size: 1.2rem; font-weight: bold;
-            padding: 10px 20px; border-radius: 8px; cursor: pointer; border: none;
-            transition: all 0.2s; box-shadow: 0 4px 0 rgba(0,0,0,0.5);
+            font-family: 'Patrick Hand', cursive; font-size: 1.1rem; font-weight: bold;
+            padding: 8px 15px; border-radius: 8px; cursor: pointer; border: none;
+            transition: all 0.2s; box-shadow: 0 3px 0 rgba(0,0,0,0.5);
         }
-        .btn-game:active { transform: translateY(4px); box-shadow: none; }
-        .btn-strike { background-color: #c62828; color: white; font-size: 1.5rem; }
+        .btn-game:active { transform: translateY(3px); box-shadow: none; }
+        .btn-strike { background-color: #c62828; color: white; }
         .btn-strike:hover { background-color: #e53935; }
         .btn-next { background-color: #fbc02d; color: #1a2e1a; }
         .btn-next:hover { background-color: #fdd835; }
-        .btn-show-q { background-color: #4caf50; color: white; font-size: 1.5rem; }
+        .btn-show-q { background-color: #4caf50; color: white; font-size: 1.3rem; padding: 10px 25px;}
         .btn-show-q:hover { background-color: #388e3c; }
 
         /* --- MODALS --- */
@@ -228,6 +234,7 @@
             <button class="btn-submit" onclick="cekInputJawaban()" disabled id="btn-submit">Kirim</button>
         </div>
 
+        <!-- Daftar Jawaban -->
         <div class="answers-list" id="answers-container"></div>
 
         <div class="strikes-container" id="strikes-display"><span>X</span><span>X</span><span>X</span></div>
@@ -345,7 +352,7 @@
             document.getElementById('btn-submit').disabled = true;
             document.getElementById('input-jawaban').value = '';
             
-            // Tampilkan tombol show question, sembunyikan tombol next
+            // Tampilkan tombol show question
             document.getElementById('btn-show-q').style.display = 'inline-block';
             document.getElementById('btn-show-q').disabled = false;
             document.getElementById('btn-show-q').innerText = 'Tampilkan Soal & Mulai Waktu';
@@ -364,6 +371,7 @@
             soalSekarang.jawaban.forEach((item, index) => {
                 const answerDiv = document.createElement('div');
                 answerDiv.className = 'answer-item';
+                answerDiv.id = `answer-${index}`; // Beri ID unik untuk manipulasi
                 answerDiv.innerHTML = `
                     <div class="answer-rank">${index + 1}</div>
                     <div class="answer-content hidden-box">? ? ? ? ?</div>
@@ -447,6 +455,7 @@
             }
         }
 
+        // FUNGSI YANG DIPERBAIKI UNTUK MENAMPILKAN JAWABAN
         function cekInputJawaban() {
             if (document.getElementById('input-jawaban').disabled) return;
             
@@ -454,13 +463,20 @@
             const jawabanUser = input.value.toLowerCase().trim();
             if (!jawabanUser) return;
 
-            const answersList = document.querySelectorAll('.answer-item');
             let ketemu = false;
 
             soalSekarang.jawaban.forEach((item, index) => {
-                if (item.teks.toLowerCase() === jawabanUser && !answersList[index].classList.contains('revealed')) {
-                    answersList[index].classList.add('revealed');
-                    answersList[index].querySelector('.answer-content').innerText = item.teks;
+                const answerDiv = document.getElementById(`answer-${index}`);
+                
+                // Cek jika teks cocok DAN kotak belum dibuka
+                if (item.teks.toLowerCase() === jawabanUser && !answerDiv.classList.contains('revealed')) {
+                    answerDiv.classList.add('revealed');
+                    
+                    // GANTI TEKS ? DENGAN TEKS ASLI
+                    const contentDiv = answerDiv.querySelector('.answer-content');
+                    contentDiv.classList.remove('hidden-box');
+                    contentDiv.innerText = item.teks;
+                    
                     jawabanTerbuka++;
                     ketemu = true;
                 }
@@ -496,9 +512,11 @@
 
         function beriPoinDanLanjut() {
             let totalPoin = 0;
-            const answersList = document.querySelectorAll('.answer-item');
+            
+            // Hitung poin dari jawaban yang terbuka
             soalSekarang.jawaban.forEach((item, index) => {
-                if (answersList[index].classList.contains('revealed')) {
+                const answerDiv = document.getElementById(`answer-${index}`);
+                if (answerDiv.classList.contains('revealed')) {
                     totalPoin += item.poin;
                 }
             });
