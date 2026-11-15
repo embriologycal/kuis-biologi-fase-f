@@ -174,20 +174,89 @@
 
         .team-name-badge {
             font-size: 1.2rem; font-weight: bold; padding: 5px 15px; border-radius: 10px;
-            color: white; margin-bottom: -5px; z-index: 4; white-space: nowrap;
+            color: white; margin-bottom: 5px; z-index: 4; white-space: nowrap;
             box-shadow: 0 3px 0 rgba(0,0,0,0.3);
         }
         .team-a-badge { background-color: #d32f2f; }
         .team-b-badge { background-color: #1976d2; }
 
+        /* ================= KARAKTER LABORAN CSS ================= */
         .practitioners { 
-            font-size: 5rem; display: flex; gap: -5px; 
+            display: flex; gap: 0px; /* Jarak antar karakter */
             animation: wiggle 2s infinite alternate; 
+            margin-top: 10px;
         }
-        .practitioners span { margin: 0 -10px; filter: drop-shadow(0 4px 2px rgba(0,0,0,0.3)); }
-        @keyframes wiggle { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+        @keyframes wiggle { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } }
 
-        /* Area Soal & Jawaban */
+        .char-body {
+            position: relative;
+            width: 60px; height: 90px;
+            margin: 0 -10px; /* Agar karakternya agak berdempetan */
+        }
+
+        /* Kepala (Lingkaran) */
+        .char-head {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 45px; height: 45px; background-color: #fcdbb4; /* Warna kulit */
+            border: 3px solid #333; border-radius: 50%; z-index: 2;
+            overflow: hidden;
+        }
+
+        /* Kacamata Safety */
+        .char-goggles {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 35px; height: 14px; background-color: #b3e5fc; /* Kaca transparan kebiruan */
+            border: 2px solid #333; border-radius: 4px; display: flex; justify-content: space-around; align-items: center;
+        }
+        .char-goggles::before, .char-goggles::after {
+            content: ''; width: 8px; height: 8px; border: 2px solid #333; border-radius: 50%; background-color: #fff;
+        }
+
+        /* Badan (Segitiga / Jas Lab) */
+        .char-torso {
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 55px solid #ffffff; /* Warna jas lab */
+            z-index: 1;
+            filter: drop-shadow(0 4px 2px rgba(0,0,0,0.3)); /* Bayangan */
+        }
+        /* Garis tepi segitiga (menggunakan pseudo-element segitiga yang sedikit lebih besar) */
+        .char-torso::before {
+            content: ''; position: absolute;
+            top: 3px; left: -32px;
+            width: 0; height: 0;
+            border-left: 32px solid transparent;
+            border-right: 32px solid transparent;
+            border-bottom: 58px solid #333;
+            z-index: -1;
+        }
+
+        /* Kancing Baju (Dua buah titik) */
+        .char-buttons {
+            position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; gap: 5px; z-index: 3;
+        }
+        .char-buttons span {
+            width: 6px; height: 6px; background-color: #333; border-radius: 50%;
+        }
+
+        /* Tangan Terentang */
+        .char-arm {
+            position: absolute; top: 55px; width: 30px; height: 6px; background-color: #fcdbb4;
+            border: 2px solid #333; border-radius: 3px; z-index: 3;
+        }
+        .char-arm.left { left: -15px; transform: rotate(-20deg); }
+        .char-arm.right { right: -15px; transform: rotate(20deg); }
+        /* Lengan jas (putih) */
+        .char-arm::after {
+            content: ''; position: absolute; top: -2px; width: 12px; height: 6px; background-color: #fff; border: 2px solid #333; border-radius: 3px;
+        }
+        .char-arm.left::after { right: -2px; }
+        .char-arm.right::after { left: -2px; }
+
+        /* ================= SOAL & JAWABAN ================= */
         .quiz-area {
             display: flex; width: 100%; justify-content: space-between; padding: 0 10px; gap: 20px; z-index: 5;
         }
@@ -217,7 +286,7 @@
         .answer-btn.correct { background-color: #4caf50 !important; color: white; border-color: #2e7d32 !important; }
         .answer-btn.wrong { background-color: #f44336 !important; color: white; border-color: #c62828 !important; }
 
-        /* --- MODAL (Termasuk Modal Pemenang) --- */
+        /* --- MODAL --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6);
             display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s ease;
@@ -233,15 +302,10 @@
         .modal-title { font-size: 2rem; color: #1b5e20; margin-bottom: 15px; border-bottom: 2px dashed #81c784; padding-bottom: 10px; }
         .modal-text { font-size: 1.2rem; margin-bottom: 20px; line-height: 1.5; text-align: left; }
 
-        /* Khusus Modal Pemenang */
-        .winner-animation {
-            font-size: 5rem; margin-bottom: 10px; animation: bounce 1s infinite alternate;
-        }
+        .winner-animation { font-size: 5rem; margin-bottom: 10px; animation: bounce 1s infinite alternate; }
         @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-20px); } }
         .winner-name { font-size: 2.5rem; font-weight: bold; color: #f57c00; margin-bottom: 20px; font-family: 'Permanent Marker', cursive; }
-        .stat-box {
-            display: flex; justify-content: space-around; background-color: #f5f5f5; border-radius: 10px; padding: 15px; margin-bottom: 20px;
-        }
+        .stat-box { display: flex; justify-content: space-around; background-color: #f5f5f5; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
         .stat-item { display: flex; flex-direction: column; }
         .stat-val { font-size: 1.5rem; font-weight: bold; }
         .stat-label { font-size: 1rem; color: #666; }
@@ -347,16 +411,30 @@
                 <!-- Karakter Tim A (Kiri) -->
                 <div class="team-wrapper team-a-wrapper" id="visual-team-a">
                     <div class="team-name-badge team-a-badge" id="display-team-a">TIM A</div>
+                    <!-- KARAKTER CSS -->
                     <div class="practitioners">
-                        <span>👨‍🔬</span><span>👩‍🔬</span><span>👨‍🔬</span>
+                        <div class="char-body">
+                            <div class="char-head"><div class="char-goggles"></div></div>
+                            <div class="char-torso"></div>
+                            <div class="char-buttons"><span></span><span></span></div>
+                            <div class="char-arm left"></div>
+                            <div class="char-arm right"></div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Karakter Tim B (Kanan) -->
                 <div class="team-wrapper team-b-wrapper" id="visual-team-b">
                     <div class="team-name-badge team-b-badge" id="display-team-b">TIM B</div>
+                    <!-- KARAKTER CSS -->
                     <div class="practitioners">
-                        <span>👩‍🔬</span><span>👨‍🔬</span><span>👩‍🔬</span>
+                        <div class="char-body" style="transform: scaleX(-1);"> <!-- Dibalik menghadap kiri -->
+                            <div class="char-head"><div class="char-goggles"></div></div>
+                            <div class="char-torso"></div>
+                            <div class="char-buttons"><span></span><span></span></div>
+                            <div class="char-arm left"></div>
+                            <div class="char-arm right"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -405,214 +483,4 @@
     <div class="modal-overlay" id="modal-winner">
         <div class="modal-content">
             <div class="winner-animation">🏆</div>
-            <h2 class="modal-title" style="border:none; margin-bottom:5px;">PEMENANGNYA ADALAH</h2>
-            <div class="winner-name" id="winner-name">Tim A</div>
-            
-            <div class="stat-box">
-                <div class="stat-item">
-                    <span class="stat-val val-correct" id="stat-correct">0</span>
-                    <span class="stat-label">Benar</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-val val-wrong" id="stat-wrong">0</span>
-                    <span class="stat-label">Salah</span>
-                </div>
-            </div>
-            
-            <button class="btn-start" style="background-color: #4caf50; box-shadow: 0 4px 0 #2e7d32;" onclick="closeModal('modal-winner'); endGameTT();">Kembali ke Menu</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="creator-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('creator-modal')">&times;</span>
-            <h2 class="modal-title">Tentang Kreator</h2>
-            <div class="modal-text" style="text-align:center;">
-                <p><b>Naztarbaja</b></p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // --- 1. Logika Pindah Halaman ---
-        function switchPage(pageId) {
-            const pages = document.querySelectorAll('.page-section');
-            pages.forEach(page => page.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-        }
-
-        // --- 2. Logika Setup Tarik Tambang ---
-        let selectedTime = 60; 
-
-        function selectTime(seconds, btnElement) {
-            selectedTime = seconds;
-            document.querySelectorAll('.timer-btn').forEach(btn => btn.classList.remove('selected'));
-            btnElement.classList.add('selected');
-        }
-
-        function startGameTT() {
-            document.getElementById('display-team-a').innerText = document.getElementById('input-team-a').value || 'Tim A';
-            document.getElementById('display-team-b').innerText = document.getElementById('input-team-b').value || 'Tim B';
-            
-            // Reset Game State
-            ropePosition = 0;
-            scoreA = 0; scoreB = 0;
-            wrongA = 0; wrongB = 0;
-            streakA = 0; streakB = 0;
-            updateRopeVisual();
-            
-            switchPage('page-tt-game');
-            startTimer(selectedTime);
-        }
-
-        // --- 3. Logika Waktu & Timer ---
-        let timeLeft = 60;
-        let timerInterval;
-
-        function startTimer(duration) {
-            timeLeft = duration;
-            updateTimerDisplay();
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    checkWinnerByTime();
-                }
-            }, 1000);
-        }
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            document.getElementById('tt-timer').innerText = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        // --- 4. Logika Gameplay Tarik Tambang (Streak 4) ---
-        let ropePosition = 0; 
-        let scoreA = 0; // Total benar tim A
-        let scoreB = 0; // Total benar tim B
-        let wrongA = 0; // Total salah tim A
-        let wrongB = 0; // Total salah tim B
-        let streakA = 0; // Streak benar berturut-turut tim A
-        let streakB = 0; // Streak benar berturut-turut tim B
-
-        function answerTT(option, team, btnElement) {
-            // SEMENTARA: Anggap jawaban benar adalah 'A' untuk semua soal (Bisa diubah nanti saat pakai spreadsheet)
-            const correctAnswer = 'A'; 
-            const isCorrect = (option === correctAnswer);
-
-            if (team === 'a') {
-                if (isCorrect) {
-                    scoreA++; streakA++; wrongA = wrongA; // streak nambah
-                    ropePosition -= 8; // Tarik ke kiri
-                    if (streakA >= 4) { declareWinner('a', 'Mencapai 4 Streak!'); return; }
-                } else {
-                    wrongA++; streakA = 0; // streak hangus
-                    ropePosition += 8; // Tarik ke kanan (lawan)
-                }
-            } else if (team === 'b') {
-                if (isCorrect) {
-                    scoreB++; streakB++;
-                    ropePosition += 8; // Tarik ke kanan
-                    if (streakB >= 4) { declareWinner('b', 'Mencapai 4 Streak!'); return; }
-                } else {
-                    wrongB++; streakB = 0;
-                    ropePosition -= 8; // Tarik ke kiri (lawan)
-                }
-            }
-
-            // Batasi pergerakan tali
-            if (ropePosition < -40) ropePosition = -40;
-            if (ropePosition > 40) ropePosition = 40;
-
-            updateRopeVisual();
-
-            // Efek visual tombol
-            if(isCorrect) btnElement.classList.add('correct');
-            else btnElement.classList.add('wrong');
-
-            setTimeout(() => { btnElement.classList.remove('correct', 'wrong'); }, 1000);
-        }
-
-        function updateRopeVisual() {
-            document.getElementById('rope-visual').style.transform = `translateX(${ropePosition}%)`;
-            document.getElementById('visual-team-a').style.transform = `translateX(${ropePosition}%)`;
-            document.getElementById('visual-team-b').style.transform = `translateX(${ropePosition}%)`;
-        }
-
-        function checkWinnerByTime() {
-            if (scoreA > scoreB) {
-                declareWinner('a', 'Waktu Habis! Poin Terbanyak.');
-            } else if (scoreB > scoreA) {
-                declareWinner('b', 'Waktu Habis! Poin Terbanyak.');
-            } else {
-                // Seri
-                document.getElementById('winner-name').innerText = "SERI!";
-                document.getElementById('stat-correct').innerText = scoreA;
-                document.getElementById('stat-wrong').innerText = wrongA;
-                openModal('modal-winner');
-            }
-        }
-
-        function declareWinner(team, reason) {
-            clearInterval(timerInterval);
-            
-            let winnerName = "";
-            let c = 0;
-            let w = 0;
-
-            if (team === 'a') {
-                winnerName = document.getElementById('display-team-a').innerText;
-                c = scoreA; w = wrongA;
-            } else {
-                winnerName = document.getElementById('display-team-b').innerText;
-                c = scoreB; w = wrongB;
-            }
-
-            document.getElementById('winner-name').innerText = winnerName;
-            document.getElementById('stat-correct').innerText = c;
-            document.getElementById('stat-wrong').innerText = w;
-            
-            // Tambahkan alasan menang di judul modal
-            document.querySelector('#modal-winner .modal-title').innerText = reason;
-
-            openModal('modal-winner');
-        }
-
-        function endGameTT() {
-            clearInterval(timerInterval);
-            switchPage('page-select');
-        }
-
-        // --- 5. Logika UI Umum (Modal & Musik) ---
-        function openModal(modalId) { document.getElementById(modalId).classList.add('active'); }
-        function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
-        
-        const modals = document.querySelectorAll('.modal-overlay');
-        modals.forEach(modal => {
-            modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
-        });
-
-        const muteBtn = document.getElementById('mute-btn');
-        const bgMusic = document.getElementById('bg-music');
-        document.body.addEventListener('click', function playMusic() {
-            if(bgMusic.paused) bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
-            document.body.removeEventListener('click', playMusic);
-        });
-
-        muteBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            bgMusic.muted = !bgMusic.muted;
-            muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
-        });
-
-        document.getElementById('open-creator').addEventListener('click', (e) => { 
-            e.stopPropagation(); 
-            openModal('creator-modal');
-        });
-    </script>
-</body>
-</html>
+            <h2 class="modal-title" style="border:none; margin-bottom:5px;">PEMEN
