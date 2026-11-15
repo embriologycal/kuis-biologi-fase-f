@@ -311,8 +311,9 @@
         <div class="floating-element el-6">🧬</div>
     </div>
 
+    <!-- Elemen Audio -->
     <audio id="bg-music" loop>
-        <source src="lagu.mp3" type="audio/mpeg">
+        <source src="musik.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Kontrol Kanan Atas -->
@@ -369,27 +370,39 @@
         // --- 1. Logika Musik & Tombol Mute ---
         const muteBtn = document.getElementById('mute-btn');
         const bgMusic = document.getElementById('bg-music');
-        let isMuted = false;
+        
+        // Cek memori musik sebelumnya
+        const savedTime = localStorage.getItem('musicTime');
+        const isMutedStr = localStorage.getItem('musicMuted');
 
-        // Browser memblokir autoplay. Lagu akan berputar saat pertama kali layar diklik.
+        if (savedTime !== null) bgMusic.currentTime = parseFloat(savedTime);
+        
+        if (isMutedStr === 'true') {
+            bgMusic.muted = true;
+            muteBtn.innerText = '🔇';
+        } else {
+            bgMusic.muted = false;
+            muteBtn.innerText = '🔊';
+        }
+
+        // Putar lagu saat layar pertama kali diklik
         document.body.addEventListener('click', function playMusic() {
             if(bgMusic.paused) {
-                bgMusic.play().catch(e => console.log("Menunggu interaksi user untuk memutar musik."));
+                bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
             }
             document.body.removeEventListener('click', playMusic);
         });
 
+        // Simpan waktu lagu
+        setInterval(() => {
+            if(!bgMusic.paused) localStorage.setItem('musicTime', bgMusic.currentTime);
+        }, 500);
+
         muteBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Mencegah klik tombol memicu event playMusic di atas
-            isMuted = !isMuted;
-            
-            if (isMuted) {
-                muteBtn.innerText = '🔇';
-                bgMusic.muted = true; // Matikan suara
-            } else {
-                muteBtn.innerText = '🔊';
-                bgMusic.muted = false; // Nyalakan suara
-            }
+            e.stopPropagation(); 
+            bgMusic.muted = !bgMusic.muted;
+            muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
+            localStorage.setItem('musicMuted', bgMusic.muted);
         });
 
         // --- 2. Logika Pop-up Kreator ---
@@ -412,27 +425,54 @@
             }
         });
 
-        // --- 3. Logika Tombol Layar Penuh (Fullscreen) ---
+        // --- 3. Logika Fullscreen Permanen ---
         const fullscreenBtn = document.getElementById('fullscreen-btn');
-        
+        const wasFullscreen = sessionStorage.getItem('isFullscreen') === 'true';
+
+        // Jika sebelumnya sudah fullscreen, update ikon
+        if (wasFullscreen) {
+            fullscreenBtn.innerText = '🗗';
+        }
+
+        // Fungsi untuk masuk fullscreen
+        function goFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch((err) => {
+                    console.log(`Gagal: ${err.message}`);
+                });
+            }
+        }
+
+        // Browser melarang fullscreen otomatis tanpa klik. 
+        // Jadi kita picu fullscreen saat pengguna mengklik layar pertama kali.
+        document.body.addEventListener('click', function autoFullscreenOnClick() {
+            if (wasFullscreen && !document.fullscreenElement) {
+                goFullscreen();
+            }
+            document.body.removeEventListener('click', autoFullscreenOnClick);
+        });
+
+        // Tombol manual Fullscreen
         fullscreenBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch((err) => {
-                    console.log(`Gagal mengaktifkan layar penuh: ${err.message}`);
-                });
+                goFullscreen();
+                sessionStorage.setItem('isFullscreen', 'true');
                 fullscreenBtn.innerText = '🗗'; 
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
+                    sessionStorage.setItem('isFullscreen', 'false');
                     fullscreenBtn.innerText = '⛶'; 
                 }
             }
         });
 
+        // Deteksi jika keluar fullscreen pakai tombol ESC
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 fullscreenBtn.innerText = '⛶'; 
+                sessionStorage.setItem('isFullscreen', 'false');
             }
         });
     </script>
