@@ -217,20 +217,36 @@
         .answer-btn.correct { background-color: #4caf50 !important; color: white; border-color: #2e7d32 !important; }
         .answer-btn.wrong { background-color: #f44336 !important; color: white; border-color: #c62828 !important; }
 
-        /* --- MODAL --- */
+        /* --- MODAL (Termasuk Modal Pemenang) --- */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6);
             display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content {
-            background-color: #fff; border: 4px solid #1b5e20; border-radius: 10px; padding: 25px;
+            background-color: #fff; border: 4px solid #1b5e20; border-radius: 15px; padding: 30px;
             width: 90%; max-width: 450px; text-align: center; box-shadow: 8px 8px 0px #81c784;
             position: relative; transform: translateY(-20px); transition: all 0.3s ease; color: #1a2e1a;
         }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer; color: #1b5e20; font-weight: bold; }
         .modal-title { font-size: 2rem; color: #1b5e20; margin-bottom: 15px; border-bottom: 2px dashed #81c784; padding-bottom: 10px; }
         .modal-text { font-size: 1.2rem; margin-bottom: 20px; line-height: 1.5; text-align: left; }
+
+        /* Khusus Modal Pemenang */
+        .winner-animation {
+            font-size: 5rem; margin-bottom: 10px; animation: bounce 1s infinite alternate;
+        }
+        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-20px); } }
+        .winner-name { font-size: 2.5rem; font-weight: bold; color: #f57c00; margin-bottom: 20px; font-family: 'Permanent Marker', cursive; }
+        .stat-box {
+            display: flex; justify-content: space-around; background-color: #f5f5f5; border-radius: 10px; padding: 15px; margin-bottom: 20px;
+        }
+        .stat-item { display: flex; flex-direction: column; }
+        .stat-val { font-size: 1.5rem; font-weight: bold; }
+        .stat-label { font-size: 1rem; color: #666; }
+        .val-correct { color: #4caf50; }
+        .val-wrong { color: #f44336; }
     </style>
 </head>
 <body>
@@ -347,16 +363,20 @@
 
             <!-- Area Soal & Jawaban -->
             <div class="quiz-area">
-                <!-- Kolom Kiri (Soal A) -->
+                <!-- Kolom Kiri (Soal A) - 4 Pilihan -->
                 <div class="quiz-column">
                     <div class="question-box q-a-box" id="question-a">Soal untuk Tim A...</div>
                     <button class="answer-btn btn-a" onclick="answerTT('A', 'a', this)">A. Pilihan Pertama</button>
                     <button class="answer-btn btn-a" onclick="answerTT('B', 'a', this)">B. Pilihan Kedua</button>
+                    <button class="answer-btn btn-a" onclick="answerTT('C', 'a', this)">C. Pilihan Ketiga</button>
+                    <button class="answer-btn btn-a" onclick="answerTT('D', 'a', this)">D. Pilihan Keempat</button>
                 </div>
 
-                <!-- Kolom Kanan (Soal B) -->
+                <!-- Kolom Kanan (Soal B) - 4 Pilihan -->
                 <div class="quiz-column">
                     <div class="question-box q-b-box" id="question-b">Soal untuk Tim B...</div>
+                    <button class="answer-btn btn-b" onclick="answerTT('A', 'b', this)">A. Pilihan Pertama</button>
+                    <button class="answer-btn btn-b" onclick="answerTT('B', 'b', this)">B. Pilihan Kedua</button>
                     <button class="answer-btn btn-b" onclick="answerTT('C', 'b', this)">C. Pilihan Ketiga</button>
                     <button class="answer-btn btn-b" onclick="answerTT('D', 'b', this)">D. Pilihan Keempat</button>
                 </div>
@@ -366,17 +386,40 @@
         </div>
     </div>
 
-    <!-- ================= MODAL ================= -->
+    <!-- ================= MODAL CARA MAIN ================= -->
     <div class="modal-overlay" id="modal-tarik">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('modal-tarik')">&times;</span>
             <h2 class="modal-title">Cara Main: Tarik Tambang</h2>
             <div class="modal-text">
                 <p>1. Pilih waktu dan masukkan nama tim.</p>
-                <p>2. Tim A (Kiri) dan Tim B (Kanan) bergantian menekan jawaban.</p>
-                <p>3. Jawaban benar = tali tertarik ke pihakmu. Jawaban salah = tali tertarik ke lawan.</p>
-                <p>4. Tim yang tali/simpulnya melewati batas kemenangan atau memiliki poin terbanyak saat waktu habis, adalah pemenangnya!</p>
+                <p>2. Tiap tim menjawab soal masing-masing dengan memilih A, B, C, atau D.</p>
+                <p>3. Jawaban benar = tali tertarik ke pihakmu & streak bertambah. Jawaban salah = tali tertarik ke lawan & streak hangus.</p>
+                <p>4. Menang jika mencapai <b>4 jawaban benar berturut-turut (streak)</b>.</p>
+                <p>5. Jika waktu habis, tim dengan total jawaban benar terbanyak menang.</p>
             </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL PEMENANG ================= -->
+    <div class="modal-overlay" id="modal-winner">
+        <div class="modal-content">
+            <div class="winner-animation">🏆</div>
+            <h2 class="modal-title" style="border:none; margin-bottom:5px;">PEMENANGNYA ADALAH</h2>
+            <div class="winner-name" id="winner-name">Tim A</div>
+            
+            <div class="stat-box">
+                <div class="stat-item">
+                    <span class="stat-val val-correct" id="stat-correct">0</span>
+                    <span class="stat-label">Benar</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-val val-wrong" id="stat-wrong">0</span>
+                    <span class="stat-label">Salah</span>
+                </div>
+            </div>
+            
+            <button class="btn-start" style="background-color: #4caf50; box-shadow: 0 4px 0 #2e7d32;" onclick="closeModal('modal-winner'); endGameTT();">Kembali ke Menu</button>
         </div>
     </div>
 
@@ -408,12 +451,18 @@
         }
 
         function startGameTT() {
-            document.getElementById('display-team-a').innerText = document.getElementById('input-team-a').value || 'Tim Merah';
-            document.getElementById('display-team-b').innerText = document.getElementById('input-team-b').value || 'Tim Biru';
+            document.getElementById('display-team-a').innerText = document.getElementById('input-team-a').value || 'Tim A';
+            document.getElementById('display-team-b').innerText = document.getElementById('input-team-b').value || 'Tim B';
+            
+            // Reset Game State
+            ropePosition = 0;
+            scoreA = 0; scoreB = 0;
+            wrongA = 0; wrongB = 0;
+            streakA = 0; streakB = 0;
+            updateRopeVisual();
+            
             switchPage('page-tt-game');
             startTimer(selectedTime);
-            ropePosition = 0;
-            updateRopeVisual();
         }
 
         // --- 3. Logika Waktu & Timer ---
@@ -429,7 +478,7 @@
                 updateTimerDisplay();
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    endGameTT();
+                    checkWinnerByTime();
                 }
             }, 1000);
         }
@@ -441,35 +490,49 @@
                 `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        // --- 4. Logika Gameplay Tarik Tambang ---
+        // --- 4. Logika Gameplay Tarik Tambang (Streak 4) ---
         let ropePosition = 0; 
+        let scoreA = 0; // Total benar tim A
+        let scoreB = 0; // Total benar tim B
+        let wrongA = 0; // Total salah tim A
+        let wrongB = 0; // Total salah tim B
+        let streakA = 0; // Streak benar berturut-turut tim A
+        let streakB = 0; // Streak benar berturut-turut tim B
 
         function answerTT(option, team, btnElement) {
-            const correctAnswers = ['A', 'C'];
-            const isCorrect = correctAnswers.includes(option);
+            // SEMENTARA: Anggap jawaban benar adalah 'A' untuk semua soal (Bisa diubah nanti saat pakai spreadsheet)
+            const correctAnswer = 'A'; 
+            const isCorrect = (option === correctAnswer);
 
-            if (isCorrect) {
-                if (option === 'A' || option === 'B') ropePosition -= 8; 
-                else ropePosition += 8; 
-                btnElement.classList.add('correct');
-            } else {
-                if (option === 'A' || option === 'B') ropePosition += 8; 
-                else ropePosition -= 8; 
-                btnElement.classList.add('wrong');
+            if (team === 'a') {
+                if (isCorrect) {
+                    scoreA++; streakA++; wrongA = wrongA; // streak nambah
+                    ropePosition -= 8; // Tarik ke kiri
+                    if (streakA >= 4) { declareWinner('a', 'Mencapai 4 Streak!'); return; }
+                } else {
+                    wrongA++; streakA = 0; // streak hangus
+                    ropePosition += 8; // Tarik ke kanan (lawan)
+                }
+            } else if (team === 'b') {
+                if (isCorrect) {
+                    scoreB++; streakB++;
+                    ropePosition += 8; // Tarik ke kanan
+                    if (streakB >= 4) { declareWinner('b', 'Mencapai 4 Streak!'); return; }
+                } else {
+                    wrongB++; streakB = 0;
+                    ropePosition -= 8; // Tarik ke kiri (lawan)
+                }
             }
 
-            if (ropePosition < -35) ropePosition = -35;
-            if (ropePosition > 35) ropePosition = 35;
+            // Batasi pergerakan tali
+            if (ropePosition < -40) ropePosition = -40;
+            if (ropePosition > 40) ropePosition = 40;
 
             updateRopeVisual();
 
-            if (ropePosition <= -35) {
-                clearInterval(timerInterval);
-                setTimeout(() => alert(`🏆 TIM MERAH (${document.getElementById('display-team-a').innerText}) MENANG!`), 300);
-            } else if (ropePosition >= 35) {
-                clearInterval(timerInterval);
-                setTimeout(() => alert(`🏆 TIM BIRU (${document.getElementById('display-team-b').innerText}) MENANG!`), 300);
-            }
+            // Efek visual tombol
+            if(isCorrect) btnElement.classList.add('correct');
+            else btnElement.classList.add('wrong');
 
             setTimeout(() => { btnElement.classList.remove('correct', 'wrong'); }, 1000);
         }
@@ -478,6 +541,45 @@
             document.getElementById('rope-visual').style.transform = `translateX(${ropePosition}%)`;
             document.getElementById('visual-team-a').style.transform = `translateX(${ropePosition}%)`;
             document.getElementById('visual-team-b').style.transform = `translateX(${ropePosition}%)`;
+        }
+
+        function checkWinnerByTime() {
+            if (scoreA > scoreB) {
+                declareWinner('a', 'Waktu Habis! Poin Terbanyak.');
+            } else if (scoreB > scoreA) {
+                declareWinner('b', 'Waktu Habis! Poin Terbanyak.');
+            } else {
+                // Seri
+                document.getElementById('winner-name').innerText = "SERI!";
+                document.getElementById('stat-correct').innerText = scoreA;
+                document.getElementById('stat-wrong').innerText = wrongA;
+                openModal('modal-winner');
+            }
+        }
+
+        function declareWinner(team, reason) {
+            clearInterval(timerInterval);
+            
+            let winnerName = "";
+            let c = 0;
+            let w = 0;
+
+            if (team === 'a') {
+                winnerName = document.getElementById('display-team-a').innerText;
+                c = scoreA; w = wrongA;
+            } else {
+                winnerName = document.getElementById('display-team-b').innerText;
+                c = scoreB; w = wrongB;
+            }
+
+            document.getElementById('winner-name').innerText = winnerName;
+            document.getElementById('stat-correct').innerText = c;
+            document.getElementById('stat-wrong').innerText = w;
+            
+            // Tambahkan alasan menang di judul modal
+            document.querySelector('#modal-winner .modal-title').innerText = reason;
+
+            openModal('modal-winner');
         }
 
         function endGameTT() {
