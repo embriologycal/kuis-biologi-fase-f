@@ -483,4 +483,209 @@
     <div class="modal-overlay" id="modal-winner">
         <div class="modal-content">
             <div class="winner-animation">🏆</div>
-            <h2 class="modal-title" style="border:none; margin-bottom:5px;">PEMEN
+            <h2 class="modal-title" style="border:none; margin-bottom:5px;">PEMENANGNYA ADALAH</h2>
+            <div class="winner-name" id="winner-name">Tim A</div>
+            
+            <div class="stat-box">
+                <div class="stat-item">
+                    <span class="stat-val val-correct" id="stat-correct">0</span>
+                    <span class="stat-label">Benar</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-val val-wrong" id="stat-wrong">0</span>
+                    <span class="stat-label">Salah</span>
+                </div>
+            </div>
+            
+            <button class="btn-start" style="background-color: #4caf50; box-shadow: 0 4px 0 #2e7d32;" onclick="closeModal('modal-winner'); endGameTT();">Kembali ke Menu</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="creator-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('creator-modal')">&times;</span>
+            <h2 class="modal-title">Tentang Kreator</h2>
+            <div class="modal-text" style="text-align:center;">
+                <p><b>Naztarbaja</b></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Logika Pindah Halaman ---
+        function switchPage(pageId) {
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // --- 2. Logika Setup Tarik Tambang ---
+        let selectedTime = 60; 
+
+        function selectTime(seconds, btnElement) {
+            selectedTime = seconds;
+            document.querySelectorAll('.timer-btn').forEach(btn => btn.classList.remove('selected'));
+            btnElement.classList.add('selected');
+        }
+
+        function startGameTT() {
+            document.getElementById('display-team-a').innerText = document.getElementById('input-team-a').value || 'Tim A';
+            document.getElementById('display-team-b').innerText = document.getElementById('input-team-b').value || 'Tim B';
+            
+            // Reset Game State
+            ropePosition = 0;
+            scoreA = 0; scoreB = 0;
+            wrongA = 0; wrongB = 0;
+            streakA = 0; streakB = 0;
+            updateRopeVisual();
+            
+            switchPage('page-tt-game');
+            startTimer(selectedTime);
+        }
+
+        // --- 3. Logika Waktu & Timer ---
+        let timeLeft = 60;
+        let timerInterval;
+
+        function startTimer(duration) {
+            timeLeft = duration;
+            updateTimerDisplay();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    checkWinnerByTime();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('tt-timer').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // --- 4. Logika Gameplay Tarik Tambang (Streak 4) ---
+        let ropePosition = 0; 
+        let scoreA = 0; 
+        let scoreB = 0; 
+        let wrongA = 0; 
+        let wrongB = 0; 
+        let streakA = 0; 
+        let streakB = 0; 
+
+        function answerTT(option, team, btnElement) {
+            // SEMENTARA: Anggap jawaban benar adalah 'A' untuk semua soal
+            const correctAnswer = 'A'; 
+            const isCorrect = (option === correctAnswer);
+
+            if (team === 'a') {
+                if (isCorrect) {
+                    scoreA++; streakA++; 
+                    ropePosition -= 8; 
+                    if (streakA >= 4) { declareWinner('a', 'Mencapai 4 Streak!'); return; }
+                } else {
+                    wrongA++; streakA = 0; 
+                    ropePosition += 8; 
+                }
+            } else if (team === 'b') {
+                if (isCorrect) {
+                    scoreB++; streakB++;
+                    ropePosition += 8; 
+                    if (streakB >= 4) { declareWinner('b', 'Mencapai 4 Streak!'); return; }
+                } else {
+                    wrongB++; streakB = 0;
+                    ropePosition -= 8; 
+                }
+            }
+
+            if (ropePosition < -40) ropePosition = -40;
+            if (ropePosition > 40) ropePosition = 40;
+
+            updateRopeVisual();
+
+            if(isCorrect) btnElement.classList.add('correct');
+            else btnElement.classList.add('wrong');
+
+            setTimeout(() => { btnElement.classList.remove('correct', 'wrong'); }, 1000);
+        }
+
+        function updateRopeVisual() {
+            document.getElementById('rope-visual').style.transform = `translateX(${ropePosition}%)`;
+            document.getElementById('visual-team-a').style.transform = `translateX(${ropePosition}%)`;
+            document.getElementById('visual-team-b').style.transform = `translateX(${ropePosition}%)`;
+        }
+
+        function checkWinnerByTime() {
+            if (scoreA > scoreB) {
+                declareWinner('a', 'Waktu Habis! Poin Terbanyak.');
+            } else if (scoreB > scoreA) {
+                declareWinner('b', 'Waktu Habis! Poin Terbanyak.');
+            } else {
+                document.getElementById('winner-name').innerText = "SERI!";
+                document.getElementById('stat-correct').innerText = scoreA;
+                document.getElementById('stat-wrong').innerText = wrongA;
+                openModal('modal-winner');
+            }
+        }
+
+        function declareWinner(team, reason) {
+            clearInterval(timerInterval);
+            
+            let winnerName = "";
+            let c = 0;
+            let w = 0;
+
+            if (team === 'a') {
+                winnerName = document.getElementById('display-team-a').innerText;
+                c = scoreA; w = wrongA;
+            } else {
+                winnerName = document.getElementById('display-team-b').innerText;
+                c = scoreB; w = wrongB;
+            }
+
+            document.getElementById('winner-name').innerText = winnerName;
+            document.getElementById('stat-correct').innerText = c;
+            document.getElementById('stat-wrong').innerText = w;
+            
+            document.querySelector('#modal-winner .modal-title').innerText = reason;
+            openModal('modal-winner');
+        }
+
+        function endGameTT() {
+            clearInterval(timerInterval);
+            switchPage('page-select');
+        }
+
+        // --- 5. Logika UI Umum (Modal & Musik) ---
+        function openModal(modalId) { document.getElementById(modalId).classList.add('active'); }
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+        
+        const modals = document.querySelectorAll('.modal-overlay');
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+        });
+
+        const muteBtn = document.getElementById('mute-btn');
+        const bgMusic = document.getElementById('bg-music');
+        document.body.addEventListener('click', function playMusic() {
+            if(bgMusic.paused) bgMusic.play().catch(e => console.log("Menunggu interaksi user."));
+            document.body.removeEventListener('click', playMusic);
+        });
+
+        muteBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            bgMusic.muted = !bgMusic.muted;
+            muteBtn.innerText = bgMusic.muted ? '🔇' : '🔊';
+        });
+
+        document.getElementById('open-creator').addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            openModal('creator-modal');
+        });
+    </script>
+</body>
+</html>
