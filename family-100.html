@@ -160,8 +160,6 @@
             transition: all 0.2s; box-shadow: 0 3px 0 rgba(0,0,0,0.5);
         }
         .btn-game:active { transform: translateY(3px); box-shadow: none; }
-        .btn-next { background-color: #fbc02d; color: #1a2e1a; }
-        .btn-next:hover { background-color: #fdd835; }
         .btn-show-q { background-color: #4caf50; color: white; font-size: 1.3rem; padding: 10px 25px;}
         .btn-show-q:hover { background-color: #388e3c; }
 
@@ -219,7 +217,7 @@
             <div class="dice-box" id="dice-main">🎲</div>
         </div>
 
-        <button class="btn-dadu" id="roll-btn" onclick="rollDice()">LEMPAR DADU UNTUK RONDE 1</button>
+        <button class="btn-dadu" id="roll-btn" onclick="rollDice()">LEMPAR DADU</button>
     </div>
 
     <!-- ================= MODAL PEMENANG DADU ================= -->
@@ -264,14 +262,13 @@
 
         <div class="host-controls">
             <button class="btn-game btn-show-q" id="btn-show-q" onclick="tampilkanSoal()">Tampilkan Soal</button>
-            <button class="btn-game btn-next" onclick="paksaSoalBaru()">Soal Baru</button>
         </div>
     </div>
 
-    <!-- Modal Waktu Habis -->
+    <!-- Modal Ganti Tim (Salah 3x / Waktu Habis) -->
     <div class="modal-overlay" id="modal-waktu">
         <div class="modal-content">
-            <h2 class="modal-title">WAKTU HABIS!</h2>
+            <h2 class="modal-title" id="modal-waktu-title">3 KALI SALAH!</h2>
             <p class="modal-text" id="modal-text-waktu">Giliran tim berikutnya untuk mencoba sisa jawaban (Poin eksklusif).</p>
             <button class="btn-game btn-action" onclick="gantiGiliran()">Lanjut ke Tim Lawan</button>
         </div>
@@ -296,7 +293,7 @@
         const bankSoal = [
             {
                 soal: "Sebutkan istilah yang berkaitan dengan genetika!",
-                waktuUtama: 30, waktuRebut: 15,
+                waktuUtama: 30, waktuRebut: 20,
                 jawaban: [
                     { teks: "Gen", poin: 30 }, { teks: "DNA", poin: 25 },
                     { teks: "Kromosom", poin: 20 }, { teks: "Alel", poin: 15 },
@@ -346,7 +343,6 @@
         
         let maxRonde = 2;
         let rondeSekarang = 1;
-        let soalYangSudahKeluar = [];
 
         function selectRound(num, btn) {
             maxRonde = num;
@@ -428,14 +424,8 @@
             document.getElementById('btn-show-q').style.display = 'inline-block';
             document.getElementById('round-info').innerText = `RONDE ${rondeSekarang} / ${maxRonde}`;
 
-            let availableSoal = bankSoal.filter((s, index) => !soalYangSudahKeluar.includes(index));
-            if (availableSoal.length === 0) {
-                soalYangSudahKeluar = [];
-                availableSoal = bankSoal;
-            }
-            
-            const randomIndex = Math.floor(Math.random() * availableSoal.length);
-            soalSekarang = availableSoal[randomIndex];
+            const randomIndex = Math.floor(Math.random() * bankSoal.length);
+            soalSekarang = bankSoal[randomIndex];
 
             document.getElementById('question-text').innerText = "Soal disembunyikan.";
             document.getElementById('timer-display').innerText = soalSekarang.waktuUtama;
@@ -504,6 +494,9 @@
             document.getElementById('btn-submit').disabled = true;
             
             if (jawabanTerbuka < soalSekarang.jawaban.length) {
+                // Ubah judul modal jika disebabkan waktu habis
+                document.getElementById('modal-waktu-title').innerText = "WAKTU HABIS!";
+                document.getElementById('modal-text-waktu').innerText = "Giliran tim berikutnya untuk mencoba sisa jawaban.";
                 document.getElementById('modal-waktu').classList.add('active');
             } else {
                 selesaikanRonde();
@@ -520,12 +513,18 @@
                 document.getElementById('btn-submit').disabled = false;
                 document.getElementById('input-jawaban').focus();
                 updateTurnUI();
-                mulaiTimer(soalSekarang.waktuRebut || 15);
+                
+                // Reset strikes untuk tim kedua
+                strikes = 0;
+                document.getElementById('strikes-display').classList.remove('active');
+
+                mulaiTimer(soalSekarang.waktuRebut || 20);
             } else {
                 selesaikanRonde();
             }
         }
 
+        // FUNGSI CEK JAWABAN & ATURAN SALAH
         function cekInputJawaban() {
             if (document.getElementById('input-jawaban').disabled) return;
             
@@ -575,20 +574,29 @@
                 }, 1500);
                 input.value = '';
                 
-                if (strikes >= 3) {
+                // Tim 1 dapat 3 kesalahan, Tim 2 dapat 2 kesalahan (saat rebutan)
+                let maxStrikes = modeRebut ? 2 : 3;
+
+                if (strikes >= maxStrikes) {
                     clearInterval(timerInterval);
-                    waktuHabis();
+                    document.getElementById('input-jawaban').disabled = true;
+                    document.getElementById('btn-submit').disabled = true;
+
+                    if (modeRebut) {
+                        // Jika tim kedua sudah 2 kali salah, langsung selesaikan ronde
+                        selesaikanRonde();
+                    } else {
+                        // Jika tim pertama 3 kali salah, munculkan modal ganti giliran
+                        document.getElementById('modal-waktu-title').innerText = "3 KALI SALAH!";
+                        document.getElementById('modal-text-waktu').innerText = "Tim lawan mendapat kesempatan untuk merebut sisa jawaban (Jatah 2 kali salah).";
+                        document.getElementById('modal-waktu').classList.add('active');
+                    }
                 }
             }
         }
 
         function handleKeyPress(e) {
             if (e.key === 'Enter') cekInputJawaban();
-        }
-
-        function paksaSoalBaru() {
-            clearInterval(timerInterval);
-            selesaikanRonde();
         }
 
         function selesaikanRonde() {
