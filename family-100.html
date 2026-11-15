@@ -3,17 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mari Belajar - Family 100</title>
+    <title>Family 100 - Genetika</title>
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background-color: #0d1b2a; /* Latar gelap khas Family 100 */
+            background-color: #eef7ee; /* Nuansa Hijau Biologi */
             font-family: 'Patrick Hand', cursive;
             display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; color: white; overflow: hidden; position: relative;
+            min-height: 100vh; color: #1a2e1a; overflow: hidden; position: relative;
         }
-        
+
+        /* Latar Belakang Biologi */
+        .bio-background {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden; opacity: 0.1;
+            font-family: 'Permanent Marker', cursive; font-size: 3rem; color: #2e7d32; pointer-events: none;
+        }
+        .floating-element { position: absolute; animation: float 10s infinite ease-in-out alternate; }
+        @keyframes float { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-30px) rotate(15deg); } }
+        .el-1 { top: 10%; left: 10%; } .el-2 { top: 20%; right: 15%; animation-delay: 2s; }
+        .el-3 { bottom: 15%; left: 15%; animation-delay: 1s; } .el-4 { bottom: 25%; right: 10%; animation-delay: 3s; }
+        .el-5 { top: 50%; left: 5%; animation-delay: 4s; } .el-6 { top: 60%; right: 8%; animation-delay: 1.5s; }
+
         /* Header Kontrol */
         .top-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; }
         .icon-btn {
@@ -26,44 +38,58 @@
 
         /* ================= DESAIN GAME FAMILY 100 ================= */
         .game-container {
-            width: 95%; max-width: 1000px; height: 95vh; background-color: #0d1b2a;
-            border: 5px solid #f57c00; border-radius: 20px; padding: 20px;
-            box-shadow: 0 0 20px rgba(245, 124, 0, 0.5); display: flex; flex-direction: column;
-            z-index: 1; position: relative;
+            width: 95%; max-width: 1100px; height: 95vh; background-color: #0d1b2a; /* Tetap gelap khas Family 100 */
+            border: 5px solid #1b5e20; border-radius: 20px; padding: 20px;
+            box-shadow: 0 0 20px rgba(27, 94, 32, 0.7); display: flex; flex-direction: column;
+            z-index: 1; position: relative; color: white;
         }
 
-        /* Header Skor & Timer */
+        /* Header Skor */
         .game-header {
             display: flex; justify-content: space-between; align-items: center; width: 100%;
-            margin-bottom: 15px; border-bottom: 2px solid #1b263b; padding-bottom: 10px;
+            margin-bottom: 15px; border-bottom: 2px solid #1b5e20; padding-bottom: 10px;
         }
 
         .team-score {
             display: flex; flex-direction: column; align-items: center;
             background-color: #1b263b; padding: 10px 30px; border-radius: 15px;
-            border: 2px solid #415a77; min-width: 150px;
+            border: 2px solid #81c784; min-width: 150px;
         }
         .team-name { font-size: 1.2rem; font-weight: bold; color: #e0e1dd; }
-        .team-points { font-size: 2.5rem; font-weight: bold; color: #fbc02d; font-family: 'Permanent Marker', cursive; }
+        .team-points { font-size: 2.5rem; font-weight: bold; color: #4caf50; font-family: 'Permanent Marker', cursive; }
 
         /* Papan Ronde */
         .round-board {
             background-color: #1b263b; padding: 15px 40px; border-radius: 15px;
-            border: 2px solid #fbc02d; text-align: center;
+            border: 2px solid #4caf50; text-align: center;
         }
         .round-title { font-size: 1rem; color: #e0e1dd; }
-        .round-points { font-size: 2rem; font-weight: bold; color: #4caf50; }
+        .round-points { font-size: 2rem; font-weight: bold; color: #fbc02d; }
 
         /* Area Soal */
         .question-area {
-            text-align: center; margin-bottom: 20px;
+            text-align: center; margin-bottom: 10px;
         }
         .question-text {
-            background-color: #1b263b; display: inline-block; padding: 15px 30px;
-            border-radius: 10px; font-size: 1.5rem; font-weight: bold; border: 2px solid #415a77;
+            background-color: #1b263b; display: inline-block; padding: 10px 30px;
+            border-radius: 10px; font-size: 1.5rem; font-weight: bold; border: 2px solid #81c784;
         }
 
-        /* Daftar Jawaban */
+        /* Input Jawaban Host */
+        .input-area {
+            text-align: center; margin-bottom: 15px; display: flex; justify-content: center; gap: 10px;
+        }
+        .input-jawaban {
+            width: 50%; padding: 10px 15px; font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
+            border-radius: 10px; border: 3px solid #81c784; outline: none; text-align: center;
+        }
+        .btn-submit {
+            background-color: #81c784; color: #0d1b2a; font-weight: bold; font-size: 1.2rem;
+            border: none; border-radius: 10px; padding: 10px 20px; cursor: pointer; transition: 0.2s;
+        }
+        .btn-submit:hover { background-color: #a5d6a7; }
+
+        /* Daftar Jawaban (Tersembunyi) */
         .answers-list {
             display: flex; flex-direction: column; gap: 10px; width: 100%; margin-bottom: 20px; flex: 1;
         }
@@ -71,20 +97,35 @@
         .answer-item {
             display: flex; justify-content: space-between; align-items: center;
             background-color: #1b263b; border: 2px solid #415a77; border-radius: 10px;
-            padding: 12px 20px; font-size: 1.3rem; cursor: pointer; transition: all 0.2s;
+            padding: 10px 20px; font-size: 1.3rem; transition: all 0.4s ease;
             position: relative; overflow: hidden;
         }
 
-        .answer-item:hover { background-color: #2b3a4a; }
-
-        .answer-item.revealed {
-            background-color: #0d47a1; border-color: #64b5f6; cursor: default;
+        .answer-rank { 
+            background-color: #81c784; color: #0d1b2a; font-weight: bold; 
+            width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
+            border-radius: 50%; font-size: 1.5rem;
         }
-        .answer-item.revealed .answer-text { opacity: 1; }
-        .answer-item.revealed .answer-points { opacity: 1; }
+
+        .answer-content { flex: 1; padding-left: 20px; text-align: left; font-weight: bold; font-size: 1.5rem; }
         
-        .answer-text { opacity: 0.3; transition: opacity 0.3s; text-align: left; font-weight: bold; }
-        .answer-points { opacity: 0.3; transition: opacity 0.3s; font-weight: bold; color: #fbc02d; font-size: 1.5rem; }
+        /* Kotak Pertanyaan (?) sebelum dibuka */
+        .hidden-box {
+            color: #fbc02d; font-size: 2rem; letter-spacing: 5px;
+        }
+
+        .answer-points {
+            font-weight: bold; color: #fbc02d; font-size: 1.8rem; opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        /* Efek saat jawaban dibuka */
+        .answer-item.revealed {
+            background-color: #2e7d32; border-color: #4caf50; transform: scale(1.02);
+        }
+        .answer-item.revealed .hidden-box { display: none; }
+        .answer-item.revealed .answer-content { color: white; }
+        .answer-item.revealed .answer-points { opacity: 1; }
 
         /* Tanda X (Kesalahan) */
         .strikes-container {
@@ -113,9 +154,6 @@
         .btn-next { background-color: #fbc02d; color: #1a2e1a; }
         .btn-next:hover { background-color: #fdd835; }
 
-        .btn-exit { background-color: #546e7a; color: white; }
-        .btn-exit:hover { background-color: #78909c; }
-
         /* --- MODAL REBUT JAWABAN --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8);
@@ -134,7 +172,16 @@
     </style>
 </head>
 <body>
+    <!-- Background Elemen Biologi -->
+    <div class="bio-background">
+        <div class="floating-element el-1">A</div><div class="floating-element el-2">T</div>
+        <div class="floating-element el-3">C</div><div class="floating-element el-4">G</div>
+        <div class="floating-element el-5">🧬</div><div class="floating-element el-6">🧬</div>
+    </div>
+
+    <!-- Header Kontrol -->
     <div class="top-controls">
+        <button class="icon-btn" id="fullscreen-btn" title="Layar Penuh">⛶</button>
         <button class="icon-btn" onclick="window.location.href='index.html'" title="Keluar">⬅</button>
     </div>
 
@@ -160,6 +207,12 @@
             <div class="question-text" id="question-text">Memuat soal...</div>
         </div>
 
+        <!-- Input Jawaban Host -->
+        <div class="input-area">
+            <input type="text" id="input-jawaban" class="input-jawaban" placeholder="Ketik jawaban di sini..." onkeypress="handleKeyPress(event)">
+            <button class="btn-submit" onclick="cekInputJawaban()">Kirim</button>
+        </div>
+
         <!-- Daftar Jawaban -->
         <div class="answers-list" id="answers-container">
             <!-- Akan diisi oleh JavaScript -->
@@ -172,7 +225,6 @@
 
         <!-- Kontrol Host -->
         <div class="host-controls">
-            <button class="btn-game btn-exit" onclick="window.location.href='index.html'">Keluar</button>
             <button class="btn-game btn-strike" onclick="addStrike()">Tambah X</button>
             <button class="btn-game btn-next" onclick="loadNextQuestion()">Soal Baru</button>
         </div>
@@ -250,15 +302,14 @@
         let skorA = 0;
         let skorB = 0;
         let strikes = 0;
-        let timAktif = 'A'; // Bisa diganti manual oleh host
+        let timAktif = 'A'; 
 
         function loadNextQuestion() {
-            // Reset state
             poinRonde = 0;
             strikes = 0;
             document.getElementById('round-points').innerText = poinRonde;
             document.getElementById('strikes-display').classList.remove('active');
-            document.querySelectorAll('.answer-item').forEach(el => el.classList.remove('revealed'));
+            document.getElementById('input-jawaban').value = '';
 
             // Ambil soal acak
             const randomIndex = Math.floor(Math.random() * bankSoal.length);
@@ -267,29 +318,63 @@
             // Render soal
             document.getElementById('question-text').innerText = soalSekarang.soal;
             
-            // Render jawaban
+            // Render kotak jawaban tersembunyi
             const container = document.getElementById('answers-container');
             container.innerHTML = '';
             
             soalSekarang.jawaban.forEach((item, index) => {
                 const answerDiv = document.createElement('div');
                 answerDiv.className = 'answer-item';
-                answerDiv.onclick = () => revealAnswer(answerDiv, item.poin);
                 answerDiv.innerHTML = `
-                    <span class="answer-text">${index + 1}. ${item.teks}</span>
-                    <span class="answer-points">${item.poin}</span>
+                    <div class="answer-rank">${index + 1}</div>
+                    <div class="answer-content hidden-box">? ? ? ? ?</div>
+                    <div class="answer-points">${item.poin}</div>
                 `;
                 container.appendChild(answerDiv);
             });
         }
 
-        function revealAnswer(element, poin) {
-            if (element.classList.contains('revealed')) return;
-            element.classList.add('revealed');
-            poinRonde += poin;
-            document.getElementById('round-points').innerText = poinRonde;
+        // Fungsi Cek Input Jawaban
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                cekInputJawaban();
+            }
+        }
+
+        function cekInputJawaban() {
+            const input = document.getElementById('input-jawaban');
+            const jawabanUser = input.value.toLowerCase().trim();
             
-            // Efek suara bisa ditambahkan di sini
+            if (!jawabanUser) return;
+
+            // Cari jawaban di soal saat ini
+            const answersList = document.querySelectorAll('.answer-item');
+            let ketemu = false;
+
+            soalSekarang.jawaban.forEach((item, index) => {
+                // Cek apakah teks cocok dan kotak belum dibuka
+                if (item.teks.toLowerCase() === jawabanUser && !answersList[index].classList.contains('revealed')) {
+                    // Buka kotak jawaban
+                    answersList[index].classList.add('revealed');
+                    
+                    // Ganti teks ? dengan teks asli
+                    answersList[index].querySelector('.answer-content').innerText = item.teks;
+                    
+                    // Tambah poin
+                    poinRonde += item.poin;
+                    document.getElementById('round-points').innerText = poinRonde;
+                    
+                    ketemu = true;
+                }
+            });
+
+            if (ketemu) {
+                input.value = ''; // Kosongkan input jika benar
+                // Bisa tambahkan suara benar di sini
+            } else {
+                alert("Jawaban tidak ada di daftar, atau sudah dibuka!");
+                input.select(); // Blok teks agar mudah diketik ulang
+            }
         }
 
         function addStrike() {
@@ -297,13 +382,11 @@
                 strikes++;
                 document.getElementById('strikes-display').classList.add('active');
                 
-                // Sembunyikan X setelah 1.5 detik
                 setTimeout(() => {
                     document.getElementById('strikes-display').classList.remove('active');
                 }, 1500);
 
                 if (strikes === 3) {
-                    // Jika 3 kesalahan, munculkan modal rebut
                     setTimeout(() => {
                         document.getElementById('modal-rebut').classList.add('active');
                     }, 500);
@@ -315,7 +398,6 @@
             document.getElementById('modal-rebut').classList.remove('active');
             
             if (berhasil) {
-                // Tim lawan berhasil rebut
                 if (timAktif === 'A') {
                     skorB += poinRonde;
                     document.getElementById('score-b').innerText = skorB;
@@ -325,7 +407,6 @@
                 }
                 alert("Tim Lawan berhasil merebut poin!");
             } else {
-                // Tim lawan gagal rebut, poin tetap milik tim yang bermain
                 if (timAktif === 'A') {
                     skorA += poinRonde;
                     document.getElementById('score-a').innerText = skorA;
@@ -336,15 +417,33 @@
                 alert("Tim Lawan gagal. Poin tetap milik tim yang bermain.");
             }
 
-            // Reset ronde
             poinRonde = 0;
             strikes = 0;
             document.getElementById('round-points').innerText = poinRonde;
             document.getElementById('strikes-display').classList.remove('active');
             
-            // Ganti giliran tim (opsional, bisa diubah manual)
             timAktif = (timAktif === 'A') ? 'B' : 'A';
         }
+
+        // --- Logika Layar Penuh (Fullscreen) ---
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+                fullscreenBtn.innerText = '🗗';
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    fullscreenBtn.innerText = '⛶';
+                }
+            }
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                fullscreenBtn.innerText = '⛶';
+            }
+        });
 
         // Muat soal pertama saat halaman dibuka
         window.onload = loadNextQuestion;
